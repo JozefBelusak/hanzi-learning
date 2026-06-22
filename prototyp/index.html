@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mandarin Flashcards Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">lokálny prototyp</p>
+          <h1>Mandarin flashcards</h1>
+        </div>
+        <div class="identity">
+          <label for="userName">Používateľ</label>
+          <div class="identity-row">
+            <input id="userName" type="text" autocomplete="off" placeholder="meno">
+            <button id="saveUser" type="button">Uložiť</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="sidebar" aria-label="Balíčky">
+          <section>
+            <h2>Balíčky</h2>
+            <div id="deckList" class="deck-list"></div>
+          </section>
+          <section>
+            <h2>Pokrok</h2>
+            <div class="stat-grid">
+              <div>
+                <span id="statAttempts">0</span>
+                <small>pokusy</small>
+              </div>
+              <div>
+                <span id="statAccuracy">0%</span>
+                <small>úspešnosť</small>
+              </div>
+              <div>
+                <span id="statStreak">0</span>
+                <small>séria</small>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <section class="practice" aria-live="polite">
+          <div class="practice-head">
+            <div>
+              <p id="activeDeck" class="eyebrow">Balíček</p>
+              <h2 id="cardMeaning">Význam</h2>
+            </div>
+            <button id="nextCard" type="button" class="ghost">Ďalšia</button>
+          </div>
+
+          <article class="flashcard">
+            <div>
+              <p class="label">Čínsky zápis</p>
+              <div id="cardHanzi" class="hanzi">你好</div>
+            </div>
+            <div class="card-meta">
+              <div>
+                <p class="label">Pinyin</p>
+                <strong id="cardPinyin">nǐ hǎo</strong>
+              </div>
+              <div>
+                <p class="label">Tóny</p>
+                <strong id="cardTones">3-3</strong>
+              </div>
+            </div>
+          </article>
+
+          <div class="answer-panel">
+            <div class="speech-controls">
+              <button id="recordButton" type="button" class="primary">Nahrať odpoveď</button>
+              <span id="speechStatus" class="status">pripravené</span>
+            </div>
+            <label for="manualAnswer">Rozpoznaná alebo manuálna odpoveď</label>
+            <div class="answer-row">
+              <input id="manualAnswer" type="text" autocomplete="off" placeholder="napr. 你好 alebo ni hao">
+              <button id="checkAnswer" type="button">Vyhodnotiť</button>
+            </div>
+          </div>
+
+          <section id="feedback" class="feedback neutral">
+            <p class="label">Spätná väzba</p>
+            <h3>Vyber kartičku a odpovedz hlasom alebo textom.</h3>
+            <p id="feedbackText">Výsledok pokusu sa zobrazí tu.</p>
+          </section>
+        </section>
+
+        <aside class="history" aria-label="História">
+          <h2>Kartičky v balíčku</h2>
+          <div id="cardList" class="card-list"></div>
+          <button id="resetProgress" type="button" class="danger">Vymazať lokálny pokrok</button>
+        </aside>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
