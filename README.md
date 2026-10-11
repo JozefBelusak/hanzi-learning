@@ -1,93 +1,101 @@
-# Application for foreign language teaching needs
+# Hanzi Learning
 
-
+A React and TypeScript implementation for the thesis, running in the browser and on Android through Capacitor. The thesis text lives in `../tex/thesis`. The earlier HTML/JavaScript prototype is archived in `prototyp/`.
 
 ## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Install Node.js 22 or later and npm. Run these commands from this directory:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.kpi.fei.tuke.sk/kpi-zp/2027/dp.jozef.belusak/workspace/application-for-foreign-language-teaching-needs.git
-git branch -M main
-git push -uf origin main
+```sh
+npm ci
+npm run dev
 ```
 
-## Integrate with your tools
+Open `http://localhost:5173`. Python is not required. Browser microphone access requires localhost or HTTPS; plain HTTP from another device may not support it. The development server listens on this computer only by default.
 
-* [Set up project integrations](https://git.kpi.fei.tuke.sk/kpi-zp/2027/dp.jozef.belusak/workspace/application-for-foreign-language-teaching-needs/-/settings/integrations)
+```sh
+npm run lint
+npm test
+npm run test:browser
+npm run build
+```
 
-## Collaborate with your team
+Browser tests use Microsoft Edge on Windows. On Linux/macOS, first install Chromium with `npx playwright install chromium`. The production web build is written to `dist`; use `npm run preview` to inspect it.
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+## Implemented features
 
-## Test and Deploy
+- **Topics:** 150 HSK 2.0 level 1 words grouped into eight themes. Topic selection applies to flashcards, speaking and writing.
+- **Flashcards:** practice in either direction, reveal answers, listen to synthesized pronunciation, rate recall and schedule reviews.
+- **Speaking:** listen to a reference Chinese voice, record and replay your own voice, recognize Mandarin text and compare it with the expected word. Typed answers are a separate assisted mode.
+- **Writing:** 174 individual vocabulary characters, stroke animation, hints, outline tracing and writing from memory. Hanzi Writer checks stroke shape, order and direction. Mouse, pen and touch input are supported.
+- **Sentence building:** ten word-order examples with movable words, grammar explanations and hints. Examples are shared across topics.
+- **Progress:** a shared history, daily goal, streak, points, seven-day chart, results by mode and JSON backup import/export.
 
-Use the built-in continuous integration in GitLab.
+All interface text, explanations and app-generated messages are in English, matching the dataset's English definitions. Chinese characters and pinyin remain in their original form. Speech recognition and synthesis use Mandarin (`zh-CN`).
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+## Navigation and layout
 
-***
+Home contains an entry point to practice and a brief daily progress overview. Practice follows separate steps: **choose a topic → choose a mode → complete an exercise**. The Back button and browser history return to the preceding step. Hash URLs preserve the open screen when reloading.
 
-# Editing this README
+Progress contains statistics and history. Settings contains the profile, daily goal, backups and vocabulary refresh. Primary navigation sits at the bottom on mobile. Exercise instructions and method explanations are collapsible to keep the task visible. The layout follows feedback on separating topic selection, practice modes and exercises.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Writing uses a **Choose character** button instead of a dropdown. It opens a scrollable card picker as a drawer on desktop and a bottom sheet on mobile. Search matches Chinese characters, source-word pinyin without tone accents, or English meanings within the selected topic. Cards show the source word because the same character can have different readings in different words. Keyboard focus stays in the picker and returns to its opener after closing; Escape also closes it.
 
-## Suggestions for a good README
+The live writing brush uses a width of 72 in Hanzi Writer's normalized character coordinates, approximately 6% of the board width. It scales with the canvas and has rounded ends, so it resembles the template rather than a thin pen line. Changing characters resets the current exercise without saving an unfinished attempt. Stroke grading remains unchanged.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Vocabulary and sources
 
-## Name
-Choose a self-explaining name for your project.
+Words and pinyin come from the public [HearMandarin dataset](https://hearmandarin.com/datasets/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Definitions retain the source's English wording. The source does not include audio recordings; playback uses the device's synthesized voice. Topic grouping and demo sentences are authored for this application.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+`src/data/vocabulary-hsk1.json` contains an imported subset and source metadata. It is bundled, so the first launch does not need to download the vocabulary. **Refresh vocabulary** in Settings downloads and validates the current public dataset, then stores only the starter subset. Refresh can update pinyin and definitions. Changing the set of words or characters requires a new import and build so that the corresponding stroke data remains available.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+To reproduce the import during development:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```sh
+npm run data:import
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+The script downloads the dataset, validates records, bundles the required characters from the installed `hanzi-writer-data` package and updates license files. Review the diff and run tests and a build before committing. This is an **HSK 2.0 level 1** subset; the source dataset's HSK 3.0 name does not mean its entire vocabulary is enabled.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Writing uses [Hanzi Writer](https://hanziwriter.org/) (MIT) and [Hanzi Writer Data](https://github.com/chanind/hanzi-writer-data), derived from Make Me a Hanzi (Arphic Public License). Full notices are in `public/licenses/`. Stroke data loads from the app's own build without a public CDN request.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+## Evaluation methods and limits
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Flashcards use **self-assessment** with four ratings. **Again** resets progress and schedules a review in 10 minutes. **Good** advances through intervals of 1, 3, 7, 14 and 30 days. **Hard** stays at the current step with half the interval (12 hours for a new word). **Easy** skips a step (3 days for a new word). Buttons display the resulting review interval; the maximum is 30 days. Legacy records with only a boolean result retain their original scheduling. New words are immediately available. Only flashcard ratings change the review schedule; this is not an SM-2 implementation.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Speaking uses the Web Speech API in the browser and the native recognition service on Android. It checks **transcript equality** after normalizing punctuation and whitespace. It does not score pitch, tones, phonemes or acoustic pronunciation quality. Traditional and simplified characters are not automatically treated as equivalent. Service failures and empty recognition results are not stored as incorrect answers. Typed input is marked separately and excluded from recognition accuracy. Recognition, Mandarin voices and internet requirements depend on the browser and device.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Writing counts an independent attempt as correct after a character is completed from memory without mistakes. An outline or manual hint marks the attempt as assisted. Sentence exercises check token order and accept alternative valid orders for selected examples. Hint use remains recorded after hiding the hint. These exercises demonstrate a few rules rather than providing a general Chinese grammar parser. Accuracy by mode excludes assisted attempts and typed speech answers; points and the daily goal also count assisted practice.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+These are prototype metrics. Their educational suitability and assessment accuracy still require evaluation with learners and a teacher.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## User data
 
-## License
-For open source projects, say how it is licensed.
+The web app stores progress in `localStorage`; Android uses Capacitor Preferences. Legacy flashcard and speaking histories migrate on first load. The original identifiers for 我, 好 and 水 are preserved. Corrupted new-format history is saved under a key ending in `-recovery` before recovery. If reading storage fails, the app does not overwrite the original data and allows new results to be exported.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Exports include results, profile and daily goal. Import validates the format, merges histories, removes duplicate attempt IDs and rebuilds the review schedule. Voice recordings exist only during the current practice session and are not exported. The recognition service may process audio outside the device; this application has no audio-processing server.
+
+Vocabulary, exercises and stroke data are bundled in the Android app. The browser still needs to load the application from a web server; there is no service worker for opening the entire page offline.
+
+## Android
+
+The native project is in `android/`. Its application ID is `sk.diplomovka.hanzi.learning`, allowing installation alongside the reference app. Android Studio, an Android SDK and a compatible JDK are required.
+
+```sh
+npm run android:sync
+npm run android:open
+```
+
+Use Android Studio to run the app on a phone/emulator or build an APK. Repeat `npm run android:sync` after changing web code. The project declares microphone permission and visibility for recognition and speech synthesis services. The device needs a recognition service and an installed Mandarin voice; the APK does not bundle these services. Web tests and Capacitor sync do not substitute for testing on a physical Android device.
+
+## Code map
+
+- `src/App.tsx`, `src/lib/navigation.ts`: screens, hash navigation, vocabulary loading and progress.
+- `src/components/`: screens and practice interactions, including the character picker.
+- `src/data/categories.ts`, `sentences.ts`: topics and demo sentences.
+- `src/lib/vocabulary.ts`: dataset validation, bundled subset and refresh.
+- `src/lib/study.ts`, `storage.ts`, `useStudy.ts`: history, scheduling, migration and persistence.
+- `src/lib/speech.ts`, `writing.ts`, `sentences.ts`: recognition, comparison and exercise helpers.
+- `src/lib/*.test.ts`, `tests/*.spec.ts`: unit and browser tests.
+
+Next stages: acoustic tone and pronunciation assessment, additional vocabulary levels and systematic user evaluation.
