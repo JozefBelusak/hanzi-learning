@@ -22,6 +22,16 @@ npm run build
 
 Browser tests use Microsoft Edge on Windows. On Linux/macOS, first install Chromium with `npx playwright install chromium`. The production web build is written to `dist`; use `npm run preview` to inspect it.
 
+## Deploy to Netlify
+
+Import the GitHub repository into Netlify and deploy its `main` branch. Leave the base directory empty: the application is at the repository root. `netlify.toml` sets the build command to `npm run build`, the publish directory to `dist`, and the Node.js version to 22. No application API keys are required for this version.
+
+After connecting the repository, pushes to the deployed GitHub branch trigger a new build. Share the HTTPS deployment URL for testing. Navigation uses hash URLs, so it does not require a server-side SPA rewrite. Vocabulary and stroke data are included in the build.
+
+If Netlify creates the project as private, use **Make public** after the first successful production deploy so the supervisor can open the URL without a Netlify team login. Visibility is also available under Project configuration → General → Visitor access → Project visibility. Check the shared URL in a signed-out or private browser window.
+
+Try speaking in a supported browser such as Chrome or Edge and allow microphone access. Recognition and Mandarin voices depend on browser/device support. Current speaking feedback checks the transcript; acoustic pronunciation and tone assessment are still planned. Progress is stored separately on each browser origin, so use Settings to export/import a backup when moving from localhost to the deployed site.
+
 ## Implemented features
 
 - **Topics:** 150 HSK 2.0 level 1 words grouped into eight themes. Topic selection applies to flashcards, speaking and writing.
