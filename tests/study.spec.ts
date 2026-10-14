@@ -39,7 +39,7 @@ test('category selection changes the deck and flashcard progress survives a relo
 
   await page.reload()
   await page.getByRole('navigation', { name: 'Main navigation' })
-    .getByRole('button', { name: 'Learn', exact: true }).click()
+    .getByRole('button', { name: 'Practice', exact: true }).click()
   await page.getByRole('button', { name: /Food and drinks/ }).click()
   await page.getByRole('button', { name: /Flashcards/ }).click()
   await expect(page.locator('.practice-header')).toContainText('1 / 7')
@@ -136,7 +136,7 @@ test('bundled public vocabulary works on the first launch with external network 
   await page.getByRole('button', { name: 'Refresh vocabulary', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Vocabulary refresh failed.')
   await page.getByRole('navigation', { name: 'Main navigation' })
-    .getByRole('button', { name: 'Learn', exact: true }).click()
+    .getByRole('button', { name: 'Practice', exact: true }).click()
   await openMode(page, /Numbers and quantities/, /Flashcards/)
   await expect(page.locator('.flashcard')).toBeVisible()
   await page.getByRole('button', { name: /Show answer/ }).click()

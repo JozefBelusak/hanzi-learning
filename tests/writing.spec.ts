@@ -61,15 +61,23 @@ async function savedAttempts(page: Page): Promise<StudyAttempt[]> {
 }
 
 async function expectVisibleInk(page: Page) {
-  const liveInk = page.locator('.writing-board svg > g > path[stroke-linecap="round"]')
+  const liveInk = page.locator('.writing-board path[data-brush-ink]')
   await expect(liveInk).toHaveCount(1)
   const ink = await liveInk.evaluate((path) => {
-    const matrix = (path as SVGPathElement).getScreenCTM()
+    const element = path as SVGPathElement
+    const matrix = element.getScreenCTM()
     if (!matrix) throw new Error('Live ink has no screen transform')
-    const width = Number(path.getAttribute('stroke-width')) * Math.hypot(matrix.a, matrix.b)
-    return { width, boardWidth: path.closest('.writing-board')!.getBoundingClientRect().width }
+    const bounds = element.getBBox()
+    return {
+      shape: element.getAttribute('d'), fill: element.getAttribute('fill'), stroke: element.getAttribute('stroke'),
+      width: bounds.width * Math.hypot(matrix.a, matrix.b), height: bounds.height * Math.hypot(matrix.c, matrix.d),
+      boardWidth: path.closest('.writing-board')!.getBoundingClientRect().width,
+    }
   })
-  expect(ink.width).toBeGreaterThanOrEqual(ink.boardWidth * 0.04)
+  expect(ink.shape).toMatch(/^M .+ Q .+ Z$/)
+  expect(ink.fill).not.toBe('none')
+  expect(ink.stroke).toBe('none')
+  expect(Math.min(ink.width, ink.height)).toBeGreaterThan(ink.boardWidth * 0.012)
 }
 
 test('writing: actual mouse strokes, assisted result, backwards rejection and recall result', async ({ page }) => {
@@ -157,7 +165,7 @@ test('writing: mobile touch completes the genuine trajectories after resizing', 
           type: pointIndex === 0 ? 'touchStart' : 'touchMove',
           touchPoints: [{ x: point.x, y: point.y }],
         })
-        if (index === 0 && pointIndex === 1) {
+        if (index === 0 && pointIndex === points.length - 2) {
           await expectVisibleInk(page)
           // Full-page capture can resize the mobile viewport mid-gesture.
           await page.screenshot({ path: 'playwright-report/english-mobile-ink.png' })
@@ -233,15 +241,16 @@ for (const viewport of [
   })
 }
 
-test('writing: live ink has a visible brush width and choosing another character discards an unfinished attempt', async ({ page }) => {
+test('writing: live ink has a filled brush contour and choosing another character discards an unfinished attempt', async ({ page }) => {
   await openWriting(page)
   const coordinates = await transformedPoints(page, strokeData.medians[0])
   await page.mouse.move(coordinates[0].x, coordinates[0].y)
   await page.mouse.down()
-  await page.mouse.move(coordinates[1].x, coordinates[1].y, { steps: 5 })
+  const split = coordinates.length - 1
+  for (const point of coordinates.slice(1, split)) await page.mouse.move(point.x, point.y, { steps: 5 })
   await expectVisibleInk(page)
   await page.screenshot({ path: 'playwright-report/english-desktop-ink.png' })
-  for (const point of coordinates.slice(2)) await page.mouse.move(point.x, point.y, { steps: 5 })
+  for (const point of coordinates.slice(split)) await page.mouse.move(point.x, point.y, { steps: 5 })
   await page.mouse.up()
   await expect(page.locator('.writing-counts')).toContainText('Strokes: 1 / 2')
   expect(await savedAttempts(page)).toHaveLength(0)
@@ -258,4 +267,28 @@ test('writing: live ink has a visible brush width and choosing another character
   }
   await expect.poll(async () => (await savedAttempts(page)).length).toBe(1)
   expect((await savedAttempts(page))[0]).toMatchObject({ expectedText: '八', correct: true, mistakes: 0, assisted: true })
+})
+
+test('writing: real pen pressure changes the live brush while the same trajectory still grades correctly', async ({ page }) => {
+  await openWriting(page)
+  await chooseCharacter(page, '一')
+  const data: { medians: number[][][] } = JSON.parse(readFileSync(new URL('../src/data/strokes/一.json', import.meta.url), 'utf8'))
+  const session = await page.context().newCDPSession(page)
+  const heights: number[] = []
+  for (const [index, force] of [0.15, 0.9].entries()) {
+    if (index) {
+      await page.getByRole('button', { name: 'Try again', exact: true }).click()
+      await expect(page.locator('.writing-exercise [role="status"]')).toContainText('Trace the outline')
+    }
+    const points = await transformedPoints(page, data.medians[0])
+    await session.send('Input.dispatchMouseEvent', { type: 'mousePressed', ...points[0], button: 'left', buttons: 1, clickCount: 1, pointerType: 'pen', force })
+    for (const point of points.slice(1)) await session.send('Input.dispatchMouseEvent', { type: 'mouseMoved', ...point, button: 'left', buttons: 1, pointerType: 'pen', force })
+    await expectVisibleInk(page)
+    heights.push(await page.locator('[data-brush-ink]').evaluate((element) => (element as SVGPathElement).getBBox().height))
+    await session.send('Input.dispatchMouseEvent', { type: 'mouseReleased', ...points[points.length - 1], button: 'left', buttons: 0, clickCount: 1, pointerType: 'pen', force: 0 })
+    await expect(page.locator('.writing-counts')).toContainText('Strokes: 1 / 1')
+  }
+  expect(heights[1]).toBeGreaterThan(heights[0] * 1.1)
+  await expect.poll(async () => (await savedAttempts(page)).length).toBe(2)
+  expect((await savedAttempts(page)).every((attempt) => attempt.correct && attempt.mistakes === 0)).toBe(true)
 })

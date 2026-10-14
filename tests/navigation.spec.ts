@@ -42,7 +42,7 @@ test('learning has separate steps and both in-app and browser Back preserve thei
   await page.getByRole('button', { name: 'Back', exact: true }).click()
   await expect(page).toHaveURL(/#\/home$/)
 
-  await navigation(page).getByRole('button', { name: 'Learn', exact: true }).click()
+  await navigation(page).getByRole('button', { name: 'Practice', exact: true }).click()
   await page.getByRole('button', { name: /Food and drinks/ }).click()
   await page.getByRole('button', { name: /Speaking/ }).click()
   await expect(page).toHaveURL(/#\/practice\/food\/speech$/)
@@ -70,7 +70,7 @@ test('direct practice routes survive reload and primary navigation leaves the ex
   await expect(page.getByRole('heading', { name: 'Settings', exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Refresh vocabulary', exact: true })).toBeVisible()
   await expect(page.getByLabel('Daily goal · attempts')).toBeVisible()
-  await navigation(page).getByRole('button', { name: 'Learn', exact: true }).click()
+  await navigation(page).getByRole('button', { name: 'Practice', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Choose a topic', exact: true })).toBeVisible()
 })
 

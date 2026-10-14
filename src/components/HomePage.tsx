@@ -1,24 +1,38 @@
 import { studySummary } from '../lib/study'
+import { getNextLesson, activityStatus } from '../lib/learning'
+import { lessons } from '../data/learning'
 import type { StudyData } from '../types/study'
 
-type Props = { study: StudyData; onLearn: () => void; onProgress: () => void }
+type Props = { study: StudyData; onLearn: () => void; onCourse: () => void; onLesson: (id: string) => void; onExercises: () => void; onProgress: () => void }
 
-export default function HomePage({ study, onLearn, onProgress }: Props) {
+export default function HomePage({ study, onLearn, onCourse, onLesson, onExercises, onProgress }: Props) {
   const summary = studySummary(study.attempts)
+  const sessions = study.learningSessions ?? []
+  const next = getNextLesson(sessions)
+  const complete = lessons.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length
   return (
     <main className="home-page">
       <h1>Home</h1>
       {study.displayName && <p className="home-greeting">Hi, {study.displayName}.</p>}
       <section className="home-study">
         <div>
-          <h2>Chinese practice</h2>
-          <p>Choose a topic and practise vocabulary, speaking or writing characters.</p>
-          <button type="button" onClick={onLearn}>Start practice</button>
+          <span className="home-course-label">Starter course</span>
+          <h2>{next?.title ?? 'Your first journey, complete'}</h2>
+          <p>{next?.description ?? 'Revisit any stop on the course map, or put your skills to work in a themed exercise.'}</p>
+          <div className="action-row">
+            <button type="button" onClick={() => next ? onLesson(next.id) : onCourse()}>{next ? sessions.some((session) => session.activityId === next.id && !session.finishedAt) ? 'Continue lesson' : 'Start course' : 'Revisit course'}</button>
+            <button type="button" className="home-map-button" onClick={onCourse}>View course map</button>
+          </div>
+          <span className="home-course-progress">{complete} / {lessons.length} stops completed</span>
         </div>
         <span className="home-character" lang="zh-CN" aria-hidden="true">学</span>
       </section>
+      <section className="home-pathways" aria-label="Choose your learning path">
+        <button className="home-pathway" type="button" aria-label="Themed exercises" onClick={onExercises}><span><strong>Themed exercises</strong><span>Practise listening, vocabulary and sentences in everyday situations.</span></span></button>
+        <button className="home-pathway" type="button" aria-label="Start practice" onClick={onLearn}><span><strong>Start practice</strong><span>Choose your own words and focus on one skill at a time.</span></span></button>
+      </section>
       <section className="home-goal" aria-label="Today's practice">
-        <div className="goal-heading"><h2>Today's goal</h2><span>{summary.todayCount} / {study.dailyGoal} attempts</span></div>
+        <div className="goal-heading"><h2>Daily practice goal</h2><span>{summary.todayCount} / {study.dailyGoal} practice attempts</span></div>
         <progress aria-label="Daily goal progress" value={Math.min(summary.todayCount, study.dailyGoal)} max={study.dailyGoal} />
         {summary.todayCount >= study.dailyGoal && <p>You've reached today's goal.</p>}
       </section>

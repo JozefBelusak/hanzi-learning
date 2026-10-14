@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { AttemptInput, StudyData } from '../types/study'
-import { appendAttempt, createAttempt, emptyStudy, mergeStudy, parseStudy } from './study'
+import type { LearningSession } from '../types/learning'
+import { appendAttempt, createAttempt, emptyStudy, mergeStudy, parseStudy, saveLearningSession } from './study'
 import { loadStudyData, saveStudyData } from './storage'
 
 export function useStudy() {
@@ -31,10 +32,15 @@ export function useStudy() {
     if (!Number.isFinite(dailyGoal)) return
     setData((previous) => ({ ...previous, displayName: displayName.trim().slice(0, 60), dailyGoal: Math.max(1, Math.min(100, Math.round(dailyGoal))) }))
   }
+  function recordLearningSession(session: LearningSession) {
+    setData((previous) => saveLearningSession(previous, session))
+  }
   function importBackup(raw: string) {
     const imported = parseStudy(raw)
-    setData((previous) => mergeStudy(previous, imported))
+    // Validate cross-device conflicts inside the caller's import error handler.
+    const merged = mergeStudy(data, imported)
+    setData(merged)
     return imported
   }
-  return { data, ready, storageError, recordAttempt, updateProfile, importBackup }
+  return { data, ready, storageError, recordAttempt, recordLearningSession, updateProfile, importBackup }
 }

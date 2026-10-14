@@ -11,8 +11,10 @@
 .brand { display: flex; align-items: center; gap: 10px; padding: 0; background: transparent; color: var(--green); font-size: 23px; }
 .brand > span:first-child { font-family: var(--hanzi-font); font-size: 29px; }
 .app-header nav { display: flex; gap: 6px; }
+.app-header nav { flex-wrap: wrap; justify-content: flex-end; }
 .nav-button { color: var(--muted); background: transparent; font-size: 14px; padding: 10px 16px; }
 .nav-button[aria-current=page] { background: #edf2e8; color: var(--green); }
+.nav-icon { display: none; }
 .home-page, .topics-page, .learning-page, .progress-page, .settings-page {
   width: min(960px, calc(100% - 48px));
   margin: 40px auto;
@@ -44,6 +46,22 @@
 .home-study p { max-width: 410px; margin-bottom: 24px; color: #d9e5d5; }
 .home-study button { background: var(--cream); color: var(--green); }
 .home-character { font-family: var(--hanzi-font); font-size: 94px; color: #c9dabd; }
+.home-course-label { display: block; margin-bottom: 14px; font-size: 14px; color: #d9e5d5; }
+.home-study .home-map-button { background: transparent; color: #f5efdf; border-color: #6b8d7e; }
+.home-course-progress { display: block; margin-top: 20px; color: #d9e5d5; font-size: 13px; }
+.home-pathways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.home-pathway { display: flex; gap: 14px; align-items: flex-start; padding: 22px; min-width: 0; background: white; color: var(--green); border-color: var(--line); text-align: left; }
+.home-pathway > span { display: block; }
+.home-pathway strong { display: block; font-size: 17px; margin-bottom: 8px; }
+.home-pathway strong + span { display: block; color: var(--muted); font-size: 14px; font-weight: 400; }
+.learning-progress-summary { margin: 24px 0; }
+.learning-progress-totals { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 22px; }
+.learning-progress-totals strong { font-size: 26px; margin-right: 8px; }
+.learning-history { margin: 0; padding: 0; list-style: none; }
+.learning-history li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+.learning-history li strong, .learning-history li small { display: block; }
+.learning-history li small { color: var(--muted); margin-top: 4px; }
+.learning-history li > span { white-space: nowrap; color: var(--green); }
 .home-goal { padding: 28px 0 24px; border-bottom: 1px solid var(--line); }
 .goal-heading { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 10px; }
 .goal-heading h2 { margin: 0; font-size: 18px; }
@@ -267,12 +285,15 @@
   .writing-board { scroll-margin-bottom: calc(94px + env(safe-area-inset-bottom)); }
   .app-shell { padding-bottom: calc(94px + env(safe-area-inset-bottom)); }
   .app-header { padding: 12px 18px; }
-  .app-header nav { position: fixed; z-index: 10; bottom: 0; left: 0; width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: white; }
-  .nav-button { padding: 12px 4px; font-size: 13px; }
+  .app-header nav { position: fixed; z-index: 10; bottom: 0; left: 0; width: 100%; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; padding: 8px 4px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: white; }
+  .nav-button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 1px; font-size: 10px; min-width: 0; }
+  .nav-icon { display: block; width: 20px; height: 20px; }
   .home-page, .topics-page, .learning-page, .progress-page, .settings-page, .practice-page, .speech-page, .sentence-page { width: calc(100% - 32px); margin: 24px auto; }
   .home-study { padding: 24px; }
   .home-study h2 { font-size: 23px; }
   .home-character { display: none; }
+  .home-pathways { grid-template-columns: 1fr; }
+  .home-pathway { padding: 20px; }
   .goal-heading { gap: 12px; }
   .goal-heading span { font-size: 14px; }
   .home-progress { gap: 20px; flex-wrap: wrap; }

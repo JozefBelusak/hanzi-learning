@@ -1,5 +1,6 @@
 import type { CharacterJson, Point, RenderTargetInitFunction } from 'hanzi-writer'
 import type { Card } from '../types/study'
+import { createBrushRenderer, type BrushInput } from './brushRenderer'
 
 const strokeModules = import.meta.glob<CharacterJson>('../data/strokes/*.json', {
   import: 'default',
@@ -66,22 +67,25 @@ class WritingRenderTarget {
   defs: SVGDefsElement
   private controller: AbortController
   private activePointer: number | null = null
+  private input: BrushInput
 
   constructor(
     svg: SVGSVGElement | SVGGElement,
     defs: SVGDefsElement,
     controller: AbortController,
+    input: BrushInput,
   ) {
     this.node = svg
     this.svg = svg
     this.defs = defs
     this.controller = controller
+    this.input = input
   }
 
   createSubRenderTarget() {
     const group = document.createElementNS(svgNamespace, 'g')
     this.svg.appendChild(group)
-    return new WritingRenderTarget(group, this.defs, this.controller)
+    return new WritingRenderTarget(group, this.defs, this.controller, this.input)
   }
 
   getBoundingClientRect() {
@@ -129,6 +133,7 @@ class WritingRenderTarget {
       if (!(event instanceof PointerEvent)) return
       if (!event.isPrimary || event.button !== 0 || this.activePointer !== null) return
       this.activePointer = event.pointerId
+      this.input.samples = [{ pressure: event.pointerType === 'pen' ? event.pressure : undefined }]
       this.node.setPointerCapture(event.pointerId)
       callback(this._eventify(event, (pointer) => this.point(pointer.clientX, pointer.clientY)))
     }, { signal: this.controller.signal })
@@ -138,7 +143,11 @@ class WritingRenderTarget {
     this.node.addEventListener('pointermove', (event) => {
       if (!(event instanceof PointerEvent)) return
       if (event.pointerId !== this.activePointer) return
-      callback(this._eventify(event, (pointer) => this.point(pointer.clientX, pointer.clientY)))
+      const coalesced = event.getCoalescedEvents?.() ?? []
+      for (const sample of coalesced.length ? coalesced : [event]) {
+        this.input.samples.push({ pressure: event.pointerType === 'pen' ? sample.pressure : undefined })
+        callback(this._eventify(sample, (pointer) => this.point(pointer.clientX, pointer.clientY)))
+      }
     }, { signal: this.controller.signal })
   }
 
@@ -158,6 +167,7 @@ class WritingRenderTarget {
 
 export function createWritingTarget(host: HTMLDivElement) {
   const controller = new AbortController()
+  const input: BrushInput = { samples: [] }
   const svg = document.createElementNS(svgNamespace, 'svg')
   svg.style.touchAction = 'none'
   svg.setAttribute('aria-hidden', 'true')
@@ -168,11 +178,12 @@ export function createWritingTarget(host: HTMLDivElement) {
     svg.setAttribute('width', String(width))
     svg.setAttribute('height', String(height))
     host.appendChild(svg)
-    return new WritingRenderTarget(svg, defs, controller)
+    return new WritingRenderTarget(svg, defs, controller, input)
   }
 
   return {
     createRenderTarget,
+    HanziWriterRenderer: createBrushRenderer(input),
     dispose() {
       controller.abort()
       svg.remove()

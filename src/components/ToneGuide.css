@@ -1,0 +1,15 @@
+.tone-guide { padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 22px 0; }
+.tone-guide-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.tone-guide-heading h3 { margin: 0; font-size: 15px; }
+.tone-guide-heading button { font-size: 12px; padding: 8px 0; white-space: nowrap; }
+.tone-guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tone-guide-card { min-width: 0; background: #f7f9f3; border-radius: 9px; padding: 12px; }
+.tone-guide-card > strong { font-size: 21px; color: var(--green); }
+.tone-guide-card svg { display: block; width: 100%; max-height: 75px; margin: 3px 0; }
+.tone-guide-card > span, .tone-guide-card > small { display: block; }
+.tone-guide-card > span { font-size: 13px; font-weight: 600; }
+.tone-guide-card > small { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.tone-guide-contour { stroke-dasharray: 1; stroke-dashoffset: 0; animation: draw-tone-guide 1.4s ease-out both; }
+.tone-guide > p { margin: 14px 0 0; font-size: 11px; }
+@keyframes draw-tone-guide { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .tone-guide-contour { animation: none; } }

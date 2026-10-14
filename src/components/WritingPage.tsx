@@ -59,15 +59,15 @@ function WritingExercise({
       height: size,
       padding: size * 0.08,
       charDataLoader: loadStrokeData,
-      rendererOverride: { createRenderTarget: target.createRenderTarget },
+      rendererOverride: { createRenderTarget: target.createRenderTarget, HanziWriterRenderer: target.HanziWriterRenderer },
       showCharacter: false,
       showOutline: mode === 'guide',
       strokeColor: '#204e42',
       outlineColor: '#dfe7db',
       drawingColor: '#204e42',
       highlightColor: '#cc804b',
-      // The SVG scales character coordinates to the board. This is a width in
-      // those coordinates, not pixels; 72 gives a brush about 6% of board width.
+      // Maximum brush size in character coordinates. The custom renderer tapers
+      // the actual input path and uses pen pressure where the device provides it.
       drawingWidth: 72,
       strokeAnimationSpeed: 1,
       delayBetweenStrokes: 280,

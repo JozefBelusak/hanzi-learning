@@ -1,10 +1,40 @@
 import type {
   AttemptInput, Card, CardProgress, FlashcardRating, StudyAttempt, StudyData,
 } from '../types/study'
+import type { LearningSession } from '../types/learning'
+import { validateLearningSession } from './learning'
 
 const DAY = 86_400_000
 const intervals = [1, 3, 7, 14, 30]
-export const emptyStudy = (): StudyData => ({ version: 1, displayName: '', dailyGoal: 10, attempts: [], progress: {} })
+export const emptyStudy = (): StudyData => ({ version: 1, displayName: '', dailyGoal: 10, attempts: [], progress: {}, learningSessions: [] })
+
+export function mergeLearningSessions(sessions: LearningSession[]): LearningSession[] {
+  const byId = new Map<string, LearningSession>()
+  for (const session of sessions) {
+    const existing = byId.get(session.id)
+    if (existing && (existing.activityId !== session.activityId || existing.startedAt !== session.startedAt)) {
+      throw new Error('The backup contains conflicting learning sessions.')
+    }
+    if (!existing) { byId.set(session.id, session); continue }
+    // Checked answers are immutable. A stale backup cannot shorten a session or undo a hint.
+    const newest = Date.parse(session.updatedAt) >= Date.parse(existing.updatedAt) ? session : existing
+    const longest = session.answers.length > existing.answers.length ? session : existing
+    const chosen = session.answers.length === existing.answers.length ? newest : longest
+    const hintedQuestionIds = [...new Set([...(existing.hintedQuestionIds ?? []), ...(session.hintedQuestionIds ?? [])])]
+    const finishedAt = newest.finishedAt ?? (newest === session ? existing.finishedAt : session.finishedAt)
+    byId.set(session.id, {
+      ...chosen, updatedAt: newest.updatedAt,
+      ...(hintedQuestionIds.length ? { hintedQuestionIds } : {}),
+      ...(finishedAt ? { finishedAt } : {}),
+    })
+  }
+  return [...byId.values()].sort((a, b) => Date.parse(a.startedAt) - Date.parse(b.startedAt))
+}
+
+export function saveLearningSession(state: StudyData, session: LearningSession): StudyData {
+  if (!validateLearningSession(session)) throw new Error('The learning session is invalid.')
+  return { ...state, learningSessions: mergeLearningSessions([...(state.learningSessions ?? []), session]) }
+}
 export function scheduleReview(
   previous: CardProgress | undefined,
   correct: boolean,
@@ -95,8 +125,10 @@ export function parseStudy(raw: string): StudyData {
   if (!value || typeof value !== 'object') throw new Error('The backup has an invalid format.')
   const data = value as Record<string, unknown>
   if (data.version !== 1 || typeof data.displayName !== 'string' || !Array.isArray(data.attempts) || !data.attempts.every(isStudyAttempt) || typeof data.dailyGoal !== 'number' || !Number.isInteger(data.dailyGoal) || data.dailyGoal < 1 || data.dailyGoal > 100) throw new Error('The backup does not contain valid Hanzi progress.')
-  return data.attempts.slice().sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)).reduce(appendAttempt, { ...emptyStudy(), displayName: data.displayName.slice(0, 60), dailyGoal: data.dailyGoal })
+  if (data.learningSessions !== undefined && (!Array.isArray(data.learningSessions) || !data.learningSessions.every(validateLearningSession))) throw new Error('The backup does not contain valid lesson or exercise progress.')
+  const learningSessions = mergeLearningSessions((data.learningSessions ?? []) as LearningSession[])
+  return data.attempts.slice().sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)).reduce(appendAttempt, { ...emptyStudy(), displayName: data.displayName.slice(0, 60), dailyGoal: data.dailyGoal, learningSessions })
 }
 export function mergeStudy(current: StudyData, imported: StudyData): StudyData {
-  return parseStudy(JSON.stringify({ ...imported, attempts: [...current.attempts, ...imported.attempts] }))
+  return parseStudy(JSON.stringify({ ...imported, attempts: [...current.attempts, ...imported.attempts], learningSessions: [...(current.learningSessions ?? []), ...(imported.learningSessions ?? [])] }))
 }

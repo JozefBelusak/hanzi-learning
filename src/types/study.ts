@@ -1,3 +1,5 @@
+import type { LearningSession } from './learning'
+
 export type WordCategoryId =
   | 'people' | 'food' | 'numbers' | 'time'
   | 'places' | 'actions' | 'objects' | 'other'
@@ -49,6 +51,7 @@ export type StudyData = {
   dailyGoal: number
   attempts: StudyAttempt[]
   progress: Record<string, CardProgress>
+  learningSessions?: LearningSession[]
 }
 
 // Earlier saved attempts are migrated when the application starts.

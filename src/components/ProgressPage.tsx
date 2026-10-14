@@ -1,12 +1,16 @@
 import type { Card, StudyData } from '../types/study'
 import { categories, filterCards } from '../data/categories'
 import { dayKey, dueCards, studySummary } from '../lib/study'
+import { activities, lessons, exercises, getActivity } from '../data/learning'
+import { activityStatus, sessionScore } from '../lib/learning'
 
 type Props = { cards: Card[]; study: StudyData; onBack: () => void }
 const modeNames = { flashcards: 'Flashcards', speech: 'Speaking · text match', writing: 'Writing', sentences: 'Sentences · word order' }
 
 export default function ProgressPage({ cards, study, onBack }: Props) {
   const summary = studySummary(study.attempts)
+  const sessions = study.learningSessions ?? []
+  const finished = sessions.filter((session) => session.finishedAt).slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
   const days = Array.from({ length: 7 }, (_, index) => {
     const date = new Date()
     date.setDate(date.getDate() - (6 - index))
@@ -23,6 +27,18 @@ export default function ProgressPage({ cards, study, onBack }: Props) {
         <div className="stat-card"><span>Words practised</span><strong>{summary.practiced} <small>/ {cards.length}</small></strong></div>
         <div className="stat-card"><span>Day streak</span><strong>{summary.streak}</strong></div>
         <div className="stat-card"><span>Points</span><strong>{summary.points}</strong></div>
+      </section>
+      <section className="card-surface learning-progress-summary" aria-label="Course and exercise progress">
+        <h2>Your learning journeys</h2>
+        <div className="learning-progress-totals">
+          <span><strong>{lessons.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length} / {lessons.length}</strong>course stops completed</span>
+          <span><strong>{exercises.filter((exercise) => activityStatus(exercise, sessions) === 'completed').length} / {exercises.length}</strong>exercises passed</span>
+        </div>
+        {finished.length ? <ol className="learning-history">{finished.slice(0, 6).map((session) => {
+          const activity = getActivity(session.activityId)!
+          const score = sessionScore(activity, session)
+          return <li key={session.id}><div><strong>{activity.title}</strong><small>{activity.kind === 'lesson' ? 'Course' : 'Exercise'} · {score.passed ? 'Passed' : 'Review recommended'} · {new Date(session.updatedAt).toLocaleDateString('en-GB')}</small></div><span>{score.correct} / {score.total} independent answers</span></li>
+        })}</ol> : <p>{activities.some((activity) => activityStatus(activity, sessions) === 'in-progress') ? 'A learning session is in progress. Continue it from Course or Exercises.' : 'Complete a course stop or a themed exercise to see your results here.'}</p>}
       </section>
       <section className="progress-columns">
         <div className="card-surface">
