@@ -1,9 +1,9 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from './fixtures'
+import type { Page } from '@playwright/test'
 import type { StudyData } from '../src/types/study'
 
 async function openLearning(page: Page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: 'Start learning', exact: true }).click()
+  await page.goto('/#/home')
   await expect(page.getByRole('heading', { name: 'Home', exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Start practice', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Choose a topic', exact: true })).toBeVisible()
@@ -20,7 +20,7 @@ async function openProgress(page: Page) {
 }
 
 async function storedStudy(page: Page): Promise<StudyData> {
-  return page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{"attempts":[],"progress":{}}'))
+  return page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{"attempts":[],"progress":{}}'))
 }
 
 test('category selection changes the deck and flashcard progress survives a reload', async ({ page }) => {

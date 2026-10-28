@@ -1,9 +1,10 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from './fixtures'
+import type { Page } from '@playwright/test'
 import { exercises, lessons } from '../src/data/learning'
 import type { LearningActivity, LearningQuestion, LearningSession } from '../src/types/learning'
 
 async function storedSessions(page: Page): Promise<LearningSession[]> {
-  return page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{}').learningSessions ?? [])
+  return page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}').learningSessions ?? [])
 }
 
 async function chooseAnswer(page: Page, question: LearningQuestion, correct = true) {
@@ -186,13 +187,13 @@ test('a conflicting session backup reports an import error without losing saved 
   const option = question.options.find((item) => item.id === question.answer)!
   await page.locator('.session-option').filter({ has: page.getByText(option.text, { exact: true }) }).click()
   await page.getByRole('button', { name: 'Check answer', exact: true }).click()
-  await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{}').learningSessions?.[0]?.answers.length)).toBe(1)
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1')!))
+  await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}').learningSessions?.[0]?.answers.length)).toBe(1)
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001')!))
   const backup = { ...saved, learningSessions: [{ ...saved.learningSessions[0], startedAt: '2026-10-01T10:00:00.000Z' }] }
   await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'Settings', exact: true }).click()
   await page.getByLabel('Import progress backup', { exact: true }).setInputFiles({ name: 'conflicting-progress.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) })
   await expect(page.getByRole('status')).toContainText('conflicting learning sessions')
   await expect(page.getByRole('heading', { name: 'Settings', exact: true })).toBeVisible()
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1')!))).toEqual(saved)
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001')!))).toEqual(saved)
   expect(errors).toEqual([])
 })

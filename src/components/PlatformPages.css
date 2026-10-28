@@ -1,0 +1,26 @@
+.platform-page { width: min(960px, calc(100% - 48px)); margin: 40px auto; }
+.management-section { margin: 24px 0; }
+.management-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+.management-heading h2 { margin: 0; }
+.management-form { display: grid; gap: 10px; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.management-form label { font-size: 14px; font-weight: 600; }
+.management-form textarea { width: 100%; resize: vertical; min-height: 160px; font: inherit; padding: 12px; border: 1px solid #c9d4c5; border-radius: 7px; color: inherit; }
+.management-form small { color: var(--muted); }
+.management-form .checkbox-field { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+.checkbox-field input { min-height: 18px; width: 18px; }
+.management-list { padding: 0; margin: 20px 0 0; list-style: none; }
+.management-list > li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+.management-list > li > div:first-child { min-width: 0; flex: 1 1 200px; overflow-wrap: anywhere; }
+.management-list strong, .management-list small { display: block; }
+.management-list small { color: var(--muted); margin-top: 5px; }
+.management-list .action-row { gap: 6px; }
+.management-list button { padding: 8px 12px; font-size: 14px; }
+.classroom-create { margin: 20px 0; }
+.classroom-create label { flex: 1 0 100%; font-size: 14px; }
+.classroom-create input { flex: 1 1 180px; }
+.roster { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 24px; }
+.published-lesson-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.published-lesson-list article, .platform-page > h1 { min-width: 0; overflow-wrap: anywhere; }
+.lesson-reader { max-width: 760px; }
+.lesson-body { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.8; }
+@media (max-width: 600px) { .published-lesson-list { grid-template-columns: 1fr; } .platform-page { width: calc(100% - 40px); } .management-section { padding: 20px; } }

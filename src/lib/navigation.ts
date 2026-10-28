@@ -3,8 +3,10 @@ import { categories } from '../data/categories'
 import { getActivity } from '../data/learning'
 import type { CategoryId, PracticeMode } from '../types/study'
 
+type StaticPage = 'welcome' | 'login' | 'register' | 'home' | 'course' | 'exercises' | 'topics' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
 export type AppRoute =
-  | { page: 'welcome' | 'home' | 'course' | 'exercises' | 'topics' | 'progress' | 'settings' }
+  | { page: StaticPage }
+  | { page: 'public-lesson'; lessonId: string }
   | { page: 'lesson'; activityId: string }
   | { page: 'exercise'; activityId: string }
   | { page: 'modes'; category: CategoryId }
@@ -15,9 +17,10 @@ const validCategory = (value: string): value is CategoryId => categories.some((c
 
 export function parseRoute(hash: string): AppRoute {
   const parts = hash.replace(/^#\/?/, '').split('/')
-  if (parts.length === 1 && ['welcome', 'home', 'course', 'exercises', 'topics', 'progress', 'settings'].includes(parts[0])) {
-    return { page: parts[0] as 'welcome' | 'home' | 'course' | 'exercises' | 'topics' | 'progress' | 'settings' }
+  if (parts.length === 1 && ['welcome', 'login', 'register', 'home', 'course', 'exercises', 'topics', 'progress', 'settings', 'lessons', 'classes', 'teach', 'admin'].includes(parts[0])) {
+    return { page: parts[0] as StaticPage }
   }
+  if (parts.length === 2 && parts[0] === 'lessons' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(parts[1])) return { page: 'public-lesson', lessonId: parts[1] }
   if (parts.length === 2 && (parts[0] === 'course' || parts[0] === 'exercises')) {
     const activity = getActivity(parts[1])
     if (activity && activity.kind === (parts[0] === 'course' ? 'lesson' : 'exercise')) {
@@ -38,6 +41,7 @@ export function parseRoute(hash: string): AppRoute {
 }
 
 export function routeHash(route: AppRoute): string {
+  if (route.page === 'public-lesson') return `#/lessons/${route.lessonId}`
   if (route.page === 'modes') return `#/topics/${route.category}`
   if (route.page === 'lesson') return `#/course/${route.activityId}`
   if (route.page === 'exercise') return `#/exercises/${route.activityId}`

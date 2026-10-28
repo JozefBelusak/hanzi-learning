@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, mockSupabase } from './fixtures'
+import type { Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import type { StudyAttempt } from '../src/types/study'
 
@@ -7,8 +8,7 @@ const strokeData: { medians: number[][][] } = JSON.parse(
 )
 
 async function openWriting(page: Page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: 'Start learning', exact: true }).click()
+  await page.goto('/#/home')
   const device = (page.viewportSize()?.width ?? 1280) < 700 ? 'mobile' : 'desktop'
   await expect(page.getByRole('heading', { name: 'Home', exact: true })).toBeVisible()
   await page.screenshot({ path: `playwright-report/english-writing-${device}-home.png`, fullPage: true })
@@ -55,7 +55,7 @@ async function mouseStroke(page: Page, points: number[][]) {
 
 async function savedAttempts(page: Page): Promise<StudyAttempt[]> {
   return page.evaluate(() => {
-    const state = JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{"attempts":[]}')
+    const state = JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{"attempts":[]}')
     return state.attempts
   })
 }
@@ -151,6 +151,7 @@ test('writing: mobile touch completes the genuine trajectories after resizing', 
     hasTouch: true,
   })
   const page = await context.newPage()
+  await mockSupabase(page, 'student')
 
   try {
     await openWriting(page)

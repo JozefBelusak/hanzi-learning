@@ -3,16 +3,16 @@ import { emptyStudy } from './study'
 
 const native = vi.hoisted(() => ({
   enabled: false,
-  get: vi.fn(), set: vi.fn(), writeFile: vi.fn(), share: vi.fn(),
+  get: vi.fn(), set: vi.fn(), remove: vi.fn(), writeFile: vi.fn(), share: vi.fn(),
 }))
 vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => native.enabled } }))
-vi.mock('@capacitor/preferences', () => ({ Preferences: { get: native.get, set: native.set } }))
+vi.mock('@capacitor/preferences', () => ({ Preferences: { get: native.get, set: native.set, remove: native.remove } }))
 vi.mock('@capacitor/filesystem', () => ({ Filesystem: { writeFile: native.writeFile }, Directory: { Cache: 'CACHE' }, Encoding: { UTF8: 'utf8' } }))
 vi.mock('@capacitor/share', () => ({ Share: { share: native.share } }))
 
 import {
   exportStudyData, loadStudyData, migrateLegacy,
-  readStoredString, saveStudyData, STUDY_KEY, writeStoredString,
+  readStoredString, removeStoredString, saveStudyData, STUDY_KEY, writeStoredString,
 } from './storage'
 
 let values: Map<string, string>
@@ -24,16 +24,27 @@ beforeEach(() => {
   vi.clearAllMocks()
   native.get.mockReset().mockResolvedValue({ value: null })
   native.set.mockReset().mockResolvedValue(undefined)
+  native.remove.mockReset().mockResolvedValue(undefined)
   native.writeFile.mockReset().mockResolvedValue({ uri: 'file:///cache/hanzi.json' })
   native.share.mockReset().mockResolvedValue(undefined)
   values = new Map()
   localGet = vi.fn((key: string) => values.get(key) ?? null)
   localSet = vi.fn((key: string, value: string) => { values.set(key, value) })
-  vi.stubGlobal('localStorage', { getItem: localGet, setItem: localSet })
+  vi.stubGlobal('localStorage', { getItem: localGet, setItem: localSet, removeItem: (key: string) => values.delete(key) })
 })
 afterEach(() => vi.unstubAllGlobals())
 
 describe('storage compatibility and recovery', () => {
+  it('removes only the session key on web and uses Preferences.remove on Android', async () => {
+    await writeStoredString('hanzi-auth-session-v1', 'session')
+    await writeStoredString(`${STUDY_KEY}:student`, 'progress')
+    await removeStoredString('hanzi-auth-session-v1')
+    expect(await readStoredString('hanzi-auth-session-v1')).toBeNull()
+    expect(await readStoredString(`${STUDY_KEY}:student`)).toBe('progress')
+    native.enabled = true
+    await removeStoredString('hanzi-auth-session-v1')
+    expect(native.remove).toHaveBeenCalledWith({ key: 'hanzi-auth-session-v1' })
+  })
   it('uses browser storage on web and Preferences on native devices', async () => {
     await writeStoredString('test', 'web value')
     expect(await readStoredString('test')).toBe('web value')
@@ -71,6 +82,15 @@ describe('storage compatibility and recovery', () => {
     localGet.mockImplementation(() => { throw new Error('storage denied') })
     await expect(loadStudyData()).rejects.toThrow('storage denied')
     expect(localSet).not.toHaveBeenCalled()
+  })
+  it('keeps each account’s progress separate and does not automatically claim earlier anonymous progress', async () => {
+    values.set(STUDY_KEY, JSON.stringify({ ...emptyStudy(), displayName: 'Anonymous history' }))
+    await saveStudyData({ ...emptyStudy(), displayName: 'Student A' }, 'account-a')
+    await saveStudyData({ ...emptyStudy(), displayName: 'Student B' }, 'account-b')
+    expect((await loadStudyData('account-a')).displayName).toBe('Student A')
+    expect((await loadStudyData('account-b')).displayName).toBe('Student B')
+    expect(await loadStudyData('new-account')).toEqual(emptyStudy())
+    expect((await loadStudyData()).displayName).toBe('Anonymous history')
   })
 })
 

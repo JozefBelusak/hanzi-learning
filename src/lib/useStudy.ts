@@ -4,26 +4,26 @@ import type { LearningSession } from '../types/learning'
 import { appendAttempt, createAttempt, emptyStudy, mergeStudy, parseStudy, saveLearningSession } from './study'
 import { loadStudyData, saveStudyData } from './storage'
 
-export function useStudy() {
+export function useStudy(userId: string) {
   const [data, setData] = useState<StudyData>(emptyStudy)
   const [ready, setReady] = useState(false)
   const [storageWritable, setStorageWritable] = useState(false)
   const [storageError, setStorageError] = useState<string | null>(null)
   useEffect(() => {
     let active = true
-    loadStudyData().then((saved) => { if (active) { setData(saved); setStorageWritable(true); setReady(true) } }).catch(() => {
+    loadStudyData(userId).then((saved) => { if (active) { setData(saved); setStorageWritable(true); setReady(true) } }).catch(() => {
       if (active) { setStorageError('Your saved progress could not be loaded. Export your new results as a backup.'); setReady(true) }
     })
     return () => { active = false }
-  }, [])
+  }, [userId])
   useEffect(() => {
     if (!ready || !storageWritable) return
     let active = true
-    saveStudyData(data).then(() => { if (active) setStorageError(null) }).catch(() => {
+    saveStudyData(data, userId).then(() => { if (active) setStorageError(null) }).catch(() => {
       if (active) setStorageError('Your progress is available for this session, but could not be saved. Export a backup.')
     })
     return () => { active = false }
-  }, [data, ready, storageWritable])
+  }, [data, ready, storageWritable, userId])
   function recordAttempt(input: AttemptInput) {
     const attempt = createAttempt(input)
     setData((previous) => appendAttempt(previous, attempt))

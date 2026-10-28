@@ -1,8 +1,8 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from './fixtures'
+import type { Page } from '@playwright/test'
 
 async function openHome(page: Page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: 'Start learning', exact: true }).click()
+  await page.goto('/#/home')
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page).toHaveURL(/#\/home$/)
   await expect(page.getByRole('heading', { name: 'Home', exact: true })).toBeVisible()
@@ -81,7 +81,7 @@ test('profile and backup settings stay functional after leaving the statistics s
   await page.getByLabel('Daily goal · attempts', { exact: true }).fill('7')
   await page.getByRole('button', { name: 'Save preferences', exact: true }).click()
   await expect.poll(async () => page.evaluate(() => {
-    const study = JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{}')
+    const study = JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}')
     return { displayName: study.displayName, dailyGoal: study.dailyGoal }
   })).toEqual({ displayName: 'Jožko', dailyGoal: 7 })
   await page.reload()
@@ -92,12 +92,12 @@ test('profile and backup settings stay functional after leaving the statistics s
   ] }
   const upload = { name: 'progress.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) }
   await page.getByLabel('Import progress backup', { exact: true }).setInputFiles(upload)
-  await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{}').attempts.length)).toBe(1)
+  await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}').attempts.length)).toBe(1)
   await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('Imported profile')
   await expect(page.getByLabel('Daily goal · attempts', { exact: true })).toHaveValue('13')
   await page.getByLabel('Import progress backup', { exact: true }).setInputFiles(upload)
   await expect(page.getByRole('status')).toContainText('Backup history was merged.')
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1') ?? '{}').attempts.length)).toBe(1)
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}').attempts.length)).toBe(1)
   await navigation(page).getByRole('button', { name: 'Progress', exact: true }).click()
   await expect(page.locator('.history-list')).toContainText('我')
   await expect(page.locator('.history-list')).toContainText('manual entry')

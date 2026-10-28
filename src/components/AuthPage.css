@@ -1,0 +1,16 @@
+.auth-page { width: min(460px, calc(100% - 40px)); margin: 40px auto; }
+.auth-card { padding: 32px; }
+.auth-brand { display: block; font: 42px var(--hanzi-font); color: var(--green); margin-bottom: 18px; }
+.auth-card h1 { margin-bottom: 14px; }
+.auth-form { display: grid; gap: 10px; margin-top: 24px; }
+.auth-form label { margin-top: 8px; font-size: 14px; font-weight: 600; }
+.auth-form small { color: var(--muted); }
+.auth-form > button { margin-top: 14px; }
+.auth-form .error-message { margin-bottom: 0; }
+.auth-switch { margin: 22px 0 0; font-size: 14px; }
+.auth-switch button { padding: 4px 6px; }
+.account-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; padding: 10px max(24px, calc((100vw - 1060px) / 2)); border-bottom: 1px solid var(--line); background: white; font-size: 13px; }
+.account-bar .text-btn { padding: 4px 10px; }
+.account-bar > span:first-child { max-width: min(220px, 100%); overflow-wrap: anywhere; }
+.account-role { padding: 3px 8px; border-radius: 5px; background: #edf2e8; }
+@media (max-width: 500px) { .auth-card { padding: 24px; } .account-bar { justify-content: flex-start; padding: 10px 20px; } }

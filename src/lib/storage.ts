@@ -14,6 +14,11 @@ export async function writeStoredString(key: string, value: string): Promise<voi
   if (Capacitor.isNativePlatform()) await Preferences.set({ key, value })
   else localStorage.setItem(key, value)
 }
+export async function removeStoredString(key: string): Promise<void> {
+  if (Capacitor.isNativePlatform()) await Preferences.remove({ key })
+  else localStorage.removeItem(key)
+}
+export function studyKey(userId?: string): string { return userId ? `${STUDY_KEY}:${userId}` : STUDY_KEY }
 function legacyArray(key: string): unknown[] {
   try { const value: unknown = JSON.parse(localStorage.getItem(key) ?? '[]'); return Array.isArray(value) ? value : [] } catch { return [] }
 }
@@ -31,18 +36,19 @@ export function migrateLegacy(): StudyData {
   }
   return attempts.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)).reduce(appendAttempt, emptyStudy())
 }
-export async function loadStudyData(): Promise<StudyData> {
-  const saved = await readStoredString(STUDY_KEY)
-  if (!saved) return migrateLegacy()
+export async function loadStudyData(userId?: string): Promise<StudyData> {
+  const key = studyKey(userId)
+  const saved = await readStoredString(key)
+  if (!saved) return userId ? emptyStudy() : migrateLegacy()
   try { return parseStudy(saved) } catch {
-    await writeStoredString(`${STUDY_KEY}-recovery`, saved)
-    return migrateLegacy()
+    await writeStoredString(`${key}-recovery`, saved)
+    return userId ? emptyStudy() : migrateLegacy()
   }
 }
 let saveQueue = Promise.resolve()
-export function saveStudyData(data: StudyData): Promise<void> {
+export function saveStudyData(data: StudyData, userId?: string): Promise<void> {
   const value = JSON.stringify(data)
-  const next = saveQueue.catch(() => undefined).then(() => writeStoredString(STUDY_KEY, value))
+  const next = saveQueue.catch(() => undefined).then(() => writeStoredString(studyKey(userId), value))
   saveQueue = next
   return next
 }

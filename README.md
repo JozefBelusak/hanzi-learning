@@ -13,6 +13,8 @@ npm run dev
 
 Open `http://localhost:5173`. Python is not required. Browser microphone access requires localhost or HTTPS; plain HTTP from another device may not support it. The development server listens on this computer only by default.
 
+Learning requires a signed-in account. Before using it, follow [the Supabase setup guide](docs/auth-setup.md): create the project, apply the database migration, configure email confirmation and copy `.env.example` to `.env.local`. Missing configuration keeps learning locked; there is no guest or demo authentication bypass.
+
 ```sh
 npm run lint
 npm test
@@ -24,7 +26,7 @@ Browser tests use Microsoft Edge on Windows. On Linux/macOS, first install Chrom
 
 ## Deploy to Netlify
 
-Import the GitHub repository into Netlify and deploy its `main` branch. Leave the base directory empty: the application is at the repository root. `netlify.toml` sets the build command to `npm run build`, the publish directory to `dist`, and the Node.js version to 22. No application API keys are required for this version.
+Import the GitHub repository into Netlify and deploy its `main` branch. Leave the base directory empty: the application is at the repository root. `netlify.toml` sets the build command to `npm run build`, the publish directory to `dist`, and the Node.js version to 22. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in the build environment and configure the production authentication redirect URL as described in [accounts setup](docs/auth-setup.md). Use the public publishable/anon key only.
 
 After connecting the repository, pushes to the deployed GitHub branch trigger a new build. Share the HTTPS deployment URL for testing. Navigation uses hash URLs, so it does not require a server-side SPA rewrite. Vocabulary and stroke data are included in the build.
 
@@ -34,6 +36,8 @@ Try speaking in a supported browser such as Chrome or Edge and allow microphone 
 
 ## Implemented features
 
+- **Accounts and permissions:** confirmed-email registration, password sign-in, session restoration/refresh and sign-out. Students learn, lecturers publish lessons and manage their classrooms, administrators manage roles and authored content. Frontend route guards and PostgreSQL RLS enforce access; registration always creates a Student.
+- **Public lessons and classrooms:** signed-in learners read published lecturer lessons and join classrooms through invitation codes. Lecturers manage their own drafts, published lessons and student enrollments; Admin can manage all of them. The original starter course remains versioned in code.
 - **Course:** a six-stop starter course shown as a tram map. Read short explanations, listen to Mandarin examples and take a lesson review. Greetings and introductions lead to two parallel branches (family and food), then a combined checkpoint. Locked lessons can be previewed; passing a review unlocks the next stops.
 - **Exercises:** three independent themed sessions covering introductions, family and a café. Each combines meaning/listening questions and sentence ordering in a workspace with instructions, a task and feedback. They are accessible without course completion.
 - **Topics:** 150 HSK 2.0 level 1 words grouped into eight themes. Topic selection applies to flashcards, speaking and writing.
@@ -89,7 +93,7 @@ Course and exercise scores are calculated from the authored answer keys, not fro
 
 ## User data
 
-The web app stores progress in `localStorage`; Android uses Capacitor Preferences. Legacy flashcard and speaking histories migrate on first load. The original identifiers for 我, 好 and 水 are preserved. Corrupted new-format history is saved under a key ending in `-recovery` before recovery. If reading storage fails, the app does not overwrite the original data and allows new results to be exported.
+The web app stores progress in `localStorage`; Android uses Capacitor Preferences. Progress is scoped to the verified account ID and remains local to the device. Earlier anonymous/legacy progress can be imported explicitly in Settings and is not automatically exposed to every new account. The original identifiers for 我, 好 and 水 are preserved. Corrupted new-format history is saved under a key ending in `-recovery` before recovery. If reading storage fails, the app does not overwrite the original data and allows new results to be exported. Profiles, authored lessons and classroom memberships are stored in Supabase with RLS; see [account storage and permissions](docs/auth-setup.md#access-rules-and-data-storage).
 
 Exports include results, profile, daily goal and lesson/exercise sessions. Import validates the format, merges histories, removes duplicate attempt IDs and rebuilds the review schedule. Older backups without learning sessions remain supported. Session answers are validated against the current curriculum; imported completion scores are recalculated, and newer copies of the same session are kept. The daily practice goal and streak currently count the quick-practice attempt history; course and exercise completion has its own summary in Progress. Voice recordings exist only during the current practice session and are not exported. The recognition service may process audio outside the device; this application has no audio-processing server.
 
@@ -108,7 +112,10 @@ Use Android Studio to run the app on a phone/emulator or build an APK. Repeat `n
 
 ## Code map
 
-- `src/App.tsx`, `src/lib/navigation.ts`: screens, hash navigation, vocabulary loading and progress.
+- `src/App.tsx`, `src/lib/useAuth.ts`, `src/lib/supabase.ts`: authentication, session verification and route guards. `src/AuthenticatedApp.tsx` loads the learning workspace after verification.
+- `src/AuthenticatedApp.tsx`, `src/lib/navigation.ts`: learning screens, hash navigation, vocabulary loading and progress.
+- `src/lib/platform.ts`, `src/components/ManagementPage.tsx`, `LessonManager.tsx`, `ClassroomsPage.tsx`, `PublicLessonsPage.tsx`: account-backed lessons, roles and classrooms.
+- `supabase/migrations/`: backend tables, grants, RLS and restricted RPC functions. `server-tests/`: PostgreSQL authorization tests.
 - `src/components/`: screens and practice interactions, including the character picker.
 - `src/data/categories.ts`, `sentences.ts`: topics and demo sentences.
 - `src/types/learning.ts`, `src/data/learning.ts`, `src/lib/learning.ts`: curated starter curriculum, answer grading, lesson prerequisites and learning-session validation.

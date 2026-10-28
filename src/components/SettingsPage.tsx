@@ -10,9 +10,10 @@ type Props = {
   onRefresh: () => void
   refreshing: boolean
   notice: string | null
+  onImportPrevious: () => Promise<StudyData>
 }
 
-export default function SettingsPage({ study, onProfile, onImport, onRefresh, refreshing, notice }: Props) {
+export default function SettingsPage({ study, onProfile, onImport, onRefresh, refreshing, notice, onImportPrevious }: Props) {
   const [name, setName] = useState(study.displayName)
   const [goal, setGoal] = useState(study.dailyGoal)
   const [message, setMessage] = useState<string | null>(null)
@@ -60,6 +61,10 @@ export default function SettingsPage({ study, onProfile, onImport, onRefresh, re
             })
               .catch((error: unknown) => setMessage(error instanceof Error ? error.message : 'Could not read the backup.'))
           }} />
+          <details className="practice-help"><summary>Progress from before accounts</summary><p>Your progress is now stored separately for each account on this device. You can explicitly merge the earlier local progress into this account.</p><button type="button" className="secondary-btn" disabled={busy} onClick={() => {
+            setBusy(true)
+            void onImportPrevious().then((imported) => { setName(imported.displayName); setGoal(imported.dailyGoal); setMessage('Previous local progress was merged into this account.') }).catch(() => setMessage('Could not import the previous local progress.')).finally(() => setBusy(false))
+          }}>Import previous local progress</button></details>
         </div>
       </section>
       {message && <p role="status" className="status-message">{message}</p>}
