@@ -1,10 +1,12 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import LandingPage from './components/LandingPage'
 import AuthPage from './components/AuthPage'
+import OnboardingPage from './components/OnboardingPage'
 import { parseRoute, routeHash, useNavigation } from './lib/navigation'
 import { canAccessPage, isPublicPage, roleHome } from './lib/access'
 import { useAuth } from './lib/useAuth'
 import { accountError } from './lib/supabase'
+import { hasCompletedOnboarding } from './lib/profile'
 import './App.css'
 
 const AuthenticatedApp = lazy(() => import('./AuthenticatedApp'))
@@ -17,16 +19,21 @@ export default function App() {
   useEffect(() => {
     if (!auth.ready || auth.signingOut || (auth.session && !auth.profile)) return
     if (!auth.profile && !isPublicPage(route.page)) {
-      try { sessionStorage.setItem('hanzi:after-login', routeHash(route)) } catch { /* Navigation still works without storage. */ }
+      try { if (route.page !== 'onboarding') sessionStorage.setItem('hanzi:after-login', routeHash(route)) } catch { /* Navigation still works without storage. */ }
       navigate({ page: 'login' }, true)
-    } else if (auth.profile && isPublicPage(route.page)) {
+    } else if (auth.profile && !hasCompletedOnboarding(auth.profile)) {
+      if (route.page !== 'onboarding') {
+        try { if (!isPublicPage(route.page) && canAccessPage(auth.profile.role, route.page)) sessionStorage.setItem('hanzi:after-login', routeHash(route)) } catch { /* Optional navigation state. */ }
+        navigate({ page: 'onboarding' }, true)
+      }
+    } else if (auth.profile && (isPublicPage(route.page) || route.page === 'onboarding')) {
       let destination: ReturnType<typeof parseRoute> = { page: roleHome(auth.profile.role) }
       try {
         const saved = sessionStorage.getItem('hanzi:after-login')
         sessionStorage.removeItem('hanzi:after-login')
         if (saved) {
           const candidate = parseRoute(saved)
-          if (routeHash(candidate) === saved && !isPublicPage(candidate.page) && canAccessPage(auth.profile.role, candidate.page)) destination = candidate
+          if (routeHash(candidate) === saved && candidate.page !== 'onboarding' && !isPublicPage(candidate.page) && canAccessPage(auth.profile.role, candidate.page)) destination = candidate
         }
       } catch { /* Use the role's default destination. */ }
       navigate(destination, true)
@@ -48,6 +55,7 @@ export default function App() {
     if (route.page !== 'login' && route.page !== 'register') return <main className="auth-page"><p role="status">Redirecting to sign in…</p></main>
     return <AuthPage key={route.page} mode={route.page} auth={auth} onSwitch={() => navigate({ page: route.page === 'login' ? 'register' : 'login' }, true)} onBack={() => navigate({ page: 'welcome' })} />
   }
-  if (isPublicPage(route.page) || !canAccessPage(auth.profile.role, route.page)) return <main className="auth-page"><p role="status">Opening your workspace…</p></main>
-  return <Suspense fallback={<main className="auth-page"><p role="status">Opening your workspace…</p></main>}><AuthenticatedApp key={auth.profile.id} profile={auth.profile} navigation={navigation} onLogout={() => void logout()} onRefreshAccount={auth.retry} logoutError={logoutError} /></Suspense>
+  if (!hasCompletedOnboarding(auth.profile)) return <OnboardingPage key={auth.profile.id} profile={auth.profile} onSave={auth.saveProfile} onLogout={() => void logout()} logoutError={logoutError} />
+  if (route.page === 'onboarding' || isPublicPage(route.page) || !canAccessPage(auth.profile.role, route.page)) return <main className="auth-page"><p role="status">Opening your workspace…</p></main>
+  return <Suspense fallback={<main className="auth-page"><p role="status">Opening your workspace…</p></main>}><AuthenticatedApp key={auth.profile.id} profile={auth.profile} navigation={navigation} onLogout={() => void logout()} onRefreshAccount={auth.retry} onSaveProfile={auth.saveProfile} logoutError={logoutError} /></Suspense>
 }

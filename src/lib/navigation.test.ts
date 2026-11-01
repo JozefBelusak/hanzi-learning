@@ -7,7 +7,7 @@ describe('course, exercises and contextual practice routes', () => {
   it('round-trips new and existing hash routes without losing the learning context', () => {
     const lesson = lessons[0]
     const routes: AppRoute[] = [
-      { page: 'course' }, { page: 'exercises' },
+      { page: 'course' }, { page: 'exercises' }, { page: 'onboarding' },
       { page: 'lesson', activityId: lesson.id },
       { page: 'exercise', activityId: exercises[0].id },
       { page: 'practice', category: lesson.category, mode: 'speech', activityId: lesson.id },

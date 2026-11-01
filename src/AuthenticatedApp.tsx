@@ -24,9 +24,10 @@ import { canTeach, roleLabels } from './lib/access'
 import { loadStudyData } from './lib/storage'
 import type { Card } from './types/study'
 import type { UserProfile } from './types/auth'
+import type { LearningProfileInput } from './lib/profile'
 
-export default function AuthenticatedApp({ profile, navigation: router, onLogout, onRefreshAccount, logoutError }: {
-  profile: UserProfile; navigation: ReturnType<typeof useNavigation>; onLogout: () => void; onRefreshAccount: () => void; logoutError: string | null
+export default function AuthenticatedApp({ profile, navigation: router, onLogout, onRefreshAccount, onSaveProfile, logoutError }: {
+  profile: UserProfile; navigation: ReturnType<typeof useNavigation>; onLogout: () => void; onRefreshAccount: () => void; onSaveProfile: (input: LearningProfileInput) => Promise<void>; logoutError: string | null
 }) {
   const { route, navigate, back, hash } = router
   const [cards, setCards] = useState<Card[]>([])
@@ -37,7 +38,7 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   const [notice, setNotice] = useState<string | null>(null)
   const [revision, setRevision] = useState(0)
   const refreshRef = useRef<AbortController | null>(null)
-  const study = useStudy(profile.id)
+  const study = useStudy(profile)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -106,9 +107,9 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   } else if (route.page === 'modes') {
     content = <LearningPage cards={selected} category={route.category} disabled={refreshing} onBack={() => back({ page: 'topics' })} onSelectMode={(mode) => navigate({ page: 'practice', category: route.category, mode })} />
   } else if (route.page === 'progress') {
-    content = <ProgressPage cards={cards} study={study.data} onBack={() => back({ page: 'home' })} />
+    content = <ProgressPage cards={cards} study={study.data} profile={profile} onEditProfile={() => navigate({ page: 'settings' })} onBack={() => back({ page: 'home' })} />
   } else if (route.page === 'settings') {
-    content = <SettingsPage study={study.data} onProfile={study.updateProfile} onImport={study.importBackup} onRefresh={() => void updateVocabulary()} refreshing={refreshing} notice={notice} onImportPrevious={async () => study.importBackup(JSON.stringify(await loadStudyData()))} />
+    content = <SettingsPage study={study.data} profile={profile} onSaveProfile={onSaveProfile} onImport={study.importBackup} onRefresh={() => void updateVocabulary()} refreshing={refreshing} notice={notice} onImportPrevious={async () => study.importBackup(JSON.stringify(await loadStudyData()))} />
   } else if (route.page === 'lessons' || route.page === 'public-lesson') {
     content = <PublicLessonsPage key={hash} lessonId={route.page === 'public-lesson' ? route.lessonId : undefined} onSelect={(lessonId) => navigate({ page: 'public-lesson', lessonId })} onBack={() => back({ page: 'lessons' })} />
   } else if (route.page === 'classes') {
@@ -116,7 +117,7 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   } else if (route.page === 'teach' || route.page === 'admin') {
     content = <ManagementPage key={route.page} profile={profile} admin={route.page === 'admin'} onRead={(lessonId) => navigate({ page: 'public-lesson', lessonId })} onRefreshAccount={onRefreshAccount} />
   } else {
-    content = <HomePage study={study.data} onLearn={learn} onCourse={() => navigate({ page: 'course' })} onLesson={(activityId) => navigate({ page: 'lesson', activityId })} onExercises={() => navigate({ page: 'exercises' })} onProgress={() => navigate({ page: 'progress' })} />
+    content = <HomePage study={study.data} profile={profile} onEditProfile={() => navigate({ page: 'settings' })} onPreferredPractice={(mode) => navigate({ page: 'practice', category: 'all', mode })} onLearn={learn} onCourse={() => navigate({ page: 'course' })} onLesson={(activityId) => navigate({ page: 'lesson', activityId })} onExercises={() => navigate({ page: 'exercises' })} onProgress={() => navigate({ page: 'progress' })} />
   }
 
   const navigation = [

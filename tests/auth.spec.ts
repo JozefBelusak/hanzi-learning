@@ -1,4 +1,4 @@
-import { test, expect, studentId, accountStudyKey } from './fixtures'
+import { test, expect, studentId, accountStudyKey, completeOnboarding } from './fixtures'
 import type { Page } from '@playwright/test'
 
 test.use({ account: null })
@@ -61,6 +61,9 @@ test('registers students, handles email confirmation and never submits a privile
   await page.getByLabel('Email', { exact: true }).fill('new@example.test')
   await page.getByLabel('Password', { exact: true }).fill(password)
   await page.getByRole('button', { name: 'Sign in', exact: true }).click()
+  await expect(page).toHaveURL(/#\/onboarding$/)
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toHaveCount(0)
+  await completeOnboarding(page)
   await expect(page).toHaveURL(/#\/home$/)
 })
 
@@ -108,10 +111,11 @@ test('isolates accounts on a shared device and explicitly imports earlier anonym
   await page.goto('/#/progress')
   await expect(page.locator('.stat-card').filter({ hasText: 'Total attempts' })).toContainText('0')
   await page.goto('/#/settings')
-  await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('')
+  await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('Other student')
   await page.getByText('Progress from before accounts', { exact: true }).click()
   await page.getByRole('button', { name: 'Import previous local progress', exact: true }).click()
-  await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('Legacy learner')
+  await expect(page.getByRole('status')).toContainText('Previous local progress was merged')
+  await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('Other student')
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).attempts.length, accountStudyKey)).toBe(1)
 })
 

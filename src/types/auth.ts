@@ -1,3 +1,6 @@
+import type { Difficulty, LanguageLevel, LearningGoal } from '../lib/profile'
+import type { PracticeMode } from './study'
+
 export type UserRole = 'student' | 'lecturer' | 'admin'
 
 export type UserProfile = {
@@ -6,6 +9,12 @@ export type UserProfile = {
   display_name: string
   role: UserRole
   created_at: string
+  language_level: LanguageLevel | null
+  difficulty: Difficulty | null
+  preferred_modes: PracticeMode[]
+  learning_goals: LearningGoal[]
+  daily_goal: number
+  onboarding_completed_at: string | null
 }
 
 export type PublicLesson = {

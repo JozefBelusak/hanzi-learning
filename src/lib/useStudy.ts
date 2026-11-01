@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { AttemptInput, StudyData } from '../types/study'
 import type { LearningSession } from '../types/learning'
 import { appendAttempt, createAttempt, emptyStudy, mergeStudy, parseStudy, saveLearningSession } from './study'
 import { loadStudyData, saveStudyData } from './storage'
+import { applyAccountProfile } from './profile'
+import type { UserProfile } from '../types/auth'
 
-export function useStudy(userId: string) {
-  const [data, setData] = useState<StudyData>(emptyStudy)
+export function useStudy(profile: UserProfile) {
+  const userId = profile.id
+  const [stored, setData] = useState<StudyData>(emptyStudy)
+  const { display_name, daily_goal } = profile
+  const data = useMemo(() => applyAccountProfile(stored, { display_name, daily_goal }), [stored, display_name, daily_goal])
   const [ready, setReady] = useState(false)
   const [storageWritable, setStorageWritable] = useState(false)
   const [storageError, setStorageError] = useState<string | null>(null)
@@ -28,19 +33,15 @@ export function useStudy(userId: string) {
     const attempt = createAttempt(input)
     setData((previous) => appendAttempt(previous, attempt))
   }
-  function updateProfile(displayName: string, dailyGoal: number) {
-    if (!Number.isFinite(dailyGoal)) return
-    setData((previous) => ({ ...previous, displayName: displayName.trim().slice(0, 60), dailyGoal: Math.max(1, Math.min(100, Math.round(dailyGoal))) }))
-  }
   function recordLearningSession(session: LearningSession) {
     setData((previous) => saveLearningSession(previous, session))
   }
   function importBackup(raw: string) {
     const imported = parseStudy(raw)
     // Validate cross-device conflicts inside the caller's import error handler.
-    const merged = mergeStudy(data, imported)
+    const merged = applyAccountProfile(mergeStudy(data, imported), profile)
     setData(merged)
-    return imported
+    return merged
   }
-  return { data, ready, storageError, recordAttempt, recordLearningSession, updateProfile, importBackup }
+  return { data, ready, storageError, recordAttempt, recordLearningSession, importBackup }
 }

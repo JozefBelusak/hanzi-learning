@@ -4,6 +4,7 @@ import { Capacitor } from '@capacitor/core'
 import type { UserProfile } from '../types/auth'
 import { isUserRole } from './access'
 import { accountError, requireSupabase, supabase } from './supabase'
+import { hasCompletedOnboarding, profileColumns, validLearningProfile, type LearningProfileInput } from './profile'
 
 type AuthState = { ready: boolean; session: Session | null; profile: UserProfile | null; error: string | null }
 
@@ -33,10 +34,11 @@ export function useAuth() {
         setState({ ready: true, session: null, profile: null, error: 'Your session could not be verified. Please sign in again.' })
         return
       }
-      const result = await client!.from('profiles').select('id,email,display_name,role,created_at').eq('id', verified.data.user.id).abortSignal(AbortSignal.timeout(8000)).single()
+      const result = await client!.from('profiles').select(profileColumns).eq('id', verified.data.user.id).abortSignal(AbortSignal.timeout(8000)).single()
       if (!active || request !== sequence) return
       if (result.error || !result.data || !isUserRole(result.data.role) || result.data.id !== verified.data.user.id) {
-        setState({ ready: true, session, profile: null, error: 'Your account permissions could not be loaded. Try again or contact the platform administrator.' })
+        const missingMigration = result.error?.code === '42703' || result.error?.code === 'PGRST204'
+        setState({ ready: true, session, profile: null, error: missingMigration ? 'The account database needs an update. Please ask the platform administrator to apply the learning profile migration.' : 'Your account permissions could not be loaded. Try again or contact the platform administrator.' })
       } else setState({ ready: true, session, profile: result.data as UserProfile, error: null })
     }
     const refresh = () => {
@@ -78,7 +80,19 @@ export function useAuth() {
       if (error) throw error
     } finally { setSigningOut(false) }
   }
-  return { ...state, configured: Boolean(supabase), signingOut, signIn, register, signOut, retry: () => setRevision((value) => value + 1) }
+  async function saveProfile(input: LearningProfileInput): Promise<void> {
+    if (!validLearningProfile(input)) throw new Error('Choose at least one practice mode and learning goal, and complete all profile fields.')
+    const { data, error } = await requireSupabase().rpc('save_learning_profile', {
+      profile_name: input.displayName.trim(), profile_level: input.languageLevel, profile_difficulty: input.difficulty,
+      profile_modes: input.preferredModes, profile_goals: input.learningGoals, profile_daily_goal: input.dailyGoal,
+    }).abortSignal(AbortSignal.timeout(15_000))
+    if (error) throw error
+    if (!data || data.id !== state.profile?.id || !isUserRole(data.role) || !hasCompletedOnboarding(data as UserProfile)) throw new Error('Your profile could not be saved. Please sign in again.')
+    setState((previous) => previous.session?.user.id === data.id ? { ...previous, profile: data as UserProfile } : previous)
+    // Invalidate any earlier profile request so it cannot restore stale preferences.
+    setRevision((value) => value + 1)
+  }
+  return { ...state, configured: Boolean(supabase), signingOut, signIn, register, signOut, saveProfile, retry: () => setRevision((value) => value + 1) }
 }
 
 export type Auth = ReturnType<typeof useAuth>

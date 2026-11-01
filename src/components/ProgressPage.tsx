@@ -3,11 +3,13 @@ import { categories, filterCards } from '../data/categories'
 import { dayKey, dueCards, studySummary } from '../lib/study'
 import { activities, lessons, exercises, getActivity } from '../data/learning'
 import { activityStatus, sessionScore } from '../lib/learning'
+import type { UserProfile } from '../types/auth'
+import LearningPlan from './LearningPlan'
 
-type Props = { cards: Card[]; study: StudyData; onBack: () => void }
+type Props = { cards: Card[]; study: StudyData; profile: UserProfile; onEditProfile: () => void; onBack: () => void }
 const modeNames = { flashcards: 'Flashcards', speech: 'Speaking · text match', writing: 'Writing', sentences: 'Sentences · word order' }
 
-export default function ProgressPage({ cards, study, onBack }: Props) {
+export default function ProgressPage({ cards, study, profile, onEditProfile, onBack }: Props) {
   const summary = studySummary(study.attempts)
   const sessions = study.learningSessions ?? []
   const finished = sessions.filter((session) => session.finishedAt).slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
@@ -22,6 +24,11 @@ export default function ProgressPage({ cards, study, onBack }: Props) {
     <main className="progress-page">
       <button className="back-button" type="button" onClick={onBack}>Back</button>
       <h1>Progress</h1>
+      <LearningPlan profile={profile} onEdit={onEditProfile} />
+      <section className="home-goal" aria-label="Today's practice">
+        <div className="goal-heading"><h2>Daily practice goal</h2><span>{summary.todayCount} / {study.dailyGoal} practice attempts</span></div>
+        <progress aria-label="Daily goal progress" value={Math.min(summary.todayCount, study.dailyGoal)} max={study.dailyGoal} />
+      </section>
       <section className="stats-grid">
         <div className="stat-card"><span>Total attempts</span><strong>{study.attempts.length}</strong></div>
         <div className="stat-card"><span>Words practised</span><strong>{summary.practiced} <small>/ {cards.length}</small></strong></div>

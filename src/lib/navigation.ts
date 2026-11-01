@@ -3,7 +3,7 @@ import { categories } from '../data/categories'
 import { getActivity } from '../data/learning'
 import type { CategoryId, PracticeMode } from '../types/study'
 
-type StaticPage = 'welcome' | 'login' | 'register' | 'home' | 'course' | 'exercises' | 'topics' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
+type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'course' | 'exercises' | 'topics' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
 export type AppRoute =
   | { page: StaticPage }
   | { page: 'public-lesson'; lessonId: string }
@@ -17,7 +17,7 @@ const validCategory = (value: string): value is CategoryId => categories.some((c
 
 export function parseRoute(hash: string): AppRoute {
   const parts = hash.replace(/^#\/?/, '').split('/')
-  if (parts.length === 1 && ['welcome', 'login', 'register', 'home', 'course', 'exercises', 'topics', 'progress', 'settings', 'lessons', 'classes', 'teach', 'admin'].includes(parts[0])) {
+  if (parts.length === 1 && ['welcome', 'login', 'register', 'onboarding', 'home', 'course', 'exercises', 'topics', 'progress', 'settings', 'lessons', 'classes', 'teach', 'admin'].includes(parts[0])) {
     return { page: parts[0] as StaticPage }
   }
   if (parts.length === 2 && parts[0] === 'lessons' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(parts[1])) return { page: 'public-lesson', lessonId: parts[1] }

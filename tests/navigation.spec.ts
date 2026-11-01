@@ -93,8 +93,8 @@ test('profile and backup settings stay functional after leaving the statistics s
   const upload = { name: 'progress.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) }
   await page.getByLabel('Import progress backup', { exact: true }).setInputFiles(upload)
   await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}').attempts.length)).toBe(1)
-  await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('Imported profile')
-  await expect(page.getByLabel('Daily goal · attempts', { exact: true })).toHaveValue('13')
+  await expect(page.getByLabel('What should we call you?', { exact: true })).toHaveValue('Jožko')
+  await expect(page.getByLabel('Daily goal · attempts', { exact: true })).toHaveValue('7')
   await page.getByLabel('Import progress backup', { exact: true }).setInputFiles(upload)
   await expect(page.getByRole('status')).toContainText('Backup history was merged.')
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hanzi-learning-study-v1:00000000-0000-4000-8000-000000000001') ?? '{}').attempts.length)).toBe(1)

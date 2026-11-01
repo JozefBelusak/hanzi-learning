@@ -12,11 +12,12 @@ Never put a secret key, service_role key or database password in a `VITE_` varia
 
 ## 2. Install the database schema
 
-In the Supabase SQL Editor, run the complete contents of:
+In the Supabase SQL Editor, run the complete contents of these files **in order**:
 
-`supabase/migrations/20261028090000_auth_and_roles.sql`
+1. `supabase/migrations/20261028090000_auth_and_roles.sql`
+2. `supabase/migrations/20261101090000_learning_profiles.sql`
 
-Run it once on the new project. This installs profiles, roles, authored lessons, classrooms, memberships, signup triggers and permission policies. Existing Auth users are backfilled as Students. The `private` schema must stay outside the Data API's exposed schemas; expose `public` only for these application tables/functions.
+Run each file once on a new project. **If the first migration is already installed, run only the second file.** It upgrades the existing profiles without deleting accounts, lessons or enrollments. Do not rerun the first migration. These install profiles, roles, learning preferences, authored lessons, classrooms, memberships, signup triggers and permission policies. Existing Auth users are backfilled as Students by the first migration. The `private` schema must stay outside the Data API's exposed schemas; expose `public` only for these application tables/functions.
 
 You can check that all application tables have RLS enabled:
 
@@ -69,7 +70,7 @@ For Netlify, set the same two variables in the site's **build environment**, the
 
 ## 5. Create the first administrator
 
-Register your own account in Hanzi, confirm its email and sign in once. It starts as a Student; neither signup metadata nor being the first registrant grants administration.
+Register your own account in Hanzi, confirm its email, sign in and complete the learning profile setup. It starts as a Student; neither signup metadata nor being the first registrant grants administration.
 
 In the Supabase SQL Editor, run the following as the project owner, replacing the email:
 
@@ -85,11 +86,20 @@ Verify that exactly one row is returned. Refresh Hanzi or sign out and back in, 
 ## 6. Verify the flows
 
 1. Open a private browser window and visit `/#/course` or a practice link. It must redirect to Sign in without showing learning content.
-2. Register/confirm a Student. A normal login opens Home; a login requested from a protected learning URL returns there.
+2. Register/confirm a Student. The first verified login opens `/#/onboarding`. Select a language level, preferred difficulty, at least one practice mode and learning goal, and a daily target of 1–100 attempts. Save; normal login opens Home and a login requested from a protected learning URL returns there. Reloading or entering another learning URL before saving must keep the user in onboarding. Existing users must complete setup too.
 3. As Admin, promote another registered account to Lecturer. A fresh lecturer login opens the Lecturer workspace. Student visits to `/#/teach` or `/#/admin` return to Home.
 4. As Lecturer, create a lesson, save a draft, publish it, then check it from a Student's Public lessons list. Drafts stay private to their author and Admin. Authored content is plain text, including Chinese examples and paragraph breaks.
 5. Create a classroom and share its invitation code. A Student joins through Your classrooms; the lecturer can view and remove that enrollment. Lecturers cannot browse unrelated student profiles or manage other lecturers' classrooms.
 6. Sign out and use Back/reload/direct links. Learning stays locked. Sign in as a different Student on the same device; the first user's learning progress must not appear.
+7. Edit the learning profile in Settings. Reload and check that the name, preferences and daily goal persist. Home and Progress must use that goal, and existing attempts/course sessions must remain. Importing a progress backup must merge history without replacing the account profile.
+
+## Learning profile and onboarding
+
+The signup trigger creates the profile row; only a successful `save_learning_profile` RPC records completion. It binds writes to `auth.uid()`, validates every field, stores all preferences atomically and sets the completion timestamp on the database server. Clients cannot directly write that timestamp or the new preference columns. Later edits use the same RPC and preserve the first completion timestamp. User-editable Auth metadata, local storage and imported backups cannot complete onboarding.
+
+All roles complete onboarding before entering the workspace. Settings reuses the same form. The database is authoritative for the display name and daily goal; per-account local progress uses those values while retaining attempt histories, review schedules and learning sessions. Home shows preferred practice shortcuts, and Home/Progress display the learning plan and daily target. Preferences follow the account across devices; practice history still needs a backup to move between devices.
+
+Language level and difficulty are self-reported preferences. The current curriculum remains HSK 1; these settings do not generate advanced content, adapt assessment difficulty or change scores. Daily targets count free practice attempts, with course/exercise completion tracked separately. See [the onboarding guide](profile-onboarding.md) for deployment and verification.
 
 Published means visible to **signed-in users**. The built-in starter course remains versioned in `src/data/learning.ts`; the management interface creates and manages additional database lessons. It does not edit the starter tram map or its quiz answer keys.
 

@@ -1,11 +1,13 @@
 import { studySummary } from '../lib/study'
 import { getNextLesson, activityStatus } from '../lib/learning'
 import { lessons } from '../data/learning'
-import type { StudyData } from '../types/study'
+import type { PracticeMode, StudyData } from '../types/study'
+import type { UserProfile } from '../types/auth'
+import LearningPlan from './LearningPlan'
 
-type Props = { study: StudyData; onLearn: () => void; onCourse: () => void; onLesson: (id: string) => void; onExercises: () => void; onProgress: () => void }
+type Props = { study: StudyData; profile: UserProfile; onEditProfile: () => void; onPreferredPractice: (mode: PracticeMode) => void; onLearn: () => void; onCourse: () => void; onLesson: (id: string) => void; onExercises: () => void; onProgress: () => void }
 
-export default function HomePage({ study, onLearn, onCourse, onLesson, onExercises, onProgress }: Props) {
+export default function HomePage({ study, profile, onEditProfile, onPreferredPractice, onLearn, onCourse, onLesson, onExercises, onProgress }: Props) {
   const summary = studySummary(study.attempts)
   const sessions = study.learningSessions ?? []
   const next = getNextLesson(sessions)
@@ -31,6 +33,7 @@ export default function HomePage({ study, onLearn, onCourse, onLesson, onExercis
         <button className="home-pathway" type="button" aria-label="Themed exercises" onClick={onExercises}><span><strong>Themed exercises</strong><span>Practise listening, vocabulary and sentences in everyday situations.</span></span></button>
         <button className="home-pathway" type="button" aria-label="Start practice" onClick={onLearn}><span><strong>Start practice</strong><span>Choose your own words and focus on one skill at a time.</span></span></button>
       </section>
+      <LearningPlan profile={profile} onEdit={onEditProfile} onPractice={onPreferredPractice} />
       <section className="home-goal" aria-label="Today's practice">
         <div className="goal-heading"><h2>Daily practice goal</h2><span>{summary.todayCount} / {study.dailyGoal} practice attempts</span></div>
         <progress aria-label="Daily goal progress" value={Math.min(summary.todayCount, study.dailyGoal)} max={study.dailyGoal} />

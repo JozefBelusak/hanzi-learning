@@ -37,6 +37,8 @@ beforeAll(async () => {
     ($1,$4,'Published one','Content',true), ($2,$5,'Published two','Content',true), ($3,$5,'Private draft','Content',false)`, [lesson, foreignLesson, draft, ids.lecturer, ids.otherLecturer])
   await db.query(`insert into public.classrooms(id,lecturer_id,name,join_code) values ($1,$3,'Own class','first-invite'),($2,$4,'Other class','second-invite')`, [classroom, foreignClassroom, ids.lecturer, ids.otherLecturer])
   await db.query('insert into public.classroom_members(classroom_id,student_id) values ($1,$2)', [classroom, ids.student])
+  // Upgrade a database that already has accounts and learning content.
+  await db.exec(readFileSync(new URL('../supabase/migrations/20261101090000_learning_profiles.sql', import.meta.url), 'utf8'))
 }, 30_000)
 afterAll(async () => { await db.close() })
 
@@ -158,5 +160,65 @@ describe('backend authorization using the actual PostgreSQL migration', () => {
       await asUser(ids.student, async () => { expect((await db.query('select * from public.public_lessons')).rows).toEqual([]) })
       await expect(asUser(ids.student, () => db.query("select public.join_classroom('first-invite')"))).rejects.toMatchObject({ code: '42501' })
     } finally { await db.query('insert into auth.sessions(id,user_id) values ($1,$2)', [sessionId(ids.student), ids.student]) }
+  })
+})
+
+const saveProfileSql = 'select public.save_learning_profile($1,$2,$3,$4::text[],$5::text[],$6) as profile'
+const validProfile = ['Learner', 'elementary', 'gentle', ['speech', 'writing'], ['travel', 'culture'], 15]
+
+describe('learning profile migration and database authorization', () => {
+  it('preserves existing accounts and content while requiring explicit onboarding', async () => {
+    const { rows } = await db.query<{ onboarding_completed_at: string | null; daily_goal: number; preferred_modes: string[] }>('select onboarding_completed_at,daily_goal,preferred_modes from public.profiles')
+    expect(rows).toHaveLength(5)
+    for (const row of rows) expect(row).toEqual({ onboarding_completed_at: null, daily_goal: 10, preferred_modes: [] })
+    expect((await db.query('select id from public.public_lessons')).rows).toHaveLength(3)
+  })
+
+  it('creates new profiles without trusting onboarding or role claims from signup metadata', async () => {
+    await db.exec('begin')
+    try {
+      await db.query('insert into auth.users(id,email,raw_user_meta_data) values ($1,$2,$3)', ['90000000-0000-4000-8000-000000000001', 'new@example.test', JSON.stringify({ role: 'admin', onboarding_completed_at: '2026-01-01T00:00:00Z', language_level: 'advanced', daily_goal: 100 })])
+      expect((await db.query('select role,onboarding_completed_at,language_level,daily_goal from public.profiles where email=$1', ['new@example.test'])).rows[0]).toEqual({ role: 'student', onboarding_completed_at: null, language_level: null, daily_goal: 10 })
+    } finally { await db.exec('rollback') }
+  })
+
+  it('saves only the caller’s complete profile with a server-owned completion timestamp', async () => {
+    await asUser(ids.student, async () => {
+      const { rows } = await db.query<{ profile: Record<string, unknown> }>(saveProfileSql, validProfile)
+      expect(rows[0].profile).toMatchObject({ id: ids.student, role: 'student', display_name: 'Learner', language_level: 'elementary', difficulty: 'gentle', preferred_modes: ['speech', 'writing'], learning_goals: ['culture', 'travel'], daily_goal: 15 })
+      expect(rows[0].profile.onboarding_completed_at).toBeTruthy()
+      expect((await db.query('select id from public.profiles where id=$1', [ids.other])).rows).toEqual([])
+    })
+  })
+
+  it('allows later edits for every role while preserving completion and normalizing duplicate choices', async () => {
+    for (const id of [ids.student, ids.lecturer, ids.admin]) {
+      await asUser(id, async () => {
+        const first = (await db.query<{ profile: Record<string, unknown> }>(saveProfileSql, validProfile)).rows[0].profile
+        const next = (await db.query<{ profile: Record<string, unknown> }>(saveProfileSql, ['Updated', 'beginner', 'balanced', ['flashcards', 'flashcards'], ['study', 'study'], 7])).rows[0].profile
+        expect(next).toMatchObject({ id, display_name: 'Updated', daily_goal: 7, preferred_modes: ['flashcards'], learning_goals: ['study'], onboarding_completed_at: first.onboarding_completed_at, role: first.role })
+      })
+    }
+  })
+
+  it('rejects incomplete, unknown, null or out-of-range preferences atomically', async () => {
+    const invalid: [number, unknown][] = [[0, '  '], [1, null], [1, 'expert'], [2, null], [2, 'impossible'], [3, []], [3, ['admin']], [3, [null]], [3, null], [4, []], [4, ['unknown']], [4, [null]], [4, null], [5, 0], [5, 101], [5, null]]
+    for (const [index, value] of invalid) {
+      const input = [...validProfile]; input[index] = value as typeof input[number]
+      await expect(asUser(ids.student, () => db.query(saveProfileSql, input))).rejects.toMatchObject({ code: '22023' })
+    }
+    expect((await db.query('select onboarding_completed_at from public.profiles where id=$1', [ids.student])).rows[0]).toEqual({ onboarding_completed_at: null })
+  })
+
+  it('does not grant direct writes to preferences or the completion timestamp, even to an admin client', async () => {
+    for (const id of [ids.student, ids.admin]) {
+      await expect(asUser(id, () => db.query('update public.profiles set onboarding_completed_at=now() where id=$1', [id]))).rejects.toMatchObject({ code: '42501' })
+      await expect(asUser(id, () => db.query('update public.profiles set daily_goal=30 where id=$1', [ids.other]))).rejects.toMatchObject({ code: '42501' })
+    }
+  })
+
+  it('denies anonymous or revoked sessions access to the save RPC', async () => {
+    await expect(asUser(null, () => db.query(saveProfileSql, validProfile))).rejects.toMatchObject({ code: '42501' })
+    await expect(asUser(ids.student, () => db.query(saveProfileSql, validProfile), 'missing-session')).rejects.toMatchObject({ code: '42501' })
   })
 })

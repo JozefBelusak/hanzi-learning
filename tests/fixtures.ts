@@ -7,15 +7,18 @@ const ids = { student: studentId, lecturer: '00000000-0000-4000-8000-00000000000
 const otherId = '00000000-0000-4000-8000-000000000004'
 const password = 'Correct-password-123'
 const timestamp = '2026-10-28T09:00:00.000Z'
+const emptyPreferences = { language_level: null, difficulty: null, preferred_modes: [], learning_goals: [], daily_goal: 10, onboarding_completed_at: null }
+const completedPreferences = { ...emptyPreferences, language_level: 'beginner' as const, difficulty: 'balanced' as const, preferred_modes: ['flashcards' as const], learning_goals: ['conversation' as const], onboarding_completed_at: timestamp }
 
 export async function mockSupabase(page: Page, initialRole: UserRole | null) {
-  const users: UserProfile[] = [...Object.entries(ids).map(([role, id]) => ({ id, role: role as UserRole, email: `${role}@example.test`, display_name: role === 'student' ? 'Student' : role === 'lecturer' ? 'Lecturer' : 'Admin', created_at: timestamp })), { id: otherId, role: 'student', email: 'other@example.test', display_name: 'Other student', created_at: timestamp }]
+  const users: UserProfile[] = [...Object.entries(ids).map(([role, id]) => ({ ...completedPreferences, id, role: role as UserRole, email: `${role}@example.test`, display_name: role === 'student' ? 'Student' : role === 'lecturer' ? 'Lecturer' : 'Admin', created_at: timestamp })), { ...completedPreferences, id: otherId, role: 'student', email: 'other@example.test', display_name: 'Other student', created_at: timestamp }]
   const lessons: PublicLesson[] = []
   const classrooms: Classroom[] = []
   const memberships: ClassroomMember[] = []
   const requests: { method: string; path: string; body: Record<string, unknown> }[] = []
   const revoked = new Set<string>()
   let failProfile = false
+  let failSave = false
   const authUser = (user: UserProfile) => ({ id: user.id, email: user.email, aud: 'authenticated', role: 'authenticated', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { display_name: user.display_name }, created_at: timestamp })
   const session = (user: UserProfile) => {
     const payload = Buffer.from(JSON.stringify({ sub: user.id, exp: Math.floor(Date.now() / 1000) + 3600, aud: 'authenticated', role: 'authenticated', session_id: user.id })).toString('base64url')
@@ -43,7 +46,7 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
       const value = session(user); revoked.delete(value.access_token); await respond(value); return
     }
     if (url.pathname === '/auth/v1/signup') {
-      const user = { id: crypto.randomUUID(), email: String(body?.email), display_name: String((body?.data as { display_name?: string })?.display_name ?? 'Learner'), role: 'student' as const, created_at: timestamp }
+      const user = { ...emptyPreferences, id: crypto.randomUUID(), email: String(body?.email), display_name: String((body?.data as { display_name?: string })?.display_name ?? 'Learner'), role: 'student' as const, created_at: timestamp }
       users.push(user); await respond(authUser(user)); return
     }
     if (url.pathname === '/auth/v1/user') { await respond(caller ? authUser(caller) : { code: 'bad_jwt', msg: 'Invalid token' }, caller ? 200 : 401); return }
@@ -57,6 +60,11 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
       if (failProfile) { await respond({ message: 'Unavailable' }, 503); return }
       const visible = users.filter((user) => caller.role === 'admin' || user.id === caller.id || (caller.role === 'lecturer' && rosterVisible(user.id))).filter((user) => matches(user))
       await result(visible); return
+    }
+    if (url.pathname === '/rest/v1/rpc/save_learning_profile') {
+      if (failSave) { await respond({ code: 'P0001', message: 'Save failed' }, 400); return }
+      Object.assign(caller, { display_name: body?.profile_name, language_level: body?.profile_level, difficulty: body?.profile_difficulty, preferred_modes: body?.profile_modes, learning_goals: body?.profile_goals, daily_goal: body?.profile_daily_goal, onboarding_completed_at: caller.onboarding_completed_at ?? new Date().toISOString() })
+      await respond(caller); return
     }
     if (url.pathname === '/rest/v1/public_lessons') {
       if (method === 'GET') { await result(lessons.filter((lesson) => (lesson.published || caller.role === 'admin' || (caller.role === 'lecturer' && lesson.author_id === caller.id)) && matches(lesson))); return }
@@ -100,7 +108,7 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
     }
     await respond({ message: 'Unknown test endpoint' }, 404)
   })
-  return { users, lessons, classrooms, memberships, requests, failProfile: () => { failProfile = true }, session }
+  return { users, lessons, classrooms, memberships, requests, failProfile: () => { failProfile = true }, setSaveFailure: (fail: boolean) => { failSave = fail }, needsOnboarding: (email = 'student@example.test') => { Object.assign(users.find((user) => user.email === email)!, emptyPreferences) }, session }
 }
 
 type Backend = Awaited<ReturnType<typeof mockSupabase>>
@@ -109,3 +117,9 @@ export const test = base.extend<{ account: UserRole | null; backend: Backend }>(
   backend: [async ({ page, account }, use) => { await use(await mockSupabase(page, account)) }, { auto: true }],
 })
 export { expect }
+
+export async function completeOnboarding(page: Page) {
+  await page.getByLabel('Flashcards', { exact: true }).check()
+  await page.getByLabel('Everyday conversation', { exact: true }).check()
+  await page.getByRole('button', { name: 'Finish setup', exact: true }).click()
+}
