@@ -101,7 +101,7 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
     if (route.mode === 'writing') content = <WritingPage key={deckKey} cards={selected} onBack={returnToModes} onAttempt={study.recordAttempt} />
     if (route.mode === 'sentences') content = <SentencesPage key={practiceLevel} level={practiceLevel} onBack={returnToModes} onAttempt={study.recordAttempt} />
   } else if (route.page === 'course') {
-    content = <CoursePage level={route.level ?? profile.language_level ?? 'beginner'} difficulty={route.difficulty ?? 'all'} onFilterChange={(filter) => navigate({ page: 'course', level: filter.languageLevel === 'all' ? 'beginner' : filter.languageLevel, difficulty: filter.difficulty })} sessions={sessions} onSelect={(activityId) => navigate({ page: 'lesson', activityId })} />
+    content = <CoursePage level={route.level ?? profile.language_level ?? 'beginner'} difficulty={route.difficulty ?? 'all'} onFilterChange={(filter) => navigate({ page: 'course', level: filter.languageLevel, difficulty: filter.difficulty })} sessions={sessions} onSelect={(activityId) => navigate({ page: 'lesson', activityId })} />
   } else if (route.page === 'exercises') {
     content = <ExercisesPage sessions={sessions} onSelect={(activityId) => navigate({ page: 'exercise', activityId })} onPractice={learn} />
   } else if ((route.page === 'lesson' || route.page === 'exercise') && activity) {

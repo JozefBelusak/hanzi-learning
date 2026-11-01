@@ -41,6 +41,8 @@ Append a record to `src/data/content/activities.json`, using an existing record 
 
 Set the language level, difficulty, topic, objectives, explanation paragraphs and examples. Link `vocabularyIds` and `grammarTopicIds` to catalog entries; link prerequisites to platform lesson IDs. For course lessons, set a map line and non-negative map coordinates. The map sizes itself from those coordinates. Independent exercises normally have an empty prerequisite list. Content can use the existing `choice` and `order` question types without changing the runner.
 
+Each language level has its own map; **All paths** is an overview rather than a combined graph. The display uses the relative ordering of map coordinates to reserve station cells with consistent spacing, separating duplicate coordinates automatically. Desktop maps scroll within their own region and mobile maps use a vertical list. This presentation does not rewrite stored coordinates, prerequisites or progress.
+
 A choice answer references an option ID. Every accepted ordering must contain exactly the same token occurrences as the token bank, including repeated words and punctuation. A `tone-guide` teaching feature can be enabled through `features`, rather than a special lesson ID. A wholly new interaction type still needs implementation; JSON cannot define new executable UI behaviour.
 
 Add reusable language explanations to `grammar.json`. Sentence exercises reference a topic through `grammarTopicId`; their note/title is derived from that topic. Lesson-specific context and examples remain on the activity, so sharing a concept does not force unrelated examples to be identical.

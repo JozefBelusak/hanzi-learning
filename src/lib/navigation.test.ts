@@ -14,6 +14,7 @@ describe('course, exercises and contextual practice routes', () => {
       { page: 'practice', category: 'food', mode: 'writing' },
       { page: 'modes', category: 'people' },
       { page: 'course', level: 'advanced', difficulty: 'challenging' },
+      { page: 'course', level: 'all' },
       { page: 'topics', level: 'intermediate' },
       { page: 'modes', category: 'all', level: 'all' },
       { page: 'practice', category: 'all', mode: 'writing', level: 'advanced' },

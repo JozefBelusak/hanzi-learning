@@ -7,7 +7,7 @@ import type { CategoryId, PracticeMode } from '../types/study'
 type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'exercises' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
 export type AppRoute =
   | { page: StaticPage }
-  | { page: 'course'; level?: LanguageLevel; difficulty?: Difficulty | 'all' }
+  | { page: 'course'; level?: LanguageLevel | 'all'; difficulty?: Difficulty | 'all' }
   | { page: 'topics'; level?: LanguageLevel | 'all' }
   | { page: 'public-lesson'; lessonId: string }
   | { page: 'lesson'; activityId: string }
@@ -61,7 +61,7 @@ export function parseRoute(hash: string): AppRoute {
   const level = params.get('level')
   if (route.page === 'course') {
     const difficulty = params.get('difficulty')
-    return { ...route, ...(languageLevelIds.includes(level as LanguageLevel) ? { level: level as LanguageLevel } : {}), ...(difficultyIds.includes(difficulty as Difficulty) ? { difficulty: difficulty as Difficulty } : {}) }
+    return { ...route, ...(level === 'all' || languageLevelIds.includes(level as LanguageLevel) ? { level: level as LanguageLevel | 'all' } : {}), ...(difficultyIds.includes(difficulty as Difficulty) ? { difficulty: difficulty as Difficulty } : {}) }
   }
   if (route.page === 'topics' || route.page === 'modes' || route.page === 'practice') {
     if (level === 'all' || languageLevelIds.includes(level as LanguageLevel)) return { ...route, level: level as LanguageLevel | 'all' }
