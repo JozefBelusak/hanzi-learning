@@ -13,6 +13,13 @@ export function gradeAnswer(question: LearningQuestion, response: string[]): boo
 }
 
 export function sessionScore(activity: LearningActivity, session: LearningSession) {
+  if (activity.id !== session.activityId) return { correct: 0, total: activity.questions.length, percent: 0, passed: false }
+  // Score against the question bank that the learner actually answered. Legacy
+  // sessions belong to revision 1, even after a later revision is published.
+  const revision = session.contentRevision ?? 1
+  const savedActivity = getActivity(session.activityId, revision) ?? (activity.id === session.activityId && activity.revision === revision ? activity : undefined)
+  if (!savedActivity) return { correct: 0, total: activity.questions.length, percent: 0, passed: false }
+  activity = savedActivity
   const total = activity.questions.length
   const answers = new Map(session.answers.map((answer) => [answer.questionId, answer]))
   const correct = activity.questions.filter((question) => {
@@ -57,8 +64,8 @@ export function activityStatus(
   return latest && !latest.finishedAt ? 'in-progress' : 'available'
 }
 
-export function getNextLesson(sessions: LearningSession[]): LearningActivity | undefined {
-  return lessons.find((activity) => {
+export function getNextLesson(sessions: LearningSession[], candidates = lessons): LearningActivity | undefined {
+  return candidates.find((activity) => {
     const status = activityStatus(activity, sessions)
     return status === 'available' || status === 'in-progress'
   })
@@ -91,7 +98,8 @@ export function validateLearningSession(value: unknown): value is LearningSessio
     !validDate(value.startedAt) || !validDate(value.updatedAt) ||
     Date.parse(value.updatedAt) < Date.parse(value.startedAt) ||
     !Array.isArray(value.answers)) return false
-  const activity = getActivity(value.activityId)
+  if (value.contentRevision !== undefined && (!Number.isInteger(value.contentRevision) || Number(value.contentRevision) < 1)) return false
+  const activity = getActivity(value.activityId, value.contentRevision === undefined ? 1 : value.contentRevision as number)
   if (!activity || value.answers.length > activity.questions.length) return false
   if (value.hintedQuestionIds !== undefined) {
     if (!Array.isArray(value.hintedQuestionIds) ||

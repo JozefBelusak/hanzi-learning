@@ -1,0 +1,72 @@
+import { test, expect, accountStudyKey } from './fixtures'
+import { lessons } from '../src/data/learning'
+
+test('course and exercise filters use the catalog language levels and difficulty', async ({ page }) => {
+  await page.goto('/#/course')
+  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(6)
+  await page.getByLabel('Language level', { exact: true }).selectOption('advanced')
+  await expect(page.getByText('No lessons match this level and difficulty yet.', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Show all lessons', exact: true }).click()
+  await page.getByLabel('Difficulty', { exact: true }).selectOption('gentle')
+  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(1)
+  await page.goto('/#/exercises')
+  await expect(page.locator('.exercise-card')).toHaveCount(3)
+  await page.getByLabel('Language level', { exact: true }).selectOption('intermediate')
+  await expect(page.getByRole('heading', { name: 'No exercises found', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Show all exercises', exact: true }).click()
+  await expect(page.locator('.exercise-card')).toHaveCount(3)
+})
+
+test('a pre-catalog completed lesson and its grammar notes remain available after reload', async ({ page }) => {
+  const lesson = lessons[0]
+  const old = { id: 'legacy-before-catalog', activityId: lesson.id, startedAt: '2026-10-14T10:00:00Z', updatedAt: '2026-10-14T10:05:00Z', finishedAt: '2026-10-14T10:05:00Z', answers: lesson.questions.map((question) => ({ questionId: question.id, response: question.type === 'choice' ? [question.answer] : question.acceptedOrders[0], assisted: false })) }
+  await page.addInitScript(({ key, session }) => localStorage.setItem(key, JSON.stringify({ version: 1, displayName: 'Old name', dailyGoal: 10, attempts: [], progress: {}, learningSessions: [session] })), { key: accountStudyKey, session: old })
+  await page.goto('/#/course')
+  await expect(page.getByRole('button', { name: /Lesson 1:.*Completed/ })).toBeVisible()
+  await page.goto(`/#/course/${lesson.id}`)
+  await expect(page.locator('.session-result-score')).toContainText('100%')
+  const notesToggle = page.getByRole('button', { name: 'Show lesson notes', exact: true })
+  if (await notesToggle.isVisible()) await notesToggle.click()
+  await page.getByText('Language and grammar topics', { exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Written tones and connected speech', exact: true })).toBeVisible()
+  await page.reload()
+  await expect(page.locator('.session-result-score')).toContainText('100%')
+  const saved = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).learningSessions[0], accountStudyKey)
+  expect(saved).toEqual(old)
+})
+
+test.describe('lecturer lessons remain separate from platform curriculum', () => {
+  test.use({ account: 'lecturer' })
+  test('publishes and filters lecturer level metadata without adding a platform course stop', async ({ page, backend }) => {
+    await page.goto('/#/teach')
+    await page.getByRole('button', { name: 'New lesson', exact: true }).click()
+    await page.getByLabel('Title', { exact: true }).fill('Intermediate reading')
+    await page.getByLabel('Lesson language level', { exact: true }).selectOption('intermediate')
+    await page.getByLabel('Lesson difficulty', { exact: true }).selectOption('challenging')
+    await page.getByLabel('Lesson content', { exact: true }).fill('这是 lektor-created reading material.')
+    await page.getByLabel('Publish to all signed-in learners', { exact: true }).check()
+    await page.getByRole('button', { name: 'Save lesson', exact: true }).click()
+    await expect(page.getByRole('status')).toContainText('Lesson saved.')
+    expect(backend.lessons[0]).toMatchObject({ source: 'lecturer', languageLevel: 'intermediate', difficulty: 'challenging' })
+    await page.goto('/#/lessons')
+    await page.getByLabel('Language level', { exact: true }).selectOption('beginner')
+    await expect(page.getByText('No public lessons match this level and difficulty.', { exact: true })).toBeVisible()
+    await page.getByLabel('Language level', { exact: true }).selectOption('intermediate')
+    await page.getByRole('button', { name: 'Read lesson', exact: true }).click()
+    await expect(page.locator('.lesson-reader')).toContainText('Lecturer lesson · Intermediate · Challenging')
+    await page.goto('/#/course')
+    await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(6)
+  })
+})
+
+test('new sessions pin their content revision while all content filters fit a small screen', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 850 })
+  await page.goto('/#/course')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.goto(`/#/course/${lessons[0].id}`)
+  await page.getByRole('button', { name: 'Start lesson', exact: true }).click()
+  await expect.poll(() => page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? '{}').learningSessions?.[0]?.contentRevision, accountStudyKey)).toBe(1)
+  await page.goto('/#/exercises')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: 'playwright-report/content-exercises-360.png', fullPage: true })
+})

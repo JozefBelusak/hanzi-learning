@@ -39,6 +39,7 @@ beforeAll(async () => {
   await db.query('insert into public.classroom_members(classroom_id,student_id) values ($1,$2)', [classroom, ids.student])
   // Upgrade a database that already has accounts and learning content.
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101090000_learning_profiles.sql', import.meta.url), 'utf8'))
+  await db.exec(readFileSync(new URL('../supabase/migrations/20261101120000_content_classification.sql', import.meta.url), 'utf8'))
 }, 30_000)
 afterAll(async () => { await db.close() })
 
@@ -165,6 +166,22 @@ describe('backend authorization using the actual PostgreSQL migration', () => {
 
 const saveProfileSql = 'select public.save_learning_profile($1,$2,$3,$4::text[],$5::text[],$6) as profile'
 const validProfile = ['Learner', 'elementary', 'gentle', ['speech', 'writing'], ['travel', 'culture'], 15]
+
+describe('lecturer content classification and preserved ownership', () => {
+  it('adds defaults to existing lessons without changing their author, text or publication', async () => {
+    const { rows } = await db.query('select id,author_id,title,content,published,language_level,difficulty from public.public_lessons where id=$1', [lesson])
+    expect(rows[0]).toEqual({ id: lesson, author_id: ids.lecturer, title: 'Published one', content: 'Content', published: true, language_level: 'beginner', difficulty: 'balanced' })
+  })
+  it('allows owners to classify their own lessons while blocking students, foreign authors and invalid metadata', async () => {
+    await asUser(ids.lecturer, async () => {
+      expect((await db.query("update public.public_lessons set language_level='elementary',difficulty='gentle' where id=$1 returning language_level,difficulty", [lesson])).rows).toEqual([{ language_level: 'elementary', difficulty: 'gentle' }])
+      expect((await db.query("update public.public_lessons set language_level='advanced' where id=$1 returning id", [foreignLesson])).rows).toEqual([])
+    })
+    await asUser(ids.student, async () => { expect((await db.query("update public.public_lessons set difficulty='challenging' where id=$1 returning id", [lesson])).rows).toEqual([]) })
+    await expect(asUser(ids.lecturer, () => db.query("update public.public_lessons set language_level='unknown' where id=$1", [lesson]))).rejects.toMatchObject({ code: '23514' })
+    await expect(asUser(ids.lecturer, () => db.query("update public.public_lessons set difficulty='impossible' where id=$1", [lesson]))).rejects.toMatchObject({ code: '23514' })
+  })
+})
 
 describe('learning profile migration and database authorization', () => {
   it('preserves existing accounts and content while requiring explicit onboarding', async () => {

@@ -1,4 +1,5 @@
-import type { Difficulty, LanguageLevel, LearningGoal } from '../lib/profile'
+import type { LearningGoal } from '../lib/profile'
+import type { Difficulty, LanguageLevel } from './content'
 import type { PracticeMode } from './study'
 
 export type UserRole = 'student' | 'lecturer' | 'admin'
@@ -17,16 +18,7 @@ export type UserProfile = {
   onboarding_completed_at: string | null
 }
 
-export type PublicLesson = {
-  id: string
-  author_id: string
-  title: string
-  summary: string
-  content: string
-  published: boolean
-  created_at: string
-  updated_at: string
-}
+export type { LecturerLesson as PublicLesson } from './content'
 
 export type Classroom = {
   id: string

@@ -12,8 +12,10 @@
     }
   },
   "scripts": {
+    "content:check": "node --experimental-strip-types scripts/check-content.ts",
+    "content:prepare": "node --experimental-strip-types scripts/prepare-content.ts",
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
-    "build": "tsc -b && vite build",
+    "build": "npm run content:check && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview --host 127.0.0.1 --port 5173 --strictPort",
     "test": "vitest run",

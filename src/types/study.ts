@@ -1,22 +1,11 @@
 import type { LearningSession } from './learning'
 
-export type WordCategoryId =
-  | 'people' | 'food' | 'numbers' | 'time'
-  | 'places' | 'actions' | 'objects' | 'other'
-
-export type CategoryId = 'all' | WordCategoryId
+export type { WordCategoryId, CategoryId } from './content'
 export type PracticeMode = 'flashcards' | 'speech' | 'writing' | 'sentences'
 export type LearningModeId = PracticeMode | 'progress'
 export type FlashcardRating = 'again' | 'hard' | 'good' | 'easy'
 
-export type Card = {
-  id: string
-  hanzi: string
-  pinyin: string
-  meaning: string
-  categoryId: WordCategoryId
-  level: number
-}
+export type { VocabularyEntry as Card } from './content'
 
 export type AttemptInput = {
   mode: PracticeMode

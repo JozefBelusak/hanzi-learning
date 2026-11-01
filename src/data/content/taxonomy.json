@@ -1,0 +1,281 @@
+{
+  "languageLevels": [
+    {
+      "id": "beginner",
+      "label": "Beginner",
+      "description": "I am starting from the basics."
+    },
+    {
+      "id": "elementary",
+      "label": "Elementary",
+      "description": "I know some words and simple phrases."
+    },
+    {
+      "id": "intermediate",
+      "label": "Intermediate",
+      "description": "I can handle familiar everyday situations."
+    },
+    {
+      "id": "advanced",
+      "label": "Advanced",
+      "description": "I can use Chinese in a wide range of situations."
+    }
+  ],
+  "difficulties": [
+    {
+      "id": "gentle",
+      "label": "Gentle",
+      "description": "Build confidence with a comfortable pace."
+    },
+    {
+      "id": "balanced",
+      "label": "Balanced",
+      "description": "A steady mix of review and new practice."
+    },
+    {
+      "id": "challenging",
+      "label": "Challenging",
+      "description": "I enjoy stretching my knowledge."
+    }
+  ],
+  "categories": [
+    {
+      "id": "all",
+      "title": "All words",
+      "description": "The complete beginner vocabulary.",
+      "symbol": "全"
+    },
+    {
+      "id": "people",
+      "title": "People and family",
+      "description": "Pronouns, family members and jobs.",
+      "symbol": "人",
+      "words": [
+        "爸爸",
+        "儿子",
+        "工作",
+        "家",
+        "老师",
+        "妈妈",
+        "名字",
+        "女儿",
+        "你",
+        "朋友",
+        "人",
+        "谁",
+        "他",
+        "她",
+        "同学",
+        "我",
+        "我们",
+        "先生",
+        "学生",
+        "医生",
+        "小姐"
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food and drinks",
+      "description": "Order tea or something to eat.",
+      "symbol": "茶",
+      "words": [
+        "菜",
+        "茶",
+        "吃",
+        "喝",
+        "米饭",
+        "苹果",
+        "水",
+        "水果"
+      ]
+    },
+    {
+      "id": "numbers",
+      "title": "Numbers and quantities",
+      "description": "Counting, prices and amounts.",
+      "symbol": "三",
+      "words": [
+        "八",
+        "本",
+        "多",
+        "多少",
+        "二",
+        "个",
+        "几",
+        "九",
+        "块",
+        "六",
+        "钱",
+        "七",
+        "三",
+        "少",
+        "十",
+        "四",
+        "五",
+        "些",
+        "一",
+        "一点儿"
+      ]
+    },
+    {
+      "id": "time",
+      "title": "Time and weather",
+      "description": "Days, hours and everyday weather.",
+      "symbol": "日",
+      "words": [
+        "点",
+        "分钟",
+        "号",
+        "今天",
+        "冷",
+        "明天",
+        "年",
+        "热",
+        "上午",
+        "时候",
+        "岁",
+        "天气",
+        "下雨",
+        "下午",
+        "现在",
+        "星期",
+        "月",
+        "中午",
+        "昨天"
+      ]
+    },
+    {
+      "id": "places",
+      "title": "Places and travel",
+      "description": "School, cities and transport.",
+      "symbol": "国",
+      "words": [
+        "北京",
+        "出租车",
+        "饭店",
+        "飞机",
+        "回",
+        "来",
+        "哪儿",
+        "去",
+        "商店",
+        "上",
+        "下",
+        "学校",
+        "医院",
+        "在",
+        "中国",
+        "住",
+        "后面",
+        "前面",
+        "里"
+      ]
+    },
+    {
+      "id": "actions",
+      "title": "Activities",
+      "description": "Reading, learning and everyday activities.",
+      "symbol": "学",
+      "words": [
+        "爱",
+        "打电话",
+        "读",
+        "会",
+        "叫",
+        "开",
+        "看",
+        "看见",
+        "买",
+        "能",
+        "请",
+        "认识",
+        "睡觉",
+        "说",
+        "听",
+        "喜欢",
+        "想",
+        "写",
+        "学习",
+        "有",
+        "坐",
+        "做"
+      ]
+    },
+    {
+      "id": "objects",
+      "title": "Things and animals",
+      "description": "Objects and animals around you.",
+      "symbol": "书",
+      "words": [
+        "杯子",
+        "电脑",
+        "电视",
+        "电影",
+        "东西",
+        "狗",
+        "猫",
+        "书",
+        "衣服",
+        "椅子",
+        "桌子",
+        "字"
+      ]
+    },
+    {
+      "id": "other",
+      "title": "Phrases and grammar",
+      "description": "Greetings, questions and connecting words.",
+      "symbol": "好"
+    }
+  ],
+  "courseLines": [
+    {
+      "id": "sounds",
+      "title": "Sounds & tones",
+      "color": "#326b9b",
+      "symbol": "声"
+    },
+    {
+      "id": "everyday",
+      "title": "Everyday Chinese",
+      "color": "#377d62",
+      "symbol": "日"
+    },
+    {
+      "id": "sentences",
+      "title": "Sentence building",
+      "color": "#826295",
+      "symbol": "句"
+    }
+  ],
+  "sources": [
+    {
+      "id": "hearmandarin",
+      "name": "HearMandarin",
+      "url": "https://hearmandarin.com/datasets/",
+      "license": "CC BY 4.0",
+      "attribution": "HearMandarin (https://hearmandarin.com)"
+    },
+    {
+      "id": "hanzi-original",
+      "name": "Hanzi platform content",
+      "url": "https://hanzi-demo.netlify.app/",
+      "license": "Original educational content",
+      "attribution": "Hanzi project"
+    }
+  ],
+  "vocabularySelection": {
+    "hsk2Levels": [
+      1
+    ],
+    "levelMapping": {
+      "1": "beginner",
+      "2": "elementary",
+      "3": "intermediate",
+      "4": "intermediate",
+      "5": "advanced",
+      "6": "advanced"
+    }
+  }
+}

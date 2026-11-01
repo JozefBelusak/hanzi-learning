@@ -1,8 +1,9 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { deleteLesson, listLessons, platformError, saveLesson, type LessonDraft } from '../lib/platform'
 import type { PublicLesson, UserProfile } from '../types/auth'
+import { difficulties, languageLevels, difficultyLabel, levelLabel } from '../data/taxonomy'
 
-const blank: LessonDraft = { title: '', summary: '', content: '', published: false }
+const blank: LessonDraft = { title: '', summary: '', content: '', published: false, languageLevel: 'beginner', difficulty: 'balanced' }
 
 export default function LessonManager({ profile, onRead }: { profile: UserProfile; onRead: (id: string) => void }) {
   const [lessons, setLessons] = useState<PublicLesson[]>([])
@@ -47,12 +48,14 @@ export default function LessonManager({ profile, onRead }: { profile: UserProfil
       <h3>{editing ? 'Edit lesson' : 'New lesson'}</h3>
       <label htmlFor="lesson-title">Title</label><input id="lesson-title" required maxLength={160} value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} disabled={busy} />
       <label htmlFor="lesson-summary">Summary</label><input id="lesson-summary" maxLength={500} value={draft.summary} onChange={(event) => setDraft({ ...draft, summary: event.target.value })} disabled={busy} />
+      <label htmlFor="lecturer-lesson-level">Lesson language level</label><select id="lecturer-lesson-level" value={draft.languageLevel} onChange={(event) => setDraft({ ...draft, languageLevel: event.target.value as LessonDraft['languageLevel'] })} disabled={busy}>{languageLevels.map((level) => <option key={level.id} value={level.id}>{level.label}</option>)}</select>
+      <label htmlFor="lecturer-lesson-difficulty">Lesson difficulty</label><select id="lecturer-lesson-difficulty" value={draft.difficulty} onChange={(event) => setDraft({ ...draft, difficulty: event.target.value as LessonDraft['difficulty'] })} disabled={busy}>{difficulties.map((difficulty) => <option key={difficulty.id} value={difficulty.id}>{difficulty.label}</option>)}</select>
       <label htmlFor="lesson-content">Lesson content</label><textarea id="lesson-content" rows={10} required maxLength={50000} value={draft.content} onChange={(event) => setDraft({ ...draft, content: event.target.value })} disabled={busy} />
       <small>Write explanations, Chinese examples and translations. Paragraphs are preserved.</small>
       <label className="checkbox-field"><input type="checkbox" checked={draft.published} onChange={(event) => setDraft({ ...draft, published: event.target.checked })} disabled={busy} /> Publish to all signed-in learners</label>
       <div className="action-row"><button type="submit" disabled={busy}>{busy ? 'Saving…' : 'Save lesson'}</button><button type="button" className="secondary-btn" disabled={busy} onClick={() => setEditing(undefined)}>Cancel editing</button></div>
     </form>}
-    <ul className="management-list">{lessons.map((lesson) => <li key={lesson.id}><div><strong>{lesson.title}</strong><small>{lesson.published ? 'Published' : 'Draft'}</small></div><div className="action-row"><button type="button" className="text-btn" onClick={() => onRead(lesson.id)}>Preview</button><button type="button" className="secondary-btn" disabled={busy} onClick={() => { setEditing(lesson.id); setDraft({ title: lesson.title, summary: lesson.summary, content: lesson.content, published: lesson.published }); setMessage('') }}>Edit</button><button type="button" className="text-btn" disabled={busy} onClick={() => void remove(lesson.id)}>Delete</button></div></li>)}</ul>
+    <ul className="management-list">{lessons.map((lesson) => <li key={lesson.id}><div><strong>{lesson.title}</strong><small>{lesson.published ? 'Published' : 'Draft'} · {levelLabel(lesson.languageLevel)} · {difficultyLabel(lesson.difficulty)}</small></div><div className="action-row"><button type="button" className="text-btn" onClick={() => onRead(lesson.id)}>Preview</button><button type="button" className="secondary-btn" disabled={busy} onClick={() => { setEditing(lesson.id); setDraft({ title: lesson.title, summary: lesson.summary, content: lesson.content, published: lesson.published, languageLevel: lesson.languageLevel, difficulty: lesson.difficulty }); setMessage('') }}>Edit</button><button type="button" className="text-btn" disabled={busy} onClick={() => void remove(lesson.id)}>Delete</button></div></li>)}</ul>
     {!loading && !lessons.length && <p>Create your first lesson. Drafts are visible only to their lecturer and administrators.</p>}
   </section>
 }

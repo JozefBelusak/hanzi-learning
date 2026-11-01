@@ -12,7 +12,7 @@ export function mergeLearningSessions(sessions: LearningSession[]): LearningSess
   const byId = new Map<string, LearningSession>()
   for (const session of sessions) {
     const existing = byId.get(session.id)
-    if (existing && (existing.activityId !== session.activityId || existing.startedAt !== session.startedAt)) {
+    if (existing && (existing.activityId !== session.activityId || existing.startedAt !== session.startedAt || (existing.contentRevision ?? 1) !== (session.contentRevision ?? 1))) {
       throw new Error('The backup contains conflicting learning sessions.')
     }
     if (!existing) { byId.set(session.id, session); continue }

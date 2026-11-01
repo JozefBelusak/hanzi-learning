@@ -4,9 +4,9 @@ import { loadStrokeData, writingCharacters } from './writing'
 import snapshot from '../data/vocabulary-hsk1.json'
 
 const words: Card[] = [
-  { id: 'hello', hanzi: '你好！', pinyin: 'nǐ hǎo', meaning: 'ahoj', categoryId: 'people', level: 1 },
-  { id: 'good', hanzi: '好', pinyin: 'hǎo', meaning: 'dobrý', categoryId: 'other', level: 1 },
-  { id: 'me', hanzi: '我', pinyin: 'wǒ', meaning: 'ja', categoryId: 'people', level: 1 },
+  { id: 'hello', hanzi: '你好！', pinyin: 'nǐ hǎo', meaning: 'ahoj', categoryId: 'people', level: 1, languageLevel: 'beginner', difficulty: 'balanced', sourceId: 'hanzi-original' },
+  { id: 'good', hanzi: '好', pinyin: 'hǎo', meaning: 'dobrý', categoryId: 'other', level: 1, languageLevel: 'beginner', difficulty: 'balanced', sourceId: 'hanzi-original' },
+  { id: 'me', hanzi: '我', pinyin: 'wǒ', meaning: 'ja', categoryId: 'people', level: 1, languageLevel: 'beginner', difficulty: 'balanced', sourceId: 'hanzi-original' },
 ]
 
 describe('writing characters', () => {

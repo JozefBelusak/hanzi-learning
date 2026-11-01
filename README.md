@@ -13,7 +13,7 @@ npm run dev
 
 Open `http://localhost:5173`. Python is not required. Browser microphone access requires localhost or HTTPS; plain HTTP from another device may not support it. The development server listens on this computer only by default.
 
-Learning requires a signed-in account and a completed learning profile. Before using it, follow [the Supabase setup guide](docs/auth-setup.md): create the project, apply both database migrations in order, configure email confirmation and copy `.env.example` to `.env.local`. Existing projects with accounts need only the new `20261101090000_learning_profiles.sql` migration. Missing configuration keeps learning locked; there is no guest or demo authentication bypass.
+Learning requires a signed-in account and a completed learning profile. Before using it, follow [the Supabase setup guide](docs/auth-setup.md): create the project, apply the database migrations in order, configure email confirmation and copy `.env.example` to `.env.local`. Existing projects apply only new migrations; projects with working onboarding need `20261101120000_content_classification.sql` for lecturer lesson metadata. Missing configuration keeps learning locked; there is no guest or demo authentication bypass.
 
 ```sh
 npm run lint
@@ -36,6 +36,7 @@ Try speaking in a supported browser such as Chrome or Edge and allow microphone 
 
 ## Implemented features
 
+- **Content catalog:** shared models for platform lessons/exercises, grammar, vocabulary, language levels and difficulty. JSON content files drive the existing runner; validated references and immutable activity revisions preserve old progress. Platform curriculum and lecturer public lessons share classification models while retaining separate ownership/storage. See [the content model and authoring guide](docs/content-model.md).
 - **Accounts and permissions:** confirmed-email registration, password sign-in, session restoration/refresh and sign-out. Students learn, lecturers publish lessons and manage their classrooms, administrators manage roles and authored content. Frontend route guards and PostgreSQL RLS enforce access; registration always creates a Student.
 - **Learning profiles:** mandatory setup after the first verified login, with language level, difficulty preference, preferred practice modes, learning goals and a daily target. Preferences are stored in Supabase, editable in Settings and connected to the local progress view. All roles, including existing users, complete setup. Home offers preferred practice shortcuts. Level/difficulty are preferences; the current HSK 1 course and assessment scores are unchanged. See [onboarding setup](docs/profile-onboarding.md).
 - **Public lessons and classrooms:** signed-in learners read published lecturer lessons and join classrooms through invitation codes. Lecturers manage their own drafts, published lessons and student enrollments; Admin can manage all of them. The original starter course remains versioned in code.
@@ -114,6 +115,7 @@ Use Android Studio to run the app on a phone/emulator or build an APK. Repeat `n
 ## Code map
 
 - `src/App.tsx`, `src/lib/useAuth.ts`, `src/lib/supabase.ts`: authentication, session verification and route guards. `src/AuthenticatedApp.tsx` loads the learning workspace after verification.
+- `src/types/content.ts`, `src/data/catalog.ts`, `src/data/content/`: shared educational models, versioned platform content and repository lookups. `npm run content:check` validates content before every build; `npm run content:prepare` prepares offline character templates after word additions.
 - `src/AuthenticatedApp.tsx`, `src/lib/navigation.ts`: learning screens, hash navigation, vocabulary loading and progress.
 - `src/lib/platform.ts`, `src/components/ManagementPage.tsx`, `LessonManager.tsx`, `ClassroomsPage.tsx`, `PublicLessonsPage.tsx`: account-backed lessons, roles and classrooms.
 - `supabase/migrations/`: backend tables, grants, RLS and restricted RPC functions. `server-tests/`: PostgreSQL authorization tests.

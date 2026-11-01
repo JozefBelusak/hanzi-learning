@@ -1,8 +1,10 @@
 import { requireSupabase } from './supabase'
 import type { Classroom, ClassroomMember, PublicLesson, UserProfile, UserRole } from '../types/auth'
+import { difficultyIds, languageLevelIds, type Difficulty, type LanguageLevel } from '../types/content'
 
 export function platformError(error: unknown): string {
   const failure = error as { code?: string; message?: string }
+  if (failure.code === '42703' || failure.code === 'PGRST204') return 'The content database needs an update. Ask the administrator to apply the content classification migration.'
   if (failure.code === '42501' || failure.code === 'PGRST116') return 'You do not have permission for this action. Refresh the page if your role has changed.'
   if (failure.code === 'P0001') return failure.message ?? 'The action is not available.'
   if (/fetch|network/i.test(failure.message ?? '')) return 'Could not connect. Please try again.'
@@ -14,17 +16,27 @@ export async function listLessons(publishedOnly = false): Promise<PublicLesson[]
   if (publishedOnly) query = query.eq('published', true)
   const { data, error } = await query
   if (error) throw error
-  return data as PublicLesson[]
+  return data.map(readPublicLesson)
 }
 export async function findLesson(id: string): Promise<PublicLesson> {
   const { data, error } = await requireSupabase().from('public_lessons').select('*').eq('id', id).single()
   if (error) throw error
-  return data as PublicLesson
+  return readPublicLesson(data)
 }
-export type LessonDraft = Pick<PublicLesson, 'title' | 'summary' | 'content' | 'published'>
+function readPublicLesson(value: Record<string, unknown>): PublicLesson {
+  // Old rows and older mock/deployment responses have the same default labels
+  // as the additive migration. Authorship and source remain distinct.
+  const languageLevel = value.language_level ?? 'beginner'
+  const difficulty = value.difficulty ?? 'balanced'
+  if (!languageLevelIds.includes(languageLevel as LanguageLevel) || !difficultyIds.includes(difficulty as Difficulty)) throw new Error('Lesson classification is invalid.')
+  return { ...value, languageLevel, difficulty, source: 'lecturer' } as PublicLesson
+}
+export type LessonDraft = Pick<PublicLesson, 'title' | 'summary' | 'content' | 'published' | 'languageLevel' | 'difficulty'>
 export async function saveLesson(draft: LessonDraft, id?: string): Promise<void> {
+  const { languageLevel, difficulty, ...content } = draft
+  const values = { ...content, language_level: languageLevel, difficulty }
   const table = requireSupabase().from('public_lessons')
-  const result = id ? await table.update(draft).eq('id', id).select('id').single() : await table.insert(draft).select('id').single()
+  const result = id ? await table.update(values).eq('id', id).select('id').single() : await table.insert(values).select('id').single()
   if (result.error) throw result.error
 }
 export async function deleteLesson(id: string): Promise<void> {

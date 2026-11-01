@@ -58,7 +58,7 @@ export default function SettingsPage({ study, profile, onSaveProfile, onImport, 
       {message && <p role="status" className="status-message">{message}</p>}
       <section className="card-surface source-settings">
         <h2>Vocabulary</h2>
-        <p>150 beginner words from <a href={vocabularyInfo.url} target="_blank" rel="noreferrer">HearMandarin</a>, HSK 2.0 level 1, with English meanings.</p>
+        <p>{vocabularyInfo.wordCount} words in the platform catalog, with English meanings. Public vocabulary: <a href={vocabularyInfo.url} target="_blank" rel="noreferrer">HearMandarin</a>, {vocabularyInfo.selection}. Authored vocabulary is kept when refreshing the public dataset.</p>
         <button className="secondary-btn" type="button" disabled={refreshing} onClick={onRefresh}>{refreshing ? 'Refreshing…' : 'Refresh vocabulary'}</button>
         {notice && <p role="status" className="status-message">{notice}</p>}
         <details className="practice-help">

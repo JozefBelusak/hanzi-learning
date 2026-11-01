@@ -1,0 +1,1775 @@
+{
+  "activities": [
+    {
+      "id": "lesson-tones",
+      "questions": [
+        {
+          "id": "tones-level",
+          "type": "choice",
+          "prompt": "Written-tone check: which tone is high and level?",
+          "options": [
+            {
+              "id": "second",
+              "text": "Second tone: á"
+            },
+            {
+              "id": "first",
+              "text": "First tone: ā"
+            },
+            {
+              "id": "fourth",
+              "text": "Fourth tone: à"
+            }
+          ],
+          "answer": "first",
+          "explanation": "The first tone is high and level. The mark ā is a reminder of a level pitch.",
+          "hint": "Look for the horizontal tone mark."
+        },
+        {
+          "id": "tones-rising",
+          "type": "choice",
+          "prompt": "Written-tone check: the mark in chá represents which pattern?",
+          "options": [
+            {
+              "id": "falling",
+              "text": "Falling"
+            },
+            {
+              "id": "level",
+              "text": "High and level"
+            },
+            {
+              "id": "rising",
+              "text": "Rising"
+            }
+          ],
+          "answer": "rising",
+          "explanation": "The acute mark á represents the second, rising tone.",
+          "hint": "The mark slopes upward."
+        },
+        {
+          "id": "tones-falling",
+          "type": "choice",
+          "prompt": "Written-tone check: which syllable has a fourth tone?",
+          "options": [
+            {
+              "id": "shi",
+              "text": "shì"
+            },
+            {
+              "id": "cha",
+              "text": "chá"
+            },
+            {
+              "id": "shui",
+              "text": "shuǐ"
+            }
+          ],
+          "answer": "shi",
+          "explanation": "The mark ì slopes downward and denotes the fourth tone.",
+          "hint": "Find the downward-sloping mark."
+        },
+        {
+          "id": "tones-sandhi",
+          "type": "choice",
+          "prompt": "In ordinary speech, how is the first tone of nǐ hǎo usually pronounced?",
+          "options": [
+            {
+              "id": "neutral",
+              "text": "As a neutral tone"
+            },
+            {
+              "id": "rising",
+              "text": "Like a second tone"
+            },
+            {
+              "id": "falling",
+              "text": "Like a fourth tone"
+            }
+          ],
+          "answer": "rising",
+          "explanation": "Before another third tone, the first third tone normally changes to a rising second tone. Dictionary pinyin still writes nǐ hǎo.",
+          "hint": "This phrase places two third tones together.",
+          "audioText": "你好"
+        },
+        {
+          "id": "tones-neutral",
+          "type": "choice",
+          "prompt": "Which description fits a neutral-tone syllable?",
+          "options": [
+            {
+              "id": "level",
+              "text": "Always long and high"
+            },
+            {
+              "id": "falling",
+              "text": "Always a fourth tone"
+            },
+            {
+              "id": "short",
+              "text": "Short and unstressed; pitch depends on context"
+            }
+          ],
+          "answer": "short",
+          "explanation": "Neutral tone is not a fixed fifth pitch contour. It is unstressed and changes with context.",
+          "hint": "Think of the second syllable in māma.",
+          "audioText": "妈妈"
+        }
+      ],
+      "prerequisites": [],
+      "practiceWords": [
+        "妈妈",
+        "你",
+        "好",
+        "茶",
+        "水"
+      ]
+    },
+    {
+      "id": "lesson-greetings",
+      "questions": [
+        {
+          "id": "greetings-listen",
+          "type": "choice",
+          "prompt": "Play the example and choose its meaning.",
+          "options": [
+            {
+              "id": "thanks",
+              "text": "Thank you"
+            },
+            {
+              "id": "hello",
+              "text": "Hello"
+            },
+            {
+              "id": "bye",
+              "text": "Goodbye"
+            }
+          ],
+          "answer": "hello",
+          "explanation": "你好 is the greeting “hello”. Its first syllable changes tone before the second third tone.",
+          "audioText": "你好",
+          "hint": "The two characters literally relate to “you” and “good”."
+        },
+        {
+          "id": "greetings-reply",
+          "type": "choice",
+          "prompt": "Someone says 谢谢. Which reply means “you are welcome”?",
+          "options": [
+            {
+              "id": "bye",
+              "text": "再见",
+              "pinyin": "zàijiàn"
+            },
+            {
+              "id": "hello",
+              "text": "你好",
+              "pinyin": "nǐ hǎo"
+            },
+            {
+              "id": "welcome",
+              "text": "不客气",
+              "pinyin": "bú kèqi"
+            }
+          ],
+          "answer": "welcome",
+          "explanation": "不客气 is a common reply to 谢谢.",
+          "hint": "Choose the expression that tells someone there is no need to be polite."
+        },
+        {
+          "id": "greetings-question",
+          "type": "order",
+          "prompt": "Build: “Are you well?”",
+          "tokens": [
+            "你",
+            "好",
+            "吗"
+          ],
+          "acceptedOrders": [
+            [
+              "你",
+              "好",
+              "吗"
+            ]
+          ],
+          "explanation": "The statement 你好 becomes a yes-or-no question when 吗 is added at the end.",
+          "hint": "Put the question particle last.",
+          "audioText": "你好吗"
+        },
+        {
+          "id": "greetings-ma",
+          "type": "choice",
+          "prompt": "Where does 吗 go in this kind of yes-or-no question?",
+          "options": [
+            {
+              "id": "end",
+              "text": "At the end"
+            },
+            {
+              "id": "start",
+              "text": "Before the subject"
+            },
+            {
+              "id": "middle",
+              "text": "Between the subject and verb"
+            }
+          ],
+          "answer": "end",
+          "explanation": "吗 follows the whole statement. The original word order stays the same.",
+          "hint": "Think of 你好吗？"
+        },
+        {
+          "id": "greetings-goodbye",
+          "type": "choice",
+          "prompt": "Choose the expression for “goodbye”.",
+          "options": [
+            {
+              "id": "thanks",
+              "text": "谢谢",
+              "pinyin": "xièxie"
+            },
+            {
+              "id": "bye",
+              "text": "再见",
+              "pinyin": "zàijiàn"
+            },
+            {
+              "id": "welcome",
+              "text": "不客气",
+              "pinyin": "bú kèqi"
+            }
+          ],
+          "answer": "bye",
+          "explanation": "再见 means “goodbye”, literally suggesting seeing someone again.",
+          "hint": "It is the expression used when leaving."
+        }
+      ],
+      "prerequisites": [
+        "lesson-tones"
+      ],
+      "practiceWords": [
+        "你",
+        "好",
+        "谢谢",
+        "不客气",
+        "再见",
+        "吗"
+      ]
+    },
+    {
+      "id": "lesson-introductions",
+      "questions": [
+        {
+          "id": "intro-listen",
+          "type": "choice",
+          "prompt": "Play the sentence and choose what the speaker tells you.",
+          "options": [
+            {
+              "id": "name",
+              "text": "Their name is Anna"
+            },
+            {
+              "id": "job",
+              "text": "They are a teacher"
+            },
+            {
+              "id": "drink",
+              "text": "They drink tea"
+            }
+          ],
+          "answer": "name",
+          "explanation": "我叫安娜 introduces the speaker’s name: Anna.",
+          "audioText": "我叫安娜",
+          "hint": "叫 introduces a name."
+        },
+        {
+          "id": "intro-student",
+          "type": "order",
+          "prompt": "Build: “I am a student.”",
+          "tokens": [
+            "我",
+            "是",
+            "学生"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "是",
+              "学生"
+            ]
+          ],
+          "explanation": "是 links the subject 我 to the noun 学生.",
+          "hint": "Person → 是 → identity.",
+          "audioText": "我是学生"
+        },
+        {
+          "id": "intro-name-verb",
+          "type": "choice",
+          "prompt": "Which word introduces your name in 我___安娜？",
+          "options": [
+            {
+              "id": "study",
+              "text": "学习",
+              "pinyin": "xuéxí"
+            },
+            {
+              "id": "called",
+              "text": "叫",
+              "pinyin": "jiào"
+            },
+            {
+              "id": "at",
+              "text": "在",
+              "pinyin": "zài"
+            }
+          ],
+          "answer": "called",
+          "explanation": "叫 introduces what a person is called. 是 is used for identity, not in this name pattern.",
+          "hint": "Use the verb meaning “be called”."
+        },
+        {
+          "id": "intro-today",
+          "type": "order",
+          "prompt": "Build: “I study Chinese today.”",
+          "tokens": [
+            "我",
+            "今天",
+            "学习",
+            "汉语"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "今天",
+              "学习",
+              "汉语"
+            ],
+            [
+              "今天",
+              "我",
+              "学习",
+              "汉语"
+            ]
+          ],
+          "explanation": "今天 goes before 学习. It can appear before or after 我, so both time placements are accepted.",
+          "hint": "Keep 今天 before the action."
+        },
+        {
+          "id": "intro-wh-question",
+          "type": "choice",
+          "prompt": "Why does 你叫什么名字？ not need 吗?",
+          "options": [
+            {
+              "id": "short",
+              "text": "The sentence is too short"
+            },
+            {
+              "id": "teacher",
+              "text": "Only teachers use 吗"
+            },
+            {
+              "id": "what",
+              "text": "什么 already asks “what”"
+            }
+          ],
+          "answer": "what",
+          "explanation": "吗 creates a yes-or-no question; 什么 already asks for the missing information.",
+          "hint": "What kind of answer does “what is your name?” request?"
+        }
+      ],
+      "prerequisites": [
+        "lesson-greetings"
+      ],
+      "practiceWords": [
+        "我",
+        "你",
+        "叫",
+        "名字",
+        "是",
+        "学生",
+        "老师",
+        "学习",
+        "汉语",
+        "今天"
+      ]
+    },
+    {
+      "id": "lesson-family",
+      "questions": [
+        {
+          "id": "family-listen",
+          "type": "choice",
+          "prompt": "Play the phrase and choose the family member.",
+          "options": [
+            {
+              "id": "teacher",
+              "text": "Teacher"
+            },
+            {
+              "id": "mum",
+              "text": "Mum"
+            },
+            {
+              "id": "dad",
+              "text": "Dad"
+            }
+          ],
+          "answer": "mum",
+          "explanation": "妈妈 is mum. Its second syllable is commonly neutral.",
+          "audioText": "妈妈",
+          "hint": "Listen for māma."
+        },
+        {
+          "id": "family-mine",
+          "type": "order",
+          "prompt": "Build the full possessive phrase: “my mum”. Use every tile.",
+          "tokens": [
+            "我",
+            "的",
+            "妈妈"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "的",
+              "妈妈"
+            ]
+          ],
+          "explanation": "In the full possessive form, the owner 我 comes before 的 and 妈妈. 我妈妈 is also natural, but this exercise supplies 的.",
+          "hint": "Owner → 的 → person."
+        },
+        {
+          "id": "family-teacher",
+          "type": "order",
+          "prompt": "Build: “She is a teacher.”",
+          "tokens": [
+            "她",
+            "是",
+            "老师"
+          ],
+          "acceptedOrders": [
+            [
+              "她",
+              "是",
+              "老师"
+            ]
+          ],
+          "explanation": "她 is the subject, 是 links the identity, and 老师 is teacher.",
+          "hint": "Person → 是 → identity."
+        },
+        {
+          "id": "family-also",
+          "type": "choice",
+          "prompt": "Where does 也 go in “Mum also likes tea”?",
+          "options": [
+            {
+              "id": "end",
+              "text": "After 茶"
+            },
+            {
+              "id": "first",
+              "text": "Before 妈妈"
+            },
+            {
+              "id": "before-verb",
+              "text": "Before 喜欢"
+            }
+          ],
+          "answer": "before-verb",
+          "explanation": "The pattern is 妈妈也喜欢茶: 也 comes before the verb 喜欢.",
+          "hint": "也 modifies the following action."
+        },
+        {
+          "id": "family-two-likes",
+          "type": "order",
+          "prompt": "Build: “I like tea, and Dad likes tea too.”",
+          "tokens": [
+            "我",
+            "喜欢",
+            "茶",
+            "，",
+            "爸爸",
+            "也",
+            "喜欢",
+            "茶"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "喜欢",
+              "茶",
+              "，",
+              "爸爸",
+              "也",
+              "喜欢",
+              "茶"
+            ]
+          ],
+          "explanation": "Each clause has a subject and 喜欢茶. The second clause adds 也 before 喜欢. Identical 茶 and 喜欢 tiles are interchangeable.",
+          "hint": "Finish 我喜欢茶 first, then add the clause about Dad."
+        }
+      ],
+      "prerequisites": [
+        "lesson-introductions"
+      ],
+      "practiceWords": [
+        "爸爸",
+        "妈妈",
+        "我",
+        "她",
+        "他",
+        "的",
+        "有",
+        "女儿",
+        "个",
+        "老师",
+        "喜欢",
+        "茶"
+      ]
+    },
+    {
+      "id": "lesson-food",
+      "questions": [
+        {
+          "id": "food-listen",
+          "type": "choice",
+          "prompt": "Play the sentence. What does the speaker want to drink?",
+          "options": [
+            {
+              "id": "water",
+              "text": "Water"
+            },
+            {
+              "id": "rice",
+              "text": "Rice"
+            },
+            {
+              "id": "tea",
+              "text": "Tea"
+            }
+          ],
+          "answer": "tea",
+          "explanation": "我想喝茶 ends in 茶: the speaker wants tea.",
+          "audioText": "我想喝茶",
+          "hint": "茶 is chá."
+        },
+        {
+          "id": "food-drink",
+          "type": "order",
+          "prompt": "Build: “I drink water.”",
+          "tokens": [
+            "我",
+            "喝",
+            "水"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "喝",
+              "水"
+            ]
+          ],
+          "explanation": "The subject 我 comes before 喝, and the object 水 follows it.",
+          "hint": "Who → action → drink."
+        },
+        {
+          "id": "food-want",
+          "type": "order",
+          "prompt": "Build: “I would like to drink tea.”",
+          "tokens": [
+            "我",
+            "想",
+            "喝",
+            "茶"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "想",
+              "喝",
+              "茶"
+            ]
+          ],
+          "explanation": "想 goes before the action 喝: wanting to drink tea.",
+          "hint": "Place 想 immediately before 喝."
+        },
+        {
+          "id": "food-negative",
+          "type": "choice",
+          "prompt": "What does 我不喝茶 mean?",
+          "options": [
+            {
+              "id": "no-tea",
+              "text": "I do not drink tea"
+            },
+            {
+              "id": "want-tea",
+              "text": "I want tea"
+            },
+            {
+              "id": "no-water",
+              "text": "I do not drink water"
+            }
+          ],
+          "answer": "no-tea",
+          "explanation": "不 negates 喝, while 茶 remains the object.",
+          "hint": "不 is the negative word."
+        },
+        {
+          "id": "food-cup",
+          "type": "order",
+          "prompt": "Build: “one cup of water”.",
+          "tokens": [
+            "一",
+            "杯",
+            "水"
+          ],
+          "acceptedOrders": [
+            [
+              "一",
+              "杯",
+              "水"
+            ]
+          ],
+          "explanation": "Put the number first, then 杯 as the container measure, then the drink 水.",
+          "hint": "Number → cup measure → drink."
+        }
+      ],
+      "prerequisites": [
+        "lesson-introductions"
+      ],
+      "practiceWords": [
+        "茶",
+        "水",
+        "喝",
+        "想",
+        "我",
+        "不",
+        "杯子",
+        "一",
+        "谢谢",
+        "喜欢"
+      ]
+    },
+    {
+      "id": "lesson-checkpoint",
+      "questions": [
+        {
+          "id": "checkpoint-listen",
+          "type": "choice",
+          "prompt": "Play the sentence and choose the correct meaning.",
+          "options": [
+            {
+              "id": "dad",
+              "text": "Dad likes water"
+            },
+            {
+              "id": "mum",
+              "text": "Mum likes tea"
+            },
+            {
+              "id": "student",
+              "text": "I am a student"
+            }
+          ],
+          "answer": "mum",
+          "explanation": "妈妈 is mum; 喜欢 is like; 茶 is tea.",
+          "audioText": "妈妈喜欢茶",
+          "hint": "Identify the subject and the drink separately."
+        },
+        {
+          "id": "checkpoint-identity",
+          "type": "order",
+          "prompt": "Build: “I am a student.”",
+          "tokens": [
+            "我",
+            "是",
+            "学生"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "是",
+              "学生"
+            ]
+          ],
+          "explanation": "Identity uses subject → 是 → noun.",
+          "hint": "是 connects a person to an identity."
+        },
+        {
+          "id": "checkpoint-tones",
+          "type": "choice",
+          "prompt": "Which statement about spoken 你好 is correct?",
+          "options": [
+            {
+              "id": "always",
+              "text": "Both syllables must always have a full dip and rise"
+            },
+            {
+              "id": "neutral",
+              "text": "The first syllable is always neutral"
+            },
+            {
+              "id": "change",
+              "text": "The first third tone usually becomes rising before the next third tone"
+            }
+          ],
+          "answer": "change",
+          "explanation": "Third-tone sandhi changes the first tone to a rising tone in this two-syllable phrase.",
+          "hint": "Recall what happens when two third tones meet."
+        },
+        {
+          "id": "checkpoint-drink",
+          "type": "order",
+          "prompt": "Build: “I would like to drink water.”",
+          "tokens": [
+            "我",
+            "想",
+            "喝",
+            "水"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "想",
+              "喝",
+              "水"
+            ]
+          ],
+          "explanation": "想 precedes 喝, and 水 follows the action as its object.",
+          "hint": "Who → would like → drink → what."
+        },
+        {
+          "id": "checkpoint-today",
+          "type": "order",
+          "prompt": "Build: “I study Chinese today.”",
+          "tokens": [
+            "我",
+            "今天",
+            "学习",
+            "汉语"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "今天",
+              "学习",
+              "汉语"
+            ],
+            [
+              "今天",
+              "我",
+              "学习",
+              "汉语"
+            ]
+          ],
+          "explanation": "The time expression 今天 goes before 学习, either before or after 我.",
+          "hint": "Time belongs before the action."
+        }
+      ],
+      "prerequisites": [
+        "lesson-family",
+        "lesson-food"
+      ],
+      "practiceWords": [
+        "你",
+        "好",
+        "我",
+        "是",
+        "学生",
+        "妈妈",
+        "喜欢",
+        "茶",
+        "想",
+        "喝",
+        "水",
+        "今天",
+        "学习",
+        "汉语"
+      ]
+    },
+    {
+      "id": "exercise-introductions",
+      "questions": [
+        {
+          "id": "meet-listen",
+          "type": "choice",
+          "prompt": "Listen to Anna. What does she tell you?",
+          "options": [
+            {
+              "id": "teacher",
+              "text": "She is a teacher"
+            },
+            {
+              "id": "name",
+              "text": "Her name is Anna"
+            },
+            {
+              "id": "drink",
+              "text": "She wants water"
+            }
+          ],
+          "answer": "name",
+          "explanation": "叫 introduces a name; 安娜 is Anna.",
+          "audioText": "你好，我叫安娜",
+          "hint": "Focus on the words after 叫."
+        },
+        {
+          "id": "meet-reply",
+          "type": "choice",
+          "prompt": "You want to greet Anna back. Which expression fits?",
+          "options": [
+            {
+              "id": "bye",
+              "text": "再见",
+              "pinyin": "zàijiàn"
+            },
+            {
+              "id": "hello",
+              "text": "你好",
+              "pinyin": "nǐ hǎo"
+            },
+            {
+              "id": "water",
+              "text": "水",
+              "pinyin": "shuǐ"
+            }
+          ],
+          "answer": "hello",
+          "explanation": "你好 is the greeting. 再见 would end the encounter.",
+          "hint": "Choose the greeting, not the farewell."
+        },
+        {
+          "id": "meet-name",
+          "type": "order",
+          "prompt": "Build: “My name is Anna.”",
+          "tokens": [
+            "我",
+            "叫",
+            "安娜"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "叫",
+              "安娜"
+            ]
+          ],
+          "explanation": "The pattern 我叫 + name introduces the speaker.",
+          "hint": "Person → be called → name."
+        },
+        {
+          "id": "meet-student",
+          "type": "order",
+          "prompt": "Build: “I am a student.”",
+          "tokens": [
+            "我",
+            "是",
+            "学生"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "是",
+              "学生"
+            ]
+          ],
+          "explanation": "是 connects 我 to the identity 学生.",
+          "hint": "Use the identity verb between the person and noun."
+        },
+        {
+          "id": "meet-question",
+          "type": "order",
+          "prompt": "Ask: “Are you a teacher?”",
+          "tokens": [
+            "你",
+            "是",
+            "老师",
+            "吗"
+          ],
+          "acceptedOrders": [
+            [
+              "你",
+              "是",
+              "老师",
+              "吗"
+            ]
+          ],
+          "explanation": "Start with 你是老师, then add 吗 to make a yes-or-no question.",
+          "hint": "The question particle belongs last."
+        }
+      ],
+      "prerequisites": [],
+      "practiceWords": [
+        "你",
+        "好",
+        "我",
+        "叫",
+        "是",
+        "学生",
+        "老师",
+        "名字",
+        "吗"
+      ]
+    },
+    {
+      "id": "exercise-family",
+      "questions": [
+        {
+          "id": "portrait-listen",
+          "type": "choice",
+          "prompt": "Listen. What is the speaker’s mum’s job?",
+          "options": [
+            {
+              "id": "doctor",
+              "text": "Doctor"
+            },
+            {
+              "id": "student",
+              "text": "Student"
+            },
+            {
+              "id": "teacher",
+              "text": "Teacher"
+            }
+          ],
+          "answer": "teacher",
+          "explanation": "老师 is teacher. The sentence says 我的妈妈是老师.",
+          "audioText": "我的妈妈是老师",
+          "hint": "The job follows 是."
+        },
+        {
+          "id": "portrait-mum",
+          "type": "order",
+          "prompt": "Build the full phrase “my mum” using every tile.",
+          "tokens": [
+            "我",
+            "的",
+            "妈妈"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "的",
+              "妈妈"
+            ]
+          ],
+          "explanation": "The full possessive form puts 的 between the owner and the person.",
+          "hint": "Owner first; person last."
+        },
+        {
+          "id": "portrait-job",
+          "type": "order",
+          "prompt": "Build: “She is a teacher.”",
+          "tokens": [
+            "她",
+            "是",
+            "老师"
+          ],
+          "acceptedOrders": [
+            [
+              "她",
+              "是",
+              "老师"
+            ]
+          ],
+          "explanation": "The identity pattern is subject → 是 → job.",
+          "hint": "Use 是 to connect the two nouns."
+        },
+        {
+          "id": "portrait-also",
+          "type": "choice",
+          "prompt": "爸爸也喜欢茶 tells you that…",
+          "options": [
+            {
+              "id": "also",
+              "text": "Dad likes tea too"
+            },
+            {
+              "id": "not",
+              "text": "Dad does not like tea"
+            },
+            {
+              "id": "mum",
+              "text": "Mum drinks water"
+            }
+          ],
+          "answer": "also",
+          "explanation": "也 means “also” and 喜欢茶 means “like tea”.",
+          "hint": "Look at what 也 adds to the meaning."
+        },
+        {
+          "id": "portrait-compare",
+          "type": "order",
+          "prompt": "Build: “I like tea, and Dad likes tea too.”",
+          "tokens": [
+            "我",
+            "喜欢",
+            "茶",
+            "，",
+            "爸爸",
+            "也",
+            "喜欢",
+            "茶"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "喜欢",
+              "茶",
+              "，",
+              "爸爸",
+              "也",
+              "喜欢",
+              "茶"
+            ]
+          ],
+          "explanation": "Build the first statement, then put 也 before 喜欢 in the second. Identical word tiles can exchange places.",
+          "hint": "Keep the comma between the two clauses."
+        }
+      ],
+      "prerequisites": [],
+      "practiceWords": [
+        "爸爸",
+        "妈妈",
+        "我",
+        "她",
+        "的",
+        "是",
+        "老师",
+        "喜欢",
+        "茶"
+      ]
+    },
+    {
+      "id": "exercise-cafe",
+      "questions": [
+        {
+          "id": "cafe-listen",
+          "type": "choice",
+          "prompt": "Listen to your friend. Which drink do they want?",
+          "options": [
+            {
+              "id": "tea",
+              "text": "Tea"
+            },
+            {
+              "id": "water",
+              "text": "Water"
+            },
+            {
+              "id": "rice",
+              "text": "Rice"
+            }
+          ],
+          "answer": "tea",
+          "explanation": "茶 is the final word in 我想喝茶: your friend wants tea.",
+          "audioText": "我想喝茶",
+          "hint": "Listen for chá."
+        },
+        {
+          "id": "cafe-water",
+          "type": "order",
+          "prompt": "Build: “I would like to drink water.”",
+          "tokens": [
+            "我",
+            "想",
+            "喝",
+            "水"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "想",
+              "喝",
+              "水"
+            ]
+          ],
+          "explanation": "想 precedes 喝 and 水 is the object of the action.",
+          "hint": "Who → want → drink → what."
+        },
+        {
+          "id": "cafe-no-tea",
+          "type": "order",
+          "prompt": "Build: “I do not drink tea.”",
+          "tokens": [
+            "我",
+            "不",
+            "喝",
+            "茶"
+          ],
+          "acceptedOrders": [
+            [
+              "我",
+              "不",
+              "喝",
+              "茶"
+            ]
+          ],
+          "explanation": "Place 不 directly before 喝 to negate the action.",
+          "hint": "The negative word goes before the verb."
+        },
+        {
+          "id": "cafe-cup",
+          "type": "order",
+          "prompt": "Build: “One cup of water, thank you.”",
+          "tokens": [
+            "一",
+            "杯",
+            "水",
+            "，",
+            "谢谢"
+          ],
+          "acceptedOrders": [
+            [
+              "一",
+              "杯",
+              "水",
+              "，",
+              "谢谢"
+            ]
+          ],
+          "explanation": "一杯水 is the quantity phrase; 谢谢 adds a polite ending.",
+          "hint": "Finish the order before the comma."
+        },
+        {
+          "id": "cafe-reply",
+          "type": "choice",
+          "prompt": "The server says 不客气 after your 谢谢. What does it mean?",
+          "options": [
+            {
+              "id": "bye",
+              "text": "Goodbye"
+            },
+            {
+              "id": "welcome",
+              "text": "You are welcome"
+            },
+            {
+              "id": "no-tea",
+              "text": "There is no tea"
+            }
+          ],
+          "answer": "welcome",
+          "explanation": "不客气 is a common reply to thanks.",
+          "hint": "Recall the exchange from the greetings stop."
+        }
+      ],
+      "prerequisites": [],
+      "practiceWords": [
+        "茶",
+        "水",
+        "我",
+        "想",
+        "喝",
+        "不",
+        "一",
+        "杯子",
+        "谢谢",
+        "不客气"
+      ]
+    }
+  ],
+  "vocabulary": [
+    {
+      "id": "hearmandarin:w00001",
+      "hanzi": "爱"
+    },
+    {
+      "id": "hearmandarin:w00002",
+      "hanzi": "八"
+    },
+    {
+      "id": "hearmandarin:w00003",
+      "hanzi": "爸爸"
+    },
+    {
+      "id": "hearmandarin:w00009",
+      "hanzi": "杯子"
+    },
+    {
+      "id": "hearmandarin:w00010",
+      "hanzi": "本"
+    },
+    {
+      "id": "hearmandarin:w00013",
+      "hanzi": "不"
+    },
+    {
+      "id": "hearmandarin:w00014",
+      "hanzi": "不客气"
+    },
+    {
+      "id": "hearmandarin:w00016",
+      "hanzi": "菜"
+    },
+    {
+      "id": "hearmandarin:w00017",
+      "hanzi": "茶"
+    },
+    {
+      "id": "hearmandarin:w00021",
+      "hanzi": "吃"
+    },
+    {
+      "id": "hearmandarin:w00022",
+      "hanzi": "出租车"
+    },
+    {
+      "id": "hearmandarin:w00024",
+      "hanzi": "打电话"
+    },
+    {
+      "id": "hearmandarin:w00025",
+      "hanzi": "大"
+    },
+    {
+      "id": "hearmandarin:w00030",
+      "hanzi": "的"
+    },
+    {
+      "id": "hearmandarin:w00033",
+      "hanzi": "点"
+    },
+    {
+      "id": "hearmandarin:w00036",
+      "hanzi": "电脑"
+    },
+    {
+      "id": "hearmandarin:w00037",
+      "hanzi": "电视"
+    },
+    {
+      "id": "hearmandarin:w00038",
+      "hanzi": "电影"
+    },
+    {
+      "id": "hearmandarin:w00040",
+      "hanzi": "东西"
+    },
+    {
+      "id": "hearmandarin:w00041",
+      "hanzi": "都"
+    },
+    {
+      "id": "hearmandarin:w00042",
+      "hanzi": "读"
+    },
+    {
+      "id": "hearmandarin:w00045",
+      "hanzi": "对不起"
+    },
+    {
+      "id": "hearmandarin:w00046",
+      "hanzi": "多"
+    },
+    {
+      "id": "hearmandarin:w00047",
+      "hanzi": "多少"
+    },
+    {
+      "id": "hearmandarin:w00048",
+      "hanzi": "儿子"
+    },
+    {
+      "id": "hearmandarin:w00049",
+      "hanzi": "二"
+    },
+    {
+      "id": "hearmandarin:w00051",
+      "hanzi": "饭店"
+    },
+    {
+      "id": "hearmandarin:w00054",
+      "hanzi": "飞机"
+    },
+    {
+      "id": "hearmandarin:w00056",
+      "hanzi": "分钟"
+    },
+    {
+      "id": "hearmandarin:w00057",
+      "hanzi": "高兴"
+    },
+    {
+      "id": "hearmandarin:w00060",
+      "hanzi": "个"
+    },
+    {
+      "id": "hearmandarin:w00063",
+      "hanzi": "工作"
+    },
+    {
+      "id": "hearmandarin:w00064",
+      "hanzi": "狗"
+    },
+    {
+      "id": "hearmandarin:w00069",
+      "hanzi": "汉语"
+    },
+    {
+      "id": "hao",
+      "hanzi": "好"
+    },
+    {
+      "id": "hearmandarin:w00076",
+      "hanzi": "号"
+    },
+    {
+      "id": "hearmandarin:w00077",
+      "hanzi": "喝"
+    },
+    {
+      "id": "hearmandarin:w00078",
+      "hanzi": "和"
+    },
+    {
+      "id": "hearmandarin:w00079",
+      "hanzi": "很"
+    },
+    {
+      "id": "hearmandarin:w00081",
+      "hanzi": "回"
+    },
+    {
+      "id": "hearmandarin:w00082",
+      "hanzi": "会"
+    },
+    {
+      "id": "hearmandarin:w00085",
+      "hanzi": "几"
+    },
+    {
+      "id": "hearmandarin:w00086",
+      "hanzi": "家"
+    },
+    {
+      "id": "hearmandarin:w00091",
+      "hanzi": "叫"
+    },
+    {
+      "id": "hearmandarin:w00094",
+      "hanzi": "今天"
+    },
+    {
+      "id": "hearmandarin:w00095",
+      "hanzi": "九"
+    },
+    {
+      "id": "hearmandarin:w00097",
+      "hanzi": "开"
+    },
+    {
+      "id": "hearmandarin:w00099",
+      "hanzi": "看"
+    },
+    {
+      "id": "hearmandarin:w00101",
+      "hanzi": "看见"
+    },
+    {
+      "id": "hearmandarin:w00105",
+      "hanzi": "块"
+    },
+    {
+      "id": "hearmandarin:w00106",
+      "hanzi": "来"
+    },
+    {
+      "id": "hearmandarin:w00107",
+      "hanzi": "老师"
+    },
+    {
+      "id": "hearmandarin:w00108",
+      "hanzi": "了"
+    },
+    {
+      "id": "hearmandarin:w00109",
+      "hanzi": "冷"
+    },
+    {
+      "id": "hearmandarin:w00110",
+      "hanzi": "里"
+    },
+    {
+      "id": "hearmandarin:w00113",
+      "hanzi": "六"
+    },
+    {
+      "id": "hearmandarin:w00114",
+      "hanzi": "妈妈"
+    },
+    {
+      "id": "hearmandarin:w00115",
+      "hanzi": "吗"
+    },
+    {
+      "id": "hearmandarin:w00116",
+      "hanzi": "买"
+    },
+    {
+      "id": "hearmandarin:w00119",
+      "hanzi": "猫"
+    },
+    {
+      "id": "hearmandarin:w00120",
+      "hanzi": "没关系"
+    },
+    {
+      "id": "hearmandarin:w00122",
+      "hanzi": "没有"
+    },
+    {
+      "id": "hearmandarin:w00125",
+      "hanzi": "米饭"
+    },
+    {
+      "id": "hearmandarin:w00129",
+      "hanzi": "明天"
+    },
+    {
+      "id": "hearmandarin:w00130",
+      "hanzi": "名字"
+    },
+    {
+      "id": "hearmandarin:w00131",
+      "hanzi": "哪"
+    },
+    {
+      "id": "hearmandarin:w00134",
+      "hanzi": "哪儿"
+    },
+    {
+      "id": "hearmandarin:w00136",
+      "hanzi": "那"
+    },
+    {
+      "id": "hearmandarin:w00144",
+      "hanzi": "呢"
+    },
+    {
+      "id": "hearmandarin:w00145",
+      "hanzi": "能"
+    },
+    {
+      "id": "hearmandarin:w00146",
+      "hanzi": "你"
+    },
+    {
+      "id": "hearmandarin:w00149",
+      "hanzi": "年"
+    },
+    {
+      "id": "hearmandarin:w00153",
+      "hanzi": "女儿"
+    },
+    {
+      "id": "hearmandarin:w00156",
+      "hanzi": "朋友"
+    },
+    {
+      "id": "hearmandarin:w00158",
+      "hanzi": "漂亮"
+    },
+    {
+      "id": "hearmandarin:w00159",
+      "hanzi": "苹果"
+    },
+    {
+      "id": "hearmandarin:w00160",
+      "hanzi": "七"
+    },
+    {
+      "id": "hearmandarin:w00164",
+      "hanzi": "钱"
+    },
+    {
+      "id": "hearmandarin:w00165",
+      "hanzi": "请"
+    },
+    {
+      "id": "hearmandarin:w00167",
+      "hanzi": "去"
+    },
+    {
+      "id": "hearmandarin:w00169",
+      "hanzi": "热"
+    },
+    {
+      "id": "hearmandarin:w00170",
+      "hanzi": "人"
+    },
+    {
+      "id": "hearmandarin:w00171",
+      "hanzi": "认识"
+    },
+    {
+      "id": "hearmandarin:w00173",
+      "hanzi": "三"
+    },
+    {
+      "id": "hearmandarin:w00174",
+      "hanzi": "商店"
+    },
+    {
+      "id": "hearmandarin:w00175",
+      "hanzi": "上"
+    },
+    {
+      "id": "hearmandarin:w00178",
+      "hanzi": "上午"
+    },
+    {
+      "id": "hearmandarin:w00180",
+      "hanzi": "少"
+    },
+    {
+      "id": "hearmandarin:w00181",
+      "hanzi": "谁"
+    },
+    {
+      "id": "hearmandarin:w00182",
+      "hanzi": "什么"
+    },
+    {
+      "id": "hearmandarin:w00184",
+      "hanzi": "十"
+    },
+    {
+      "id": "hearmandarin:w00185",
+      "hanzi": "时候"
+    },
+    {
+      "id": "hearmandarin:w00188",
+      "hanzi": "是"
+    },
+    {
+      "id": "hearmandarin:w00190",
+      "hanzi": "书"
+    },
+    {
+      "id": "shui",
+      "hanzi": "水"
+    },
+    {
+      "id": "hearmandarin:w00193",
+      "hanzi": "水果"
+    },
+    {
+      "id": "hearmandarin:w00195",
+      "hanzi": "睡觉"
+    },
+    {
+      "id": "hearmandarin:w00196",
+      "hanzi": "说"
+    },
+    {
+      "id": "hearmandarin:w00198",
+      "hanzi": "四"
+    },
+    {
+      "id": "hearmandarin:w00199",
+      "hanzi": "岁"
+    },
+    {
+      "id": "hearmandarin:w00200",
+      "hanzi": "他"
+    },
+    {
+      "id": "hearmandarin:w00202",
+      "hanzi": "她"
+    },
+    {
+      "id": "hearmandarin:w00206",
+      "hanzi": "太"
+    },
+    {
+      "id": "hearmandarin:w00208",
+      "hanzi": "天气"
+    },
+    {
+      "id": "hearmandarin:w00209",
+      "hanzi": "听"
+    },
+    {
+      "id": "hearmandarin:w00211",
+      "hanzi": "同学"
+    },
+    {
+      "id": "hearmandarin:w00218",
+      "hanzi": "喂"
+    },
+    {
+      "id": "wo",
+      "hanzi": "我"
+    },
+    {
+      "id": "hearmandarin:w00222",
+      "hanzi": "我们"
+    },
+    {
+      "id": "hearmandarin:w00223",
+      "hanzi": "五"
+    },
+    {
+      "id": "hearmandarin:w00225",
+      "hanzi": "喜欢"
+    },
+    {
+      "id": "hearmandarin:w00226",
+      "hanzi": "下"
+    },
+    {
+      "id": "hearmandarin:w00227",
+      "hanzi": "下雨"
+    },
+    {
+      "id": "hearmandarin:w00230",
+      "hanzi": "下午"
+    },
+    {
+      "id": "hearmandarin:w00231",
+      "hanzi": "先生"
+    },
+    {
+      "id": "hearmandarin:w00232",
+      "hanzi": "现在"
+    },
+    {
+      "id": "hearmandarin:w00233",
+      "hanzi": "想"
+    },
+    {
+      "id": "hearmandarin:w00234",
+      "hanzi": "小"
+    },
+    {
+      "id": "hearmandarin:w00239",
+      "hanzi": "些"
+    },
+    {
+      "id": "hearmandarin:w00240",
+      "hanzi": "写"
+    },
+    {
+      "id": "hearmandarin:w00241",
+      "hanzi": "谢谢"
+    },
+    {
+      "id": "hearmandarin:w00243",
+      "hanzi": "星期"
+    },
+    {
+      "id": "hearmandarin:w00248",
+      "hanzi": "学生"
+    },
+    {
+      "id": "hearmandarin:w00249",
+      "hanzi": "学习"
+    },
+    {
+      "id": "hearmandarin:w00250",
+      "hanzi": "学校"
+    },
+    {
+      "id": "hearmandarin:w00254",
+      "hanzi": "一"
+    },
+    {
+      "id": "hearmandarin:w00255",
+      "hanzi": "衣服"
+    },
+    {
+      "id": "hearmandarin:w00256",
+      "hanzi": "医生"
+    },
+    {
+      "id": "hearmandarin:w00257",
+      "hanzi": "医院"
+    },
+    {
+      "id": "hearmandarin:w00260",
+      "hanzi": "椅子"
+    },
+    {
+      "id": "hearmandarin:w00261",
+      "hanzi": "一点儿"
+    },
+    {
+      "id": "hearmandarin:w00263",
+      "hanzi": "有"
+    },
+    {
+      "id": "hearmandarin:w00269",
+      "hanzi": "月"
+    },
+    {
+      "id": "hearmandarin:w00271",
+      "hanzi": "在"
+    },
+    {
+      "id": "hearmandarin:w00272",
+      "hanzi": "再见"
+    },
+    {
+      "id": "hearmandarin:w00276",
+      "hanzi": "怎么"
+    },
+    {
+      "id": "hearmandarin:w00277",
+      "hanzi": "怎么样"
+    },
+    {
+      "id": "hearmandarin:w00279",
+      "hanzi": "这"
+    },
+    {
+      "id": "hearmandarin:w00289",
+      "hanzi": "中国"
+    },
+    {
+      "id": "hearmandarin:w00291",
+      "hanzi": "中午"
+    },
+    {
+      "id": "hearmandarin:w00294",
+      "hanzi": "住"
+    },
+    {
+      "id": "hearmandarin:w00295",
+      "hanzi": "桌子"
+    },
+    {
+      "id": "hearmandarin:w00296",
+      "hanzi": "字"
+    },
+    {
+      "id": "hearmandarin:w00297",
+      "hanzi": "昨天"
+    },
+    {
+      "id": "hearmandarin:w00298",
+      "hanzi": "坐"
+    },
+    {
+      "id": "hearmandarin:w00299",
+      "hanzi": "做"
+    },
+    {
+      "id": "hearmandarin:w00356",
+      "hanzi": "后面"
+    },
+    {
+      "id": "hearmandarin:w00419",
+      "hanzi": "前面"
+    },
+    {
+      "id": "hearmandarin:w03269",
+      "hanzi": "小姐"
+    },
+    {
+      "id": "hearmandarin:w11001",
+      "hanzi": "北京"
+    }
+  ]
+}

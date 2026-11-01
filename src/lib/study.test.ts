@@ -19,7 +19,7 @@ const attempt = (overrides: Partial<StudyAttempt> = {}): StudyAttempt => ({
   input: 'self', createdAt: date, ...overrides,
 })
 const cards: Card[] = ['wo', 'hao', 'shui'].map((id) => ({
-  id, hanzi: id, pinyin: id, meaning: id, categoryId: 'other', level: 1,
+  id, hanzi: id, pinyin: id, meaning: id, categoryId: 'other', level: 1, languageLevel: 'beginner', difficulty: 'balanced', sourceId: 'hanzi-original',
 }))
 
 describe('review scheduling and attempt history', () => {

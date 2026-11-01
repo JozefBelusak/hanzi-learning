@@ -1,17 +1,11 @@
 import type { UserProfile } from '../types/auth'
 import type { PracticeMode, StudyData } from '../types/study'
 
-export const languageLevels = [
-  { id: 'beginner', label: 'Beginner', description: 'I am starting from the basics.' },
-  { id: 'elementary', label: 'Elementary', description: 'I know some words and simple phrases.' },
-  { id: 'intermediate', label: 'Intermediate', description: 'I can handle familiar everyday situations.' },
-  { id: 'advanced', label: 'Advanced', description: 'I can use Chinese in a wide range of situations.' },
-] as const
-export const difficulties = [
-  { id: 'gentle', label: 'Gentle', description: 'Build confidence with a comfortable pace.' },
-  { id: 'balanced', label: 'Balanced', description: 'A steady mix of review and new practice.' },
-  { id: 'challenging', label: 'Challenging', description: 'I enjoy stretching my knowledge.' },
-] as const
+import { languageLevels, difficulties } from '../data/taxonomy'
+import type { Difficulty, LanguageLevel } from '../types/content'
+export { languageLevels, difficulties } from '../data/taxonomy'
+export type { Difficulty, LanguageLevel } from '../types/content'
+
 export const practicePreferences: { id: PracticeMode; label: string }[] = [
   { id: 'flashcards', label: 'Flashcards' }, { id: 'speech', label: 'Speaking' },
   { id: 'writing', label: 'Writing characters' }, { id: 'sentences', label: 'Sentence building' },
@@ -20,8 +14,6 @@ export const learningGoals = [
   { id: 'conversation', label: 'Everyday conversation' }, { id: 'travel', label: 'Travel' },
   { id: 'work', label: 'Work' }, { id: 'study', label: 'Study and exams' }, { id: 'culture', label: 'Culture and personal interest' },
 ] as const
-export type LanguageLevel = typeof languageLevels[number]['id']
-export type Difficulty = typeof difficulties[number]['id']
 export type LearningGoal = typeof learningGoals[number]['id']
 export type LearningProfileInput = {
   displayName: string; languageLevel: LanguageLevel; difficulty: Difficulty

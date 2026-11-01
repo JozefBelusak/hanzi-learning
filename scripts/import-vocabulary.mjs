@@ -6,18 +6,30 @@ import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 const project = fileURLToPath(new URL('../', import.meta.url))
 const url = 'https://hearmandarin.com/datasets/hsk-3-0-words.json'
-const response = await fetch(url, { signal: AbortSignal.timeout(30_000) })
-if (!response.ok) throw new Error(`Download failed: HTTP ${response.status}`)
-const source = await response.json()
+const taxonomy = JSON.parse(await readFile(join(project, 'src/data/content/taxonomy.json'), 'utf8'))
+const levels = taxonomy.vocabularySelection.hsk2Levels
+const localFile = process.argv.indexOf('--file')
+if (localFile >= 0 && !process.argv[localFile + 1]) throw new Error('Provide a dataset path after --file.')
+let source
+if (localFile >= 0) source = JSON.parse(await readFile(process.argv[localFile + 1], 'utf8'))
+else {
+  const response = await fetch(url, { signal: AbortSignal.timeout(30_000) })
+  if (!response.ok) throw new Error(`Download failed: HTTP ${response.status}`)
+  source = await response.json()
+}
 if (!Array.isArray(source.words) || source.license !== 'CC BY 4.0') {
   throw new Error('Unexpected dataset format or changed license; inspect the source before importing.')
 }
-const words = source.words.filter((word) => word.hsk2_level === 1)
+const words = source.words.filter((word) => levels.includes(word.hsk2_level))
 if (!words.length || words.some((word) => [word.id, word.simplified, word.pinyin, word.gloss_en].some((field) => typeof field !== 'string' || !field.trim()))) {
   throw new Error('Starter vocabulary is empty or contains incomplete records.')
 }
 if (new Set(words.map((word) => word.id)).size !== words.length || new Set(words.map((word) => word.simplified)).size !== words.length) {
   throw new Error('Starter vocabulary contains duplicate identifiers or words.')
+}
+const previous = JSON.parse(await readFile(join(project, 'src/data/vocabulary-hsk1.json'), 'utf8'))
+for (const old of previous.words) {
+  if (!words.some((word) => word.id === old.id && word.simplified === old.simplified)) throw new Error(`Keep existing vocabulary identity ${old.id}; imports may add words but cannot remove or reassign published identities.`)
 }
 const characters = [...new Set(words.flatMap((word) => [...word.simplified].filter((character) => /\p{Script=Han}/u.test(character))))]
 const dataPackage = dirname(require.resolve('hanzi-writer-data/package.json'))
@@ -34,7 +46,7 @@ const strokes = await Promise.all(characters.map(async (character) => {
 const dataLicense = await readFile(join(dataPackage, 'ARPHICPL.TXT'))
 const writerLicense = await readFile(join(writerPackage, 'LICENSE'))
 const metadata = Object.fromEntries(['name', 'version', 'generated', 'license', 'license_url', 'attribution', 'homepage', 'source'].map((key) => [key, source[key]]))
-const snapshot = { ...metadata, selection: 'HSK 2.0 level 1', words }
+const snapshot = { ...metadata, selection: `HSK 2.0 levels ${levels.join(', ')}`, words }
 const strokeDirectory = join(project, 'src/data/strokes')
 const licenseDirectory = join(project, 'public/licenses')
 await mkdir(strokeDirectory, { recursive: true })

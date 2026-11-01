@@ -67,17 +67,18 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
       await respond(caller); return
     }
     if (url.pathname === '/rest/v1/public_lessons') {
-      if (method === 'GET') { await result(lessons.filter((lesson) => (lesson.published || caller.role === 'admin' || (caller.role === 'lecturer' && lesson.author_id === caller.id)) && matches(lesson))); return }
+      const databaseRow = (lesson: PublicLesson) => ({ ...lesson, language_level: lesson.languageLevel })
+      if (method === 'GET') { await result(lessons.filter((lesson) => (lesson.published || caller.role === 'admin' || (caller.role === 'lecturer' && lesson.author_id === caller.id)) && matches(lesson)).map(databaseRow)); return }
       if (caller.role === 'student') { await denied(); return }
       if (method === 'POST') {
-        const lesson = { ...body, id: crypto.randomUUID(), author_id: caller.id, created_at: timestamp, updated_at: timestamp } as PublicLesson
-        lessons.push(lesson); await result([lesson]); return
+        const lesson = { ...body, source: 'lecturer', languageLevel: body?.language_level ?? 'beginner', difficulty: body?.difficulty ?? 'balanced', id: crypto.randomUUID(), author_id: caller.id, created_at: timestamp, updated_at: timestamp } as PublicLesson
+        lessons.push(lesson); await result([databaseRow(lesson)]); return
       }
       const target = lessons.find((lesson) => matches(lesson) && (lesson.author_id === caller.id || caller.role === 'admin'))
       if (!target) { await denied(); return }
-      if (method === 'PATCH') Object.assign(target, body)
+      if (method === 'PATCH') Object.assign(target, body, body?.language_level ? { languageLevel: body.language_level } : {})
       if (method === 'DELETE') lessons.splice(lessons.indexOf(target), 1)
-      await result([target]); return
+      await result([databaseRow(target)]); return
     }
     if (url.pathname === '/rest/v1/classrooms') {
       if (method === 'GET') { await result(classrooms.filter((classroom) => matches(classroom) && (caller.role === 'admin' || classroom.lecturer_id === caller.id || memberships.some((member) => member.classroom_id === classroom.id && member.student_id === caller.id)))); return }

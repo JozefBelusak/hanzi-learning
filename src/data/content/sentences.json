@@ -1,0 +1,321 @@
+[
+  {
+    "id": "sentence-drink-water",
+    "meaning": "I drink water.",
+    "pinyin": "Wǒ hē shuǐ.",
+    "tokens": [
+      "我",
+      "喝",
+      "水"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "Who",
+        "text": "我 · I"
+      },
+      {
+        "label": "Action",
+        "text": "喝 · drink"
+      },
+      {
+        "label": "What",
+        "text": "水 · water"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "subject-verb-object"
+  },
+  {
+    "id": "sentence-student",
+    "meaning": "I am a student.",
+    "pinyin": "Wǒ shì xuésheng.",
+    "tokens": [
+      "我",
+      "是",
+      "学生"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "Subject",
+        "text": "我 · I"
+      },
+      {
+        "label": "Link",
+        "text": "是 · be"
+      },
+      {
+        "label": "Identity",
+        "text": "学生 · student"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "identity-shi"
+  },
+  {
+    "id": "sentence-teacher-question",
+    "meaning": "Are you a teacher?",
+    "pinyin": "Nǐ shì lǎoshī ma?",
+    "tokens": [
+      "你",
+      "是",
+      "老师",
+      "吗"
+    ],
+    "punctuation": "？",
+    "grammarParts": [
+      {
+        "label": "Statement",
+        "text": "你是老师 · you are a teacher"
+      },
+      {
+        "label": "Question",
+        "text": "吗 · question particle"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "yes-no-ma"
+  },
+  {
+    "id": "sentence-no-tea",
+    "meaning": "I do not drink tea.",
+    "pinyin": "Wǒ bù hē chá.",
+    "tokens": [
+      "我",
+      "不",
+      "喝",
+      "茶"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "Subject",
+        "text": "我 · I"
+      },
+      {
+        "label": "Negation + action",
+        "text": "不喝 · do not drink"
+      },
+      {
+        "label": "Object",
+        "text": "茶 · tea"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "negation-bu"
+  },
+  {
+    "id": "sentence-at-school",
+    "meaning": "He is at school.",
+    "pinyin": "Tā zài xuéxiào.",
+    "tokens": [
+      "他",
+      "在",
+      "学校"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "Who",
+        "text": "他 · he"
+      },
+      {
+        "label": "Location verb",
+        "text": "在 · be at"
+      },
+      {
+        "label": "Where",
+        "text": "学校 · school"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "location-zai"
+  },
+  {
+    "id": "sentence-today-study",
+    "meaning": "I study Chinese today.",
+    "pinyin": "Wǒ jīntiān xuéxí Hànyǔ.",
+    "tokens": [
+      "我",
+      "今天",
+      "学习",
+      "汉语"
+    ],
+    "punctuation": "。",
+    "acceptedOrders": [
+      [
+        "今天",
+        "我",
+        "学习",
+        "汉语"
+      ]
+    ],
+    "grammarParts": [
+      {
+        "label": "Subject",
+        "text": "我 · I"
+      },
+      {
+        "label": "When",
+        "text": "今天 · today"
+      },
+      {
+        "label": "Action",
+        "text": "学习 · study"
+      },
+      {
+        "label": "What",
+        "text": "汉语 · Chinese"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "time-before-verb"
+  },
+  {
+    "id": "sentence-chinese-food",
+    "meaning": "I like Chinese food.",
+    "pinyin": "Wǒ xǐhuan Zhōngguó cài.",
+    "tokens": [
+      "我",
+      "喜欢",
+      "中国菜"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "Who",
+        "text": "我 · I"
+      },
+      {
+        "label": "Preference",
+        "text": "喜欢 · like"
+      },
+      {
+        "label": "What",
+        "text": "中国菜 · Chinese food"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "preference-xihuan"
+  },
+  {
+    "id": "sentence-three-books",
+    "meaning": "She has three books.",
+    "pinyin": "Tā yǒu sān běn shū.",
+    "tokens": [
+      "她",
+      "有",
+      "三",
+      "本",
+      "书"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "Subject + verb",
+        "text": "她有 · she has"
+      },
+      {
+        "label": "Number",
+        "text": "三 · three"
+      },
+      {
+        "label": "Classifier",
+        "text": "本 · for books"
+      },
+      {
+        "label": "Noun",
+        "text": "书 · book"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "classifiers"
+  },
+  {
+    "id": "sentence-tomorrow-beijing",
+    "meaning": "We are going to Beijing tomorrow.",
+    "pinyin": "Wǒmen míngtiān qù Běijīng.",
+    "tokens": [
+      "我们",
+      "明天",
+      "去",
+      "北京"
+    ],
+    "punctuation": "。",
+    "acceptedOrders": [
+      [
+        "明天",
+        "我们",
+        "去",
+        "北京"
+      ]
+    ],
+    "grammarParts": [
+      {
+        "label": "Who",
+        "text": "我们 · we"
+      },
+      {
+        "label": "When",
+        "text": "明天 · tomorrow"
+      },
+      {
+        "label": "Action",
+        "text": "去 · go"
+      },
+      {
+        "label": "Where to",
+        "text": "北京 · Beijing"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "time-destination"
+  },
+  {
+    "id": "sentence-family-tea",
+    "meaning": "I like tea, and Dad likes tea too.",
+    "pinyin": "Wǒ xǐhuan chá, bàba yě xǐhuan chá.",
+    "tokens": [
+      "我",
+      "喜欢",
+      "茶",
+      "，",
+      "爸爸",
+      "也",
+      "喜欢",
+      "茶"
+    ],
+    "punctuation": "。",
+    "grammarParts": [
+      {
+        "label": "First clause",
+        "text": "我喜欢茶 · I like tea"
+      },
+      {
+        "label": "Second subject",
+        "text": "爸爸 · Dad"
+      },
+      {
+        "label": "Also + action",
+        "text": "也喜欢 · also likes"
+      },
+      {
+        "label": "Object",
+        "text": "茶 · tea"
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "grammarTopicId": "also-ye"
+  }
+]

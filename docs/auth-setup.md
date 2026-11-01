@@ -16,8 +16,9 @@ In the Supabase SQL Editor, run the complete contents of these files **in order*
 
 1. `supabase/migrations/20261028090000_auth_and_roles.sql`
 2. `supabase/migrations/20261101090000_learning_profiles.sql`
+3. `supabase/migrations/20261101120000_content_classification.sql`
 
-Run each file once on a new project. **If the first migration is already installed, run only the second file.** It upgrades the existing profiles without deleting accounts, lessons or enrollments. Do not rerun the first migration. These install profiles, roles, learning preferences, authored lessons, classrooms, memberships, signup triggers and permission policies. Existing Auth users are backfilled as Students by the first migration. The `private` schema must stay outside the Data API's exposed schemas; expose `public` only for these application tables/functions.
+Run each file once on a new project. **On existing projects, run only migrations that have not been applied.** If accounts and onboarding already work, only the third file is new; it adds level/difficulty metadata to lecturer lessons. These migrations retain existing profiles, lessons and enrollments. Do not rerun earlier migrations. They install profiles, roles, learning preferences, authored lessons, classrooms, memberships, signup triggers and permission policies. Existing Auth users are backfilled as Students by the first migration. The `private` schema must stay outside the Data API's exposed schemas; expose `public` only for these application tables/functions.
 
 You can check that all application tables have RLS enabled:
 
@@ -101,7 +102,7 @@ All roles complete onboarding before entering the workspace. Settings reuses the
 
 Language level and difficulty are self-reported preferences. The current curriculum remains HSK 1; these settings do not generate advanced content, adapt assessment difficulty or change scores. Daily targets count free practice attempts, with course/exercise completion tracked separately. See [the onboarding guide](profile-onboarding.md) for deployment and verification.
 
-Published means visible to **signed-in users**. The built-in starter course remains versioned in `src/data/learning.ts`; the management interface creates and manages additional database lessons. It does not edit the starter tram map or its quiz answer keys.
+Published means visible to **signed-in users**. The platform course is a versioned JSON catalog in `src/data/content/`, accessed through `src/data/learning.ts`; the management interface creates and manages separate lecturer database lessons. They share language-level/difficulty models but not curriculum ownership or course answer keys. See [content models and authoring](content-model.md).
 
 ## Access rules and data storage
 

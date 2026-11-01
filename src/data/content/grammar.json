@@ -1,0 +1,232 @@
+[
+  {
+    "id": "subject-verb-object",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Subject → verb → object",
+    "explanation": "A basic statement names the person doing the action first, followed by the action and its object.",
+    "examples": [
+      {
+        "hanzi": "我喝水。",
+        "pinyin": "Wǒ hē shuǐ.",
+        "meaning": "I drink water."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "identity-shi",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Identity with 是",
+    "explanation": "是 connects the subject to a noun describing their identity or category. Here, it says that I am a student.",
+    "examples": [
+      {
+        "hanzi": "我是学生。",
+        "pinyin": "Wǒ shì xuésheng.",
+        "meaning": "I am a student."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "yes-no-ma",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Questions with 吗",
+    "explanation": "Adding 吗 to the end of a statement turns it into a yes-or-no question. The basic word order stays the same.",
+    "examples": [
+      {
+        "hanzi": "你是老师吗？",
+        "pinyin": "Nǐ shì lǎoshī ma?",
+        "meaning": "Are you a teacher?"
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "negation-bu",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Negation before the verb",
+    "explanation": "For this habitual action, 不 goes directly before the verb 喝. It changes “drink” into “do not drink”.",
+    "examples": [
+      {
+        "hanzi": "我不喝茶。",
+        "pinyin": "Wǒ bù hē chá.",
+        "meaning": "I do not drink tea."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "location-zai",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Location with 在",
+    "explanation": "Here, 在 describes where someone is. Use 在 followed by the name of the place.",
+    "examples": [
+      {
+        "hanzi": "他在学校。",
+        "pinyin": "Tā zài xuéxiào.",
+        "meaning": "He is at school."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "time-before-verb",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Time before the verb",
+    "explanation": "今天 gives the time and goes before the action 学习. 今天我学习汉语 is also accepted: the time expression can go before or after the subject.",
+    "examples": [
+      {
+        "hanzi": "我今天学习汉语。",
+        "pinyin": "Wǒ jīntiān xuéxí Hànyǔ.",
+        "meaning": "I study Chinese today."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "preference-xihuan",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "The object after 喜欢",
+    "explanation": "喜欢 means to like something. The thing you like follows the verb; 中国菜 is a single phrase here.",
+    "examples": [
+      {
+        "hanzi": "我喜欢中国菜。",
+        "pinyin": "Wǒ xǐhuan Zhōngguó cài.",
+        "meaning": "I like Chinese food."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "classifiers",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Number → classifier → noun",
+    "explanation": "When counting books, put the classifier 本 between the number 三 and the noun 书. 三本书 means three books.",
+    "examples": [
+      {
+        "hanzi": "她有三本书。",
+        "pinyin": "Tā yǒu sān běn shū.",
+        "meaning": "She has three books."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "time-destination",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "Time and destination",
+    "explanation": "明天 places the action tomorrow. 北京 follows 去 as the destination. 明天我们去北京 is also accepted.",
+    "examples": [
+      {
+        "hanzi": "我们明天去北京。",
+        "pinyin": "Wǒmen míngtiān qù Běijīng.",
+        "meaning": "We are going to Beijing tomorrow."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "also-ye",
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "title": "也 before the verb",
+    "explanation": "也 means “also” and goes before the verb 喜欢. The comma separates two simple clauses. The two 茶 tiles and the two 喜欢 tiles are interchangeable.",
+    "examples": [
+      {
+        "hanzi": "我喜欢茶，爸爸也喜欢茶。",
+        "pinyin": "Wǒ xǐhuan chá, bàba yě xǐhuan chá.",
+        "meaning": "I like tea, and Dad likes tea too."
+      }
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "mandarin-tones",
+    "title": "Written tones and connected speech",
+    "explanation": "In Mandarin, pitch patterns help distinguish words. Pinyin marks the four tones: mā (high and level), má (rising), mǎ (low, with a possible rise), and mà (falling). These are a guide to pitch, not four different volume levels.\n\nA third tone is often low without a full dip and rise inside a phrase. When two third tones meet, the first is usually pronounced like a second tone: 你好 is written nǐ hǎo but commonly spoken ní hǎo.\n\nA neutral-tone syllable is short and unstressed; its pitch depends on the preceding tone. These questions check tone concepts. They do not measure your spoken pronunciation or acoustic tone accuracy.",
+    "examples": [
+      {
+        "hanzi": "妈",
+        "pinyin": "mā",
+        "meaning": "Mum — first tone: high and level."
+      },
+      {
+        "hanzi": "茶",
+        "pinyin": "chá",
+        "meaning": "Tea — second tone: rising."
+      },
+      {
+        "hanzi": "水",
+        "pinyin": "shuǐ",
+        "meaning": "Water — third tone; its shape depends on context."
+      },
+      {
+        "hanzi": "是",
+        "pinyin": "shì",
+        "meaning": "Be — fourth tone: falling."
+      },
+      {
+        "hanzi": "妈妈",
+        "pinyin": "māma",
+        "meaning": "Mum — the second syllable is neutral in this common pronunciation."
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "prerequisites": []
+  },
+  {
+    "id": "names-jiao",
+    "title": "Introducing a name with 叫",
+    "explanation": "我 means “I” and 你 means “you”. Use 叫 for a name: 我叫安娜 means “My name is Anna”. Use 是 before a noun describing an identity: 我是学生 means “I am a student”.",
+    "examples": [
+      {
+        "hanzi": "我叫安娜。",
+        "pinyin": "Wǒ jiào Ānnà.",
+        "meaning": "My name is Anna."
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "prerequisites": []
+  },
+  {
+    "id": "possession-de",
+    "title": "Possession with 的",
+    "explanation": "爸爸 means “dad” and 妈妈 means “mum”. 我的妈妈 means “my mum”: the owner comes first, then 的, then the person or thing. With close family, 的 is also often omitted, as in 我妈妈.",
+    "examples": [
+      {
+        "hanzi": "我的妈妈",
+        "pinyin": "wǒ de māma",
+        "meaning": "My mum."
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "prerequisites": []
+  },
+  {
+    "id": "want-xiang",
+    "title": "Wanting to do something with 想",
+    "explanation": "喝 means “drink”. Start with the subject, then the verb, then the drink: 我喝水. 想 before the verb expresses wanting to do something: 我想喝茶 means “I would like to drink tea”.",
+    "examples": [
+      {
+        "hanzi": "我想喝茶。",
+        "pinyin": "Wǒ xiǎng hē chá.",
+        "meaning": "I would like to drink tea."
+      }
+    ],
+    "languageLevel": "beginner",
+    "difficulty": "balanced",
+    "prerequisites": []
+  }
+]

@@ -4,6 +4,8 @@ import { isSpeechAbort, speakChinese, speechErrorMessage, stopSpeaking } from '.
 import type { LearningActivity, LearningAnswer, LearningQuestion, LearningSession } from '../types/learning'
 import type { PracticeMode } from '../types/study'
 import ToneGuide from './ToneGuide'
+import { getActivity, getGrammarTopic } from '../data/learning'
+import { difficultyLabel, levelLabel } from '../data/taxonomy'
 import './LearningSessionPage.css'
 
 type Props = {
@@ -179,8 +181,9 @@ function QuestionTask({ question, questionNumber, total, answer, previouslyHinte
   )
 }
 
-function LearningSessionWorkspace({ activity, sessions, onSaveSession, onBack, onPractice, locked = false }: Props) {
-  const [session, setSession] = useState<LearningSession | null>(() => getLatestSession(activity.id, sessions) ?? null)
+function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveSession, onBack, onPractice, locked = false }: Props) {
+  const [session, setSession] = useState<LearningSession | null>(() => getLatestSession(currentActivity.id, sessions) ?? null)
+  const activity = session ? getActivity(session.activityId, session.contentRevision ?? 1) ?? currentActivity : currentActivity
   const [notesOpen, setNotesOpen] = useState(() => locked || !getLatestSession(activity.id, sessions))
   const [currentIndex, setCurrentIndex] = useState(() => {
     const latest = getLatestSession(activity.id, sessions)
@@ -240,7 +243,7 @@ function LearningSessionWorkspace({ activity, sessions, onSaveSession, onBack, o
     if (locked || !activity.questions.length) return
     stopAudio()
     const now = new Date().toISOString()
-    save({ id: crypto.randomUUID(), activityId: activity.id, startedAt: now, updatedAt: now, answers: [] })
+    save({ id: crypto.randomUUID(), activityId: currentActivity.id, contentRevision: currentActivity.revision, startedAt: now, updatedAt: now, answers: [] })
     setCurrentIndex(0)
     setNotesOpen(false)
   }
@@ -288,7 +291,7 @@ function LearningSessionWorkspace({ activity, sessions, onSaveSession, onBack, o
         <button type="button" className="back-button" onClick={leave}>{activity.kind === 'lesson' ? 'Back to course' : 'Back to exercises'}</button>
         <div><span className={`session-kind session-line-${activity.line}`}>{activity.kind === 'lesson' ? 'Course lesson' : 'Independent exercise'}</span><span>{activity.minutes} min</span></div>
       </header>
-      <div className="session-title"><h1>{activity.title}</h1><p>{activity.description}</p></div>
+      <div className="session-title"><h1>{activity.title}</h1><p>{activity.description}</p><p className="content-classification">{levelLabel(activity.languageLevel)} · {difficultyLabel(activity.difficulty)}</p></div>
       {started && !finished && (
         <div className="session-route-progress">
           <div><span>{session!.answers.length} of {activity.questions.length} answers saved</span><span>Continue at your own pace</span></div>
@@ -312,8 +315,12 @@ function LearningSessionWorkspace({ activity, sessions, onSaveSession, onBack, o
           <span className="session-panel-label">Learn</span>
           <h2>What you will practise</h2>
           <ul className="session-objectives">{activity.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
-          {activity.id === 'lesson-tones' && <ToneGuide />}
+          {activity.features.includes('tone-guide') && <ToneGuide />}
           <div className="session-explanation">{activity.explanation.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+          {activity.grammarTopicIds.length > 0 && <details className="practice-help"><summary>Language and grammar topics</summary>{activity.grammarTopicIds.map((id) => {
+            const topic = getGrammarTopic(id)!
+            return <section key={id}><h3>{topic.title}</h3><p>{topic.explanation}</p></section>
+          })}</details>}
           {activity.examples.length > 0 && (
             <section className="session-examples" aria-label="Mandarin examples">
               <h3>Examples</h3>

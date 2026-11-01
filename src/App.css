@@ -1,4 +1,8 @@
 .app-shell { padding-bottom: max(32px, env(safe-area-inset-bottom)); }
+.content-filters { display: flex; flex-wrap: wrap; gap: 16px; margin: 18px 0 24px; }
+.content-filters > div { display: grid; gap: 6px; min-width: 0; }
+.content-filters label { display: grid; gap: 6px; min-width: 0; font-size: 14px; }
+.content-classification { color: var(--accent); font-size: 14px; }
 .app-header {
   display: flex;
   justify-content: space-between;
