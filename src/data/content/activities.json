@@ -1620,5 +1620,4982 @@
       "hearmandarin:w00014"
     ],
     "features": []
+  },
+  {
+    "id": "lesson-beginner-conversation",
+    "kind": "lesson",
+    "title": "Your first conversation",
+    "description": "Challenge yourself with a final mixed review of introductions, family and ordering a drink.",
+    "minutes": 10,
+    "category": "all",
+    "line": "sentences",
+    "position": {
+      "x": 1100,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-checkpoint"
+    ],
+    "objectives": [
+      "Choose expressions that fit a short encounter.",
+      "Recall tone changes and basic sentence patterns without hints."
+    ],
+    "explanation": [
+      "This stop reviews the first unit. Aim to answer at least 80% independently; hints remain available for learning but assisted answers do not raise the independent score.",
+      "Listen to an example when the speaker button is available. This review checks understanding and sentence construction. It does not certify spoken tone accuracy; use the linked speaking practice to rehearse and compare recordings."
+    ],
+    "examples": [
+      {
+        "hanzi": "你好，我是学生。",
+        "pinyin": "Nǐ hǎo, wǒ shì xuésheng.",
+        "meaning": "Hello, I am a student."
+      },
+      {
+        "hanzi": "妈妈喜欢茶。",
+        "pinyin": "Māma xǐhuan chá.",
+        "meaning": "Mum likes tea."
+      }
+    ],
+    "questions": [
+      {
+        "id": "conversation-checkpoint-listen",
+        "type": "choice",
+        "prompt": "Play the sentence and choose the correct meaning.",
+        "options": [
+          {
+            "id": "dad",
+            "text": "Dad likes water"
+          },
+          {
+            "id": "mum",
+            "text": "Mum likes tea"
+          },
+          {
+            "id": "student",
+            "text": "I am a student"
+          }
+        ],
+        "answer": "mum",
+        "explanation": "妈妈 is mum; 喜欢 is like; 茶 is tea.",
+        "audioText": "妈妈喜欢茶",
+        "hint": "Identify the subject and the drink separately."
+      },
+      {
+        "id": "conversation-checkpoint-identity",
+        "type": "order",
+        "prompt": "Build: “I am a student.”",
+        "tokens": [
+          "我",
+          "是",
+          "学生"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "是",
+            "学生"
+          ]
+        ],
+        "explanation": "Identity uses subject → 是 → noun.",
+        "hint": "是 connects a person to an identity."
+      },
+      {
+        "id": "conversation-checkpoint-tones",
+        "type": "choice",
+        "prompt": "Which statement about spoken 你好 is correct?",
+        "options": [
+          {
+            "id": "always",
+            "text": "Both syllables must always have a full dip and rise"
+          },
+          {
+            "id": "neutral",
+            "text": "The first syllable is always neutral"
+          },
+          {
+            "id": "change",
+            "text": "The first third tone usually becomes rising before the next third tone"
+          }
+        ],
+        "answer": "change",
+        "explanation": "Third-tone sandhi changes the first tone to a rising tone in this two-syllable phrase.",
+        "hint": "Recall what happens when two third tones meet."
+      },
+      {
+        "id": "conversation-checkpoint-drink",
+        "type": "order",
+        "prompt": "Build: “I would like to drink water.”",
+        "tokens": [
+          "我",
+          "想",
+          "喝",
+          "水"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "想",
+            "喝",
+            "水"
+          ]
+        ],
+        "explanation": "想 precedes 喝, and 水 follows the action as its object.",
+        "hint": "Who → would like → drink → what."
+      },
+      {
+        "id": "conversation-checkpoint-today",
+        "type": "order",
+        "prompt": "Build: “I study Chinese today.”",
+        "tokens": [
+          "我",
+          "今天",
+          "学习",
+          "汉语"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "今天",
+            "学习",
+            "汉语"
+          ],
+          [
+            "今天",
+            "我",
+            "学习",
+            "汉语"
+          ]
+        ],
+        "explanation": "The time expression 今天 goes before 学习, either before or after 我.",
+        "hint": "Time belongs before the action."
+      }
+    ],
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "beginner",
+    "difficulty": "challenging",
+    "grammarTopicIds": [
+      "mandarin-tones",
+      "identity-shi",
+      "want-xiang",
+      "time-before-verb"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00146",
+      "hao",
+      "wo",
+      "hearmandarin:w00188",
+      "hearmandarin:w00248",
+      "hearmandarin:w00114",
+      "hearmandarin:w00225",
+      "hearmandarin:w00017",
+      "hearmandarin:w00233",
+      "hearmandarin:w00077",
+      "shui",
+      "hearmandarin:w00094",
+      "hearmandarin:w00249",
+      "hearmandarin:w00069"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-elementary-getting-around",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "gentle",
+    "title": "Finding your way",
+    "description": "Practise 从 … 到 … in a short, connected elementary lesson.",
+    "minutes": 7,
+    "category": "places",
+    "line": "everyday",
+    "position": {
+      "x": 110,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use 从 … 到 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there.",
+      "Read and listen: 从这儿到火车站怎么走？ (Cóng zhèr dào huǒchēzhàn zěnme zǒu?) — How do I get from here to the railway station?",
+      "Try a new context: 从学校到商店很近。 (Cóng xuéxiào dào shāngdiàn hěn jìn.) — It is close from the school to the shop."
+    ],
+    "examples": [
+      {
+        "hanzi": "从这儿到火车站怎么走？",
+        "pinyin": "Cóng zhèr dào huǒchēzhàn zěnme zǒu?",
+        "meaning": "How do I get from here to the railway station?"
+      },
+      {
+        "hanzi": "从学校到商店很近。",
+        "pinyin": "Cóng xuéxiào dào shāngdiàn hěn jìn.",
+        "meaning": "It is close from the school to the shop."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-elementary-getting-around-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "How far is the railway station from here?"
+          },
+          {
+            "id": "distractor-1",
+            "text": "How do I get from the railway station to here?"
+          },
+          {
+            "id": "correct",
+            "text": "How do I get from here to the railway station?"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "从这儿到火车站怎么走？ means: How do I get from here to the railway station?",
+        "audioText": "从这儿到火车站怎么走？"
+      },
+      {
+        "id": "lesson-elementary-getting-around-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 从 … 到 … express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "了 after a verb can mark a completed event."
+          },
+          {
+            "id": "correct",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "distractor-0",
+            "text": "要 before an action can express an intention."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there."
+      },
+      {
+        "id": "lesson-elementary-getting-around-build",
+        "type": "order",
+        "prompt": "Build: How do I get from here to the railway station?",
+        "tokens": [
+          "从",
+          "这儿",
+          "到",
+          "火车站",
+          "怎么",
+          "走",
+          "？"
+        ],
+        "acceptedOrders": [
+          [
+            "从",
+            "这儿",
+            "到",
+            "火车站",
+            "怎么",
+            "走",
+            "？"
+          ]
+        ],
+        "explanation": "从这儿到火车站怎么走？ — 从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there.",
+        "hint": "Use the pattern 从 … 到 …."
+      },
+      {
+        "id": "lesson-elementary-getting-around-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 火车站 (huǒchēzhàn)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "lesson; class"
+          },
+          {
+            "id": "distractor-1",
+            "text": "you (polite)"
+          },
+          {
+            "id": "correct",
+            "text": "train station"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "火车站 means train station."
+      },
+      {
+        "id": "lesson-elementary-getting-around-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: It is close from the school to the shop.",
+        "tokens": [
+          "从",
+          "学校",
+          "到",
+          "商店",
+          "很",
+          "近",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "从",
+            "学校",
+            "到",
+            "商店",
+            "很",
+            "近",
+            "。"
+          ]
+        ],
+        "explanation": "从学校到商店很近。 — It is close from the school to the shop.",
+        "hint": "Use the pattern 从 … 到 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-getting-around"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w11007",
+      "hearmandarin:w11006",
+      "hearmandarin:w00500",
+      "hearmandarin:w00482",
+      "hearmandarin:w00371",
+      "hearmandarin:w00484"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-elementary-getting-around",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "gentle",
+    "title": "Finding your way · practice",
+    "description": "A standalone practice session. How do I get from here to the railway station?",
+    "minutes": 7,
+    "category": "places",
+    "line": "everyday",
+    "position": {
+      "x": 110,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use 从 … 到 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there.",
+      "Read and listen: 从这儿到火车站怎么走？ (Cóng zhèr dào huǒchēzhàn zěnme zǒu?) — How do I get from here to the railway station?",
+      "Try a new context: 从学校到商店很近。 (Cóng xuéxiào dào shāngdiàn hěn jìn.) — It is close from the school to the shop."
+    ],
+    "examples": [
+      {
+        "hanzi": "从这儿到火车站怎么走？",
+        "pinyin": "Cóng zhèr dào huǒchēzhàn zěnme zǒu?",
+        "meaning": "How do I get from here to the railway station?"
+      },
+      {
+        "hanzi": "从学校到商店很近。",
+        "pinyin": "Cóng xuéxiào dào shāngdiàn hěn jìn.",
+        "meaning": "It is close from the school to the shop."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-elementary-getting-around-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "How do I get from the railway station to here?"
+          },
+          {
+            "id": "correct",
+            "text": "How do I get from here to the railway station?"
+          },
+          {
+            "id": "distractor-0",
+            "text": "How far is the railway station from here?"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "从这儿到火车站怎么走？ means: How do I get from here to the railway station?",
+        "audioText": "从这儿到火车站怎么走？"
+      },
+      {
+        "id": "exercise-elementary-getting-around-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 从 … 到 … express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "distractor-0",
+            "text": "要 before an action can express an intention."
+          },
+          {
+            "id": "distractor-1",
+            "text": "了 after a verb can mark a completed event."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there."
+      },
+      {
+        "id": "exercise-elementary-getting-around-build",
+        "type": "order",
+        "prompt": "Build: How do I get from here to the railway station?",
+        "tokens": [
+          "从",
+          "这儿",
+          "到",
+          "火车站",
+          "怎么",
+          "走",
+          "？"
+        ],
+        "acceptedOrders": [
+          [
+            "从",
+            "这儿",
+            "到",
+            "火车站",
+            "怎么",
+            "走",
+            "？"
+          ]
+        ],
+        "explanation": "从这儿到火车站怎么走？ — 从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there.",
+        "hint": "Use the pattern 从 … 到 …."
+      },
+      {
+        "id": "exercise-elementary-getting-around-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 火车站 (huǒchēzhàn)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "to ask"
+          },
+          {
+            "id": "correct",
+            "text": "train station"
+          },
+          {
+            "id": "distractor-0",
+            "text": "time"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "火车站 means train station."
+      },
+      {
+        "id": "exercise-elementary-getting-around-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: It is close from the school to the shop.",
+        "tokens": [
+          "从",
+          "学校",
+          "到",
+          "商店",
+          "很",
+          "近",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "从",
+            "学校",
+            "到",
+            "商店",
+            "很",
+            "近",
+            "。"
+          ]
+        ],
+        "explanation": "从学校到商店很近。 — It is close from the school to the shop.",
+        "hint": "Use the pattern 从 … 到 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-getting-around"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w11007",
+      "hearmandarin:w11006",
+      "hearmandarin:w00500",
+      "hearmandarin:w00482",
+      "hearmandarin:w00371",
+      "hearmandarin:w00484"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-elementary-making-plans",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "Making simple plans",
+    "description": "Practise 要 + action in a short, connected elementary lesson.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 270,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-elementary-getting-around"
+    ],
+    "objectives": [
+      "Use 要 + action in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "要 before an action can express an intention. A time word such as 明天 comes before the action; 一起 means doing something together.",
+      "Read and listen: 明天我要和朋友一起去旅游。 (Míngtiān wǒ yào hé péngyou yìqǐ qù lǚyóu.) — Tomorrow I am going travelling with a friend.",
+      "Try a new context: 我们明天一起看电影。 (Wǒmen míngtiān yìqǐ kàn diànyǐng.) — We are watching a film together tomorrow."
+    ],
+    "examples": [
+      {
+        "hanzi": "明天我要和朋友一起去旅游。",
+        "pinyin": "Míngtiān wǒ yào hé péngyou yìqǐ qù lǚyóu.",
+        "meaning": "Tomorrow I am going travelling with a friend."
+      },
+      {
+        "hanzi": "我们明天一起看电影。",
+        "pinyin": "Wǒmen míngtiān yìqǐ kàn diànyǐng.",
+        "meaning": "We are watching a film together tomorrow."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-elementary-making-plans-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "Yesterday I went travelling with a friend."
+          },
+          {
+            "id": "distractor-1",
+            "text": "Tomorrow my friend is going travelling without me."
+          },
+          {
+            "id": "correct",
+            "text": "Tomorrow I am going travelling with a friend."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "明天我要和朋友一起去旅游。 means: Tomorrow I am going travelling with a friend.",
+        "audioText": "明天我要和朋友一起去旅游。"
+      },
+      {
+        "id": "lesson-elementary-making-plans-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 要 + action express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "了 after a verb can mark a completed event."
+          },
+          {
+            "id": "correct",
+            "text": "要 before an action can express an intention."
+          },
+          {
+            "id": "distractor-0",
+            "text": "从 introduces the starting point and 到 the destination."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "要 before an action can express an intention. A time word such as 明天 comes before the action; 一起 means doing something together."
+      },
+      {
+        "id": "lesson-elementary-making-plans-build",
+        "type": "order",
+        "prompt": "Build: Tomorrow I am going travelling with a friend.",
+        "tokens": [
+          "明天",
+          "我",
+          "要",
+          "和",
+          "朋友",
+          "一起",
+          "去",
+          "旅游",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "明天",
+            "我",
+            "要",
+            "和",
+            "朋友",
+            "一起",
+            "去",
+            "旅游",
+            "。"
+          ]
+        ],
+        "explanation": "明天我要和朋友一起去旅游。 — 要 before an action can express an intention. A time word such as 明天 comes before the action; 一起 means doing something together.",
+        "hint": "Use the pattern 要 + action."
+      },
+      {
+        "id": "lesson-elementary-making-plans-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 一起 (yìqǐ)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "morning"
+          },
+          {
+            "id": "distractor-1",
+            "text": "don't; other"
+          },
+          {
+            "id": "correct",
+            "text": "together"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "一起 means together."
+      },
+      {
+        "id": "lesson-elementary-making-plans-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: We are watching a film together tomorrow.",
+        "tokens": [
+          "我们",
+          "明天",
+          "一起",
+          "看",
+          "电影",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我们",
+            "明天",
+            "一起",
+            "看",
+            "电影",
+            "。"
+          ]
+        ],
+        "explanation": "我们明天一起看电影。 — We are watching a film together tomorrow.",
+        "hint": "Use the pattern 要 + action."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-making-plans"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00473",
+      "hearmandarin:w00394",
+      "hearmandarin:w00252",
+      "hearmandarin:w00129",
+      "hearmandarin:w00156",
+      "hearmandarin:w00038"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-elementary-finished-actions",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "Talking about completed actions",
+    "description": "Practise verb + 了 in a short, connected elementary lesson.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 430,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-elementary-making-plans"
+    ],
+    "objectives": [
+      "Use verb + 了 in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending.",
+      "Read and listen: 昨天我买了一本书。 (Zuótiān wǒ mǎi le yì běn shū.) — Yesterday I bought a book.",
+      "Try a new context: 我已经吃了早饭。 (Wǒ yǐjīng chī le zǎofàn.) — I have already eaten breakfast."
+    ],
+    "examples": [
+      {
+        "hanzi": "昨天我买了一本书。",
+        "pinyin": "Zuótiān wǒ mǎi le yì běn shū.",
+        "meaning": "Yesterday I bought a book."
+      },
+      {
+        "hanzi": "我已经吃了早饭。",
+        "pinyin": "Wǒ yǐjīng chī le zǎofàn.",
+        "meaning": "I have already eaten breakfast."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-elementary-finished-actions-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "Yesterday I bought a book."
+          },
+          {
+            "id": "distractor-0",
+            "text": "I did not buy a book yesterday."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I will buy a book tomorrow."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "昨天我买了一本书。 means: Yesterday I bought a book.",
+        "audioText": "昨天我买了一本书。"
+      },
+      {
+        "id": "lesson-elementary-finished-actions-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does verb + 了 express?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "要 before an action can express an intention."
+          },
+          {
+            "id": "distractor-1",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "correct",
+            "text": "了 after a verb can mark a completed event."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending."
+      },
+      {
+        "id": "lesson-elementary-finished-actions-build",
+        "type": "order",
+        "prompt": "Build: Yesterday I bought a book.",
+        "tokens": [
+          "昨天",
+          "我",
+          "买",
+          "了",
+          "一",
+          "本",
+          "书",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "昨天",
+            "我",
+            "买",
+            "了",
+            "一",
+            "本",
+            "书",
+            "。"
+          ]
+        ],
+        "explanation": "昨天我买了一本书。 — 了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending.",
+        "hint": "Use the pattern verb + 了."
+      },
+      {
+        "id": "lesson-elementary-finished-actions-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 已经 (yǐjīng)?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "already"
+          },
+          {
+            "id": "distractor-0",
+            "text": "then; just; at once"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to tell; to inform"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "已经 means already."
+      },
+      {
+        "id": "lesson-elementary-finished-actions-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: I have already eaten breakfast.",
+        "tokens": [
+          "我",
+          "已经",
+          "吃",
+          "了",
+          "早饭",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "已经",
+            "吃",
+            "了",
+            "早饭",
+            "。"
+          ]
+        ],
+        "explanation": "我已经吃了早饭。 — I have already eaten breakfast.",
+        "hint": "Use the pattern verb + 了."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-finished-actions"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00472",
+      "hearmandarin:w00116",
+      "hearmandarin:w00275",
+      "hearmandarin:w00010",
+      "hearmandarin:w00190",
+      "hearmandarin:w00297"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-elementary-finished-actions",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "Talking about completed actions · practice",
+    "description": "A standalone practice session. Yesterday I bought a book.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 430,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use verb + 了 in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending.",
+      "Read and listen: 昨天我买了一本书。 (Zuótiān wǒ mǎi le yì běn shū.) — Yesterday I bought a book.",
+      "Try a new context: 我已经吃了早饭。 (Wǒ yǐjīng chī le zǎofàn.) — I have already eaten breakfast."
+    ],
+    "examples": [
+      {
+        "hanzi": "昨天我买了一本书。",
+        "pinyin": "Zuótiān wǒ mǎi le yì běn shū.",
+        "meaning": "Yesterday I bought a book."
+      },
+      {
+        "hanzi": "我已经吃了早饭。",
+        "pinyin": "Wǒ yǐjīng chī le zǎofàn.",
+        "meaning": "I have already eaten breakfast."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-elementary-finished-actions-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "I did not buy a book yesterday."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I will buy a book tomorrow."
+          },
+          {
+            "id": "correct",
+            "text": "Yesterday I bought a book."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "昨天我买了一本书。 means: Yesterday I bought a book.",
+        "audioText": "昨天我买了一本书。"
+      },
+      {
+        "id": "exercise-elementary-finished-actions-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does verb + 了 express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "correct",
+            "text": "了 after a verb can mark a completed event."
+          },
+          {
+            "id": "distractor-0",
+            "text": "要 before an action can express an intention."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending."
+      },
+      {
+        "id": "exercise-elementary-finished-actions-build",
+        "type": "order",
+        "prompt": "Build: Yesterday I bought a book.",
+        "tokens": [
+          "昨天",
+          "我",
+          "买",
+          "了",
+          "一",
+          "本",
+          "书",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "昨天",
+            "我",
+            "买",
+            "了",
+            "一",
+            "本",
+            "书",
+            "。"
+          ]
+        ],
+        "explanation": "昨天我买了一本书。 — 了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending.",
+        "hint": "Use the pattern verb + 了."
+      },
+      {
+        "id": "exercise-elementary-finished-actions-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 已经 (yǐjīng)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "wife"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to travel; trip"
+          },
+          {
+            "id": "correct",
+            "text": "already"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "已经 means already."
+      },
+      {
+        "id": "exercise-elementary-finished-actions-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: I have already eaten breakfast.",
+        "tokens": [
+          "我",
+          "已经",
+          "吃",
+          "了",
+          "早饭",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "已经",
+            "吃",
+            "了",
+            "早饭",
+            "。"
+          ]
+        ],
+        "explanation": "我已经吃了早饭。 — I have already eaten breakfast.",
+        "hint": "Use the pattern verb + 了."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-finished-actions"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00472",
+      "hearmandarin:w00116",
+      "hearmandarin:w00275",
+      "hearmandarin:w00010",
+      "hearmandarin:w00190",
+      "hearmandarin:w00297"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-elementary-comparisons",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "Comparing two choices",
+    "description": "Practise A 比 B + adjective in a short, connected elementary lesson.",
+    "minutes": 9,
+    "category": "other",
+    "line": "everyday",
+    "position": {
+      "x": 580,
+      "y": 110
+    },
+    "prerequisites": [
+      "lesson-elementary-making-plans"
+    ],
+    "objectives": [
+      "Use A 比 B + adjective in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "比 introduces the comparison standard. The adjective follows both items. Do not add 很 simply to turn the comparison into an adjective sentence.",
+      "Read and listen: 今天比昨天冷。 (Jīntiān bǐ zuótiān lěng.) — Today is colder than yesterday.",
+      "Try a new context: 这本书比那本书便宜。 (Zhè běn shū bǐ nà běn shū piányi.) — This book is cheaper than that book."
+    ],
+    "examples": [
+      {
+        "hanzi": "今天比昨天冷。",
+        "pinyin": "Jīntiān bǐ zuótiān lěng.",
+        "meaning": "Today is colder than yesterday."
+      },
+      {
+        "hanzi": "这本书比那本书便宜。",
+        "pinyin": "Zhè běn shū bǐ nà běn shū piányi.",
+        "meaning": "This book is cheaper than that book."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-elementary-comparisons-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "Today is colder than yesterday."
+          },
+          {
+            "id": "distractor-0",
+            "text": "Yesterday was colder than today."
+          },
+          {
+            "id": "distractor-1",
+            "text": "Today is as cold as yesterday."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "今天比昨天冷。 means: Today is colder than yesterday.",
+        "audioText": "今天比昨天冷。"
+      },
+      {
+        "id": "lesson-elementary-comparisons-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does A 比 B + adjective express?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "distractor-1",
+            "text": "要 before an action can express an intention."
+          },
+          {
+            "id": "correct",
+            "text": "比 introduces the comparison standard."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "比 introduces the comparison standard. The adjective follows both items. Do not add 很 simply to turn the comparison into an adjective sentence."
+      },
+      {
+        "id": "lesson-elementary-comparisons-build",
+        "type": "order",
+        "prompt": "Build: Today is colder than yesterday.",
+        "tokens": [
+          "今天",
+          "比",
+          "昨天",
+          "冷",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "今天",
+            "比",
+            "昨天",
+            "冷",
+            "。"
+          ]
+        ],
+        "explanation": "今天比昨天冷。 — 比 introduces the comparison standard. The adjective follows both items. Do not add 很 simply to turn the comparison into an adjective sentence.",
+        "hint": "Use the pattern A 比 B + adjective."
+      },
+      {
+        "id": "lesson-elementary-comparisons-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 比 (bǐ)?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "to compare; than"
+          },
+          {
+            "id": "distractor-0",
+            "text": "towards; to go toward"
+          },
+          {
+            "id": "distractor-1",
+            "text": "eye"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "比 means to compare; than."
+      },
+      {
+        "id": "lesson-elementary-comparisons-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: This book is cheaper than that book.",
+        "tokens": [
+          "这",
+          "本",
+          "书",
+          "比",
+          "那",
+          "本",
+          "书",
+          "便宜",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "这",
+            "本",
+            "书",
+            "比",
+            "那",
+            "本",
+            "书",
+            "便宜",
+            "。"
+          ]
+        ],
+        "explanation": "这本书比那本书便宜。 — This book is cheaper than that book.",
+        "hint": "Use the pattern A 比 B + adjective."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-comparisons"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00309",
+      "hearmandarin:w00498",
+      "hearmandarin:w00065",
+      "hearmandarin:w00157",
+      "hearmandarin:w00109",
+      "hearmandarin:w00169"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-elementary-requests",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "challenging",
+    "title": "Making polite requests",
+    "description": "Practise 请 + person + action in a short, connected elementary lesson.",
+    "minutes": 12,
+    "category": "people",
+    "line": "sentences",
+    "position": {
+      "x": 740,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-elementary-finished-actions",
+      "lesson-elementary-comparisons"
+    ],
+    "objectives": [
+      "Use 请 + person + action in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "请 introduces a polite request. 帮 means help, and 一下 can make a short request sound less abrupt. The request still needs an action or context.",
+      "Read and listen: 请你帮我一下。 (Qǐng nǐ bāng wǒ yíxià.) — Please give me a hand.",
+      "Try a new context: 你可以帮我吗？ (Nǐ kěyǐ bāng wǒ ma?) — Can you help me?"
+    ],
+    "examples": [
+      {
+        "hanzi": "请你帮我一下。",
+        "pinyin": "Qǐng nǐ bāng wǒ yíxià.",
+        "meaning": "Please give me a hand."
+      },
+      {
+        "hanzi": "你可以帮我吗？",
+        "pinyin": "Nǐ kěyǐ bāng wǒ ma?",
+        "meaning": "Can you help me?"
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-elementary-requests-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "Please wait for me."
+          },
+          {
+            "id": "correct",
+            "text": "Please give me a hand."
+          },
+          {
+            "id": "distractor-0",
+            "text": "I can help you."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "请你帮我一下。 means: Please give me a hand.",
+        "audioText": "请你帮我一下。"
+      },
+      {
+        "id": "lesson-elementary-requests-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 请 + person + action express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "请 introduces a polite request."
+          },
+          {
+            "id": "distractor-0",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "distractor-1",
+            "text": "要 before an action can express an intention."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "请 introduces a polite request. 帮 means help, and 一下 can make a short request sound less abrupt. The request still needs an action or context."
+      },
+      {
+        "id": "lesson-elementary-requests-build",
+        "type": "order",
+        "prompt": "Build: Please give me a hand.",
+        "tokens": [
+          "请",
+          "你",
+          "帮",
+          "我",
+          "一下",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "请",
+            "你",
+            "帮",
+            "我",
+            "一下",
+            "。"
+          ]
+        ],
+        "explanation": "请你帮我一下。 — 请 introduces a polite request. 帮 means help, and 一下 can make a short request sound less abrupt. The request still needs an action or context.",
+        "hint": "Use the pattern 请 + person + action."
+      },
+      {
+        "id": "lesson-elementary-requests-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 可以 (kěyǐ)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "to help; assistance"
+          },
+          {
+            "id": "correct",
+            "text": "can; may"
+          },
+          {
+            "id": "distractor-0",
+            "text": "sports; exercise; to move"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "可以 means can; may."
+      },
+      {
+        "id": "lesson-elementary-requests-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Can you help me?",
+        "tokens": [
+          "你",
+          "可以",
+          "帮",
+          "我",
+          "吗",
+          "？"
+        ],
+        "acceptedOrders": [
+          [
+            "你",
+            "可以",
+            "帮",
+            "我",
+            "吗",
+            "？"
+          ]
+        ],
+        "explanation": "你可以帮我吗？ — Can you help me?",
+        "hint": "Use the pattern 请 + person + action."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-requests"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00102",
+      "hearmandarin:w00514",
+      "hearmandarin:w00422",
+      "hearmandarin:w00165",
+      "hearmandarin:w00219",
+      "hearmandarin:w00432"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-elementary-city-checkpoint",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "challenging",
+    "title": "A day in the city",
+    "description": "Practise Routes, plans and comparisons in a short, connected elementary lesson.",
+    "minutes": 12,
+    "category": "places",
+    "line": "sentences",
+    "position": {
+      "x": 900,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-elementary-requests"
+    ],
+    "objectives": [
+      "Use Routes, plans and comparisons in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path.",
+      "Read and listen: 明天我们一起去火车站。 (Míngtiān wǒmen yìqǐ qù huǒchēzhàn.) — Tomorrow we are going to the railway station together.",
+      "Try a new context: 坐公共汽车比走路快。 (Zuò gōnggòngqìchē bǐ zǒulù kuài.) — Taking the bus is faster than walking."
+    ],
+    "examples": [
+      {
+        "hanzi": "明天我们一起去火车站。",
+        "pinyin": "Míngtiān wǒmen yìqǐ qù huǒchēzhàn.",
+        "meaning": "Tomorrow we are going to the railway station together."
+      },
+      {
+        "hanzi": "坐公共汽车比走路快。",
+        "pinyin": "Zuò gōnggòngqìchē bǐ zǒulù kuài.",
+        "meaning": "Taking the bus is faster than walking."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-elementary-city-checkpoint-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "Tomorrow we are going to the railway station separately."
+          },
+          {
+            "id": "distractor-1",
+            "text": "Yesterday we went to the railway station together."
+          },
+          {
+            "id": "correct",
+            "text": "Tomorrow we are going to the railway station together."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "明天我们一起去火车站。 means: Tomorrow we are going to the railway station together.",
+        "audioText": "明天我们一起去火车站。"
+      },
+      {
+        "id": "lesson-elementary-city-checkpoint-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does Routes, plans and comparisons express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "从 introduces the starting point and 到 the destination."
+          },
+          {
+            "id": "correct",
+            "text": "Combine a time expression with a plan, then use 从 and 到 for a route."
+          },
+          {
+            "id": "distractor-0",
+            "text": "要 before an action can express an intention."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path."
+      },
+      {
+        "id": "lesson-elementary-city-checkpoint-build",
+        "type": "order",
+        "prompt": "Build: Tomorrow we are going to the railway station together.",
+        "tokens": [
+          "明天",
+          "我们",
+          "一起",
+          "去",
+          "火车站",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "明天",
+            "我们",
+            "一起",
+            "去",
+            "火车站",
+            "。"
+          ]
+        ],
+        "explanation": "明天我们一起去火车站。 — Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path.",
+        "hint": "Use the pattern Routes, plans and comparisons."
+      },
+      {
+        "id": "lesson-elementary-city-checkpoint-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 火车站 (huǒchēzhàn)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "mutton"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to play basketball"
+          },
+          {
+            "id": "correct",
+            "text": "train station"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "火车站 means train station."
+      },
+      {
+        "id": "lesson-elementary-city-checkpoint-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Taking the bus is faster than walking.",
+        "tokens": [
+          "坐",
+          "公共汽车",
+          "比",
+          "走路",
+          "快",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "坐",
+            "公共汽车",
+            "比",
+            "走路",
+            "快",
+            "。"
+          ]
+        ],
+        "explanation": "坐公共汽车比走路快。 — Taking the bus is faster than walking.",
+        "hint": "Use the pattern Routes, plans and comparisons."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-city-checkpoint"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w11007",
+      "hearmandarin:w11006",
+      "hearmandarin:w00473",
+      "hearmandarin:w00384",
+      "hearmandarin:w00484",
+      "hearmandarin:w00371"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-elementary-city-checkpoint",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "elementary",
+    "difficulty": "challenging",
+    "title": "A day in the city · practice",
+    "description": "A standalone practice session. Tomorrow we are going to the railway station together.",
+    "minutes": 12,
+    "category": "places",
+    "line": "sentences",
+    "position": {
+      "x": 900,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use Routes, plans and comparisons in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path.",
+      "Read and listen: 明天我们一起去火车站。 (Míngtiān wǒmen yìqǐ qù huǒchēzhàn.) — Tomorrow we are going to the railway station together.",
+      "Try a new context: 坐公共汽车比走路快。 (Zuò gōnggòngqìchē bǐ zǒulù kuài.) — Taking the bus is faster than walking."
+    ],
+    "examples": [
+      {
+        "hanzi": "明天我们一起去火车站。",
+        "pinyin": "Míngtiān wǒmen yìqǐ qù huǒchēzhàn.",
+        "meaning": "Tomorrow we are going to the railway station together."
+      },
+      {
+        "hanzi": "坐公共汽车比走路快。",
+        "pinyin": "Zuò gōnggòngqìchē bǐ zǒulù kuài.",
+        "meaning": "Taking the bus is faster than walking."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-elementary-city-checkpoint-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "Yesterday we went to the railway station together."
+          },
+          {
+            "id": "correct",
+            "text": "Tomorrow we are going to the railway station together."
+          },
+          {
+            "id": "distractor-0",
+            "text": "Tomorrow we are going to the railway station separately."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "明天我们一起去火车站。 means: Tomorrow we are going to the railway station together.",
+        "audioText": "明天我们一起去火车站。"
+      },
+      {
+        "id": "exercise-elementary-city-checkpoint-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does Routes, plans and comparisons express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "Combine a time expression with a plan, then use 从 and 到 for a route."
+          },
+          {
+            "id": "distractor-0",
+            "text": "要 before an action can express an intention."
+          },
+          {
+            "id": "distractor-1",
+            "text": "从 introduces the starting point and 到 the destination."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path."
+      },
+      {
+        "id": "exercise-elementary-city-checkpoint-build",
+        "type": "order",
+        "prompt": "Build: Tomorrow we are going to the railway station together.",
+        "tokens": [
+          "明天",
+          "我们",
+          "一起",
+          "去",
+          "火车站",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "明天",
+            "我们",
+            "一起",
+            "去",
+            "火车站",
+            "。"
+          ]
+        ],
+        "explanation": "明天我们一起去火车站。 — Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path.",
+        "hint": "Use the pattern Routes, plans and comparisons."
+      },
+      {
+        "id": "exercise-elementary-city-checkpoint-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 火车站 (huǒchēzhàn)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "very; extremely"
+          },
+          {
+            "id": "correct",
+            "text": "train station"
+          },
+          {
+            "id": "distractor-0",
+            "text": "tasty; delicious"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "火车站 means train station."
+      },
+      {
+        "id": "exercise-elementary-city-checkpoint-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Taking the bus is faster than walking.",
+        "tokens": [
+          "坐",
+          "公共汽车",
+          "比",
+          "走路",
+          "快",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "坐",
+            "公共汽车",
+            "比",
+            "走路",
+            "快",
+            "。"
+          ]
+        ],
+        "explanation": "坐公共汽车比走路快。 — Taking the bus is faster than walking.",
+        "hint": "Use the pattern Routes, plans and comparisons."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-elementary-city-checkpoint"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w11007",
+      "hearmandarin:w11006",
+      "hearmandarin:w00473",
+      "hearmandarin:w00384",
+      "hearmandarin:w00484",
+      "hearmandarin:w00371"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-intermediate-experiences",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "gentle",
+    "title": "Experiences and change",
+    "description": "Practise verb + 过 in a short, connected intermediate lesson.",
+    "minutes": 7,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 110,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use verb + 过 in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过.",
+      "Read and listen: 我去过北京。 (Wǒ qù guo Běijīng.) — I have been to Beijing.",
+      "Try a new context: 我没有参加过这个活动。 (Wǒ méiyǒu cānjiā guo zhège huódòng.) — I have never taken part in this activity."
+    ],
+    "examples": [
+      {
+        "hanzi": "我去过北京。",
+        "pinyin": "Wǒ qù guo Běijīng.",
+        "meaning": "I have been to Beijing."
+      },
+      {
+        "hanzi": "我没有参加过这个活动。",
+        "pinyin": "Wǒ méiyǒu cānjiā guo zhège huódòng.",
+        "meaning": "I have never taken part in this activity."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-intermediate-experiences-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "I am in Beijing now."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I have never been to Beijing."
+          },
+          {
+            "id": "correct",
+            "text": "I have been to Beijing."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我去过北京。 means: I have been to Beijing.",
+        "audioText": "我去过北京。"
+      },
+      {
+        "id": "lesson-intermediate-experiences-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does verb + 过 express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "A result complement follows the action and says what it achieved."
+          },
+          {
+            "id": "correct",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "distractor-0",
+            "text": "正在 marks an action in progress at the reference time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过."
+      },
+      {
+        "id": "lesson-intermediate-experiences-build",
+        "type": "order",
+        "prompt": "Build: I have been to Beijing.",
+        "tokens": [
+          "我",
+          "去",
+          "过",
+          "北京",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "去",
+            "过",
+            "北京",
+            "。"
+          ]
+        ],
+        "explanation": "我去过北京。 — 过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过.",
+        "hint": "Use the pattern verb + 过."
+      },
+      {
+        "id": "lesson-intermediate-experiences-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 经历 (jīnglì)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "weekend"
+          },
+          {
+            "id": "distractor-1",
+            "text": "final; last; in the end"
+          },
+          {
+            "id": "correct",
+            "text": "to experience; experience"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "经历 means to experience; experience."
+      },
+      {
+        "id": "lesson-intermediate-experiences-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: I have never taken part in this activity.",
+        "tokens": [
+          "我",
+          "没有",
+          "参加",
+          "过",
+          "这个",
+          "活动",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "没有",
+            "参加",
+            "过",
+            "这个",
+            "活动",
+            "。"
+          ]
+        ],
+        "explanation": "我没有参加过这个活动。 — I have never taken part in this activity.",
+        "hint": "Use the pattern verb + 过."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-experiences"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w01398",
+      "hearmandarin:w00529",
+      "hearmandarin:w00689",
+      "hearmandarin:w01873",
+      "hearmandarin:w01312",
+      "hearmandarin:w00546"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-intermediate-experiences",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "gentle",
+    "title": "Experiences and change · practice",
+    "description": "A standalone practice session. I have been to Beijing.",
+    "minutes": 7,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 110,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use verb + 过 in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过.",
+      "Read and listen: 我去过北京。 (Wǒ qù guo Běijīng.) — I have been to Beijing.",
+      "Try a new context: 我没有参加过这个活动。 (Wǒ méiyǒu cānjiā guo zhège huódòng.) — I have never taken part in this activity."
+    ],
+    "examples": [
+      {
+        "hanzi": "我去过北京。",
+        "pinyin": "Wǒ qù guo Běijīng.",
+        "meaning": "I have been to Beijing."
+      },
+      {
+        "hanzi": "我没有参加过这个活动。",
+        "pinyin": "Wǒ méiyǒu cānjiā guo zhège huódòng.",
+        "meaning": "I have never taken part in this activity."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-intermediate-experiences-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "I have never been to Beijing."
+          },
+          {
+            "id": "correct",
+            "text": "I have been to Beijing."
+          },
+          {
+            "id": "distractor-0",
+            "text": "I am in Beijing now."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我去过北京。 means: I have been to Beijing.",
+        "audioText": "我去过北京。"
+      },
+      {
+        "id": "exercise-intermediate-experiences-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does verb + 过 express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "distractor-0",
+            "text": "正在 marks an action in progress at the reference time."
+          },
+          {
+            "id": "distractor-1",
+            "text": "A result complement follows the action and says what it achieved."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过."
+      },
+      {
+        "id": "exercise-intermediate-experiences-build",
+        "type": "order",
+        "prompt": "Build: I have been to Beijing.",
+        "tokens": [
+          "我",
+          "去",
+          "过",
+          "北京",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "去",
+            "过",
+            "北京",
+            "。"
+          ]
+        ],
+        "explanation": "我去过北京。 — 过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过.",
+        "hint": "Use the pattern verb + 过."
+      },
+      {
+        "id": "exercise-intermediate-experiences-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 经历 (jīnglì)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "to graduate; graduation"
+          },
+          {
+            "id": "correct",
+            "text": "to experience; experience"
+          },
+          {
+            "id": "distractor-0",
+            "text": "to hug; to carry in arms"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "经历 means to experience; experience."
+      },
+      {
+        "id": "exercise-intermediate-experiences-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: I have never taken part in this activity.",
+        "tokens": [
+          "我",
+          "没有",
+          "参加",
+          "过",
+          "这个",
+          "活动",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "没有",
+            "参加",
+            "过",
+            "这个",
+            "活动",
+            "。"
+          ]
+        ],
+        "explanation": "我没有参加过这个活动。 — I have never taken part in this activity.",
+        "hint": "Use the pattern verb + 过."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-experiences"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w01398",
+      "hearmandarin:w00529",
+      "hearmandarin:w00689",
+      "hearmandarin:w01873",
+      "hearmandarin:w01312",
+      "hearmandarin:w00546"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-intermediate-ongoing-actions",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "Actions in progress",
+    "description": "Practise 正在 + action in a short, connected intermediate lesson.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 270,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-intermediate-experiences"
+    ],
+    "objectives": [
+      "Use 正在 + action in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "正在 marks an action in progress at the reference time. The activity follows it directly. It does not by itself say that the action is finished.",
+      "Read and listen: 他正在准备考试。 (Tā zhèngzài zhǔnbèi kǎoshì.) — He is preparing for an exam.",
+      "Try a new context: 我们正在讨论这个问题。 (Wǒmen zhèngzài tǎolùn zhège wèntí.) — We are discussing this question."
+    ],
+    "examples": [
+      {
+        "hanzi": "他正在准备考试。",
+        "pinyin": "Tā zhèngzài zhǔnbèi kǎoshì.",
+        "meaning": "He is preparing for an exam."
+      },
+      {
+        "hanzi": "我们正在讨论这个问题。",
+        "pinyin": "Wǒmen zhèngzài tǎolùn zhège wèntí.",
+        "meaning": "We are discussing this question."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-intermediate-ongoing-actions-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "He has already finished the exam."
+          },
+          {
+            "id": "distractor-1",
+            "text": "He is going to prepare for an exam later."
+          },
+          {
+            "id": "correct",
+            "text": "He is preparing for an exam."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "他正在准备考试。 means: He is preparing for an exam.",
+        "audioText": "他正在准备考试。"
+      },
+      {
+        "id": "lesson-intermediate-ongoing-actions-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 正在 + action express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "A result complement follows the action and says what it achieved."
+          },
+          {
+            "id": "correct",
+            "text": "正在 marks an action in progress at the reference time."
+          },
+          {
+            "id": "distractor-0",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "正在 marks an action in progress at the reference time. The activity follows it directly. It does not by itself say that the action is finished."
+      },
+      {
+        "id": "lesson-intermediate-ongoing-actions-build",
+        "type": "order",
+        "prompt": "Build: He is preparing for an exam.",
+        "tokens": [
+          "他",
+          "正在",
+          "准备",
+          "考试",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "他",
+            "正在",
+            "准备",
+            "考试",
+            "。"
+          ]
+        ],
+        "explanation": "他正在准备考试。 — 正在 marks an action in progress at the reference time. The activity follows it directly. It does not by itself say that the action is finished.",
+        "hint": "Use the pattern 正在 + action."
+      },
+      {
+        "id": "lesson-intermediate-ongoing-actions-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 准备 (zhǔnbèi)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "part; portion"
+          },
+          {
+            "id": "distractor-1",
+            "text": "restaurant; dining hall"
+          },
+          {
+            "id": "correct",
+            "text": "to prepare; preparation"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "准备 means to prepare; preparation."
+      },
+      {
+        "id": "lesson-intermediate-ongoing-actions-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: We are discussing this question.",
+        "tokens": [
+          "我们",
+          "正在",
+          "讨论",
+          "这个",
+          "问题",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我们",
+            "正在",
+            "讨论",
+            "这个",
+            "问题",
+            "。"
+          ]
+        ],
+        "explanation": "我们正在讨论这个问题。 — We are discussing this question.",
+        "hint": "Use the pattern 正在 + action."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-ongoing-actions"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00493",
+      "hearmandarin:w01393",
+      "hearmandarin:w01723",
+      "hearmandarin:w00220",
+      "hearmandarin:w00381",
+      "hearmandarin:w01329"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-intermediate-results",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "Expressing a result",
+    "description": "Practise verb + result complement in a short, connected intermediate lesson.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 430,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-intermediate-ongoing-actions"
+    ],
+    "objectives": [
+      "Use verb + result complement in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result.",
+      "Read and listen: 我听懂了这个故事。 (Wǒ tīngdǒng le zhège gùshi.) — I understood this story after listening to it.",
+      "Try a new context: 她看完了那本书。 (Tā kànwán le nà běn shū.) — She finished reading that book."
+    ],
+    "examples": [
+      {
+        "hanzi": "我听懂了这个故事。",
+        "pinyin": "Wǒ tīngdǒng le zhège gùshi.",
+        "meaning": "I understood this story after listening to it."
+      },
+      {
+        "hanzi": "她看完了那本书。",
+        "pinyin": "Tā kànwán le nà běn shū.",
+        "meaning": "She finished reading that book."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-intermediate-results-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "I understood this story after listening to it."
+          },
+          {
+            "id": "distractor-0",
+            "text": "I understood this story after reading it."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I listened to this story but did not understand it."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我听懂了这个故事。 means: I understood this story after listening to it.",
+        "audioText": "我听懂了这个故事。"
+      },
+      {
+        "id": "lesson-intermediate-results-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does verb + result complement express?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "正在 marks an action in progress at the reference time."
+          },
+          {
+            "id": "distractor-1",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "correct",
+            "text": "A result complement follows the action and says what it achieved."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result."
+      },
+      {
+        "id": "lesson-intermediate-results-build",
+        "type": "order",
+        "prompt": "Build: I understood this story after listening to it.",
+        "tokens": [
+          "我",
+          "听",
+          "懂",
+          "了",
+          "这个",
+          "故事",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "听",
+            "懂",
+            "了",
+            "这个",
+            "故事",
+            "。"
+          ]
+        ],
+        "explanation": "我听懂了这个故事。 — A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result.",
+        "hint": "Use the pattern verb + result complement."
+      },
+      {
+        "id": "lesson-intermediate-results-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 故事 (gùshi)?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "story; tale"
+          },
+          {
+            "id": "distractor-0",
+            "text": "to deposit; to save; to exist"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to go on a business trip"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "故事 means story; tale."
+      },
+      {
+        "id": "lesson-intermediate-results-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: She finished reading that book.",
+        "tokens": [
+          "她",
+          "看",
+          "完",
+          "了",
+          "那",
+          "本",
+          "书",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "她",
+            "看",
+            "完",
+            "了",
+            "那",
+            "本",
+            "书",
+            "。"
+          ]
+        ],
+        "explanation": "她看完了那本书。 — She finished reading that book.",
+        "hint": "Use the pattern verb + result complement."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-results"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00650",
+      "hearmandarin:w00868",
+      "hearmandarin:w00713",
+      "hearmandarin:w01386",
+      "hearmandarin:w01382",
+      "hearmandarin:w01461"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-intermediate-results",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "Expressing a result · practice",
+    "description": "A standalone practice session. I understood this story after listening to it.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 430,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use verb + result complement in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result.",
+      "Read and listen: 我听懂了这个故事。 (Wǒ tīngdǒng le zhège gùshi.) — I understood this story after listening to it.",
+      "Try a new context: 她看完了那本书。 (Tā kànwán le nà běn shū.) — She finished reading that book."
+    ],
+    "examples": [
+      {
+        "hanzi": "我听懂了这个故事。",
+        "pinyin": "Wǒ tīngdǒng le zhège gùshi.",
+        "meaning": "I understood this story after listening to it."
+      },
+      {
+        "hanzi": "她看完了那本书。",
+        "pinyin": "Tā kànwán le nà běn shū.",
+        "meaning": "She finished reading that book."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-intermediate-results-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "I understood this story after reading it."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I listened to this story but did not understand it."
+          },
+          {
+            "id": "correct",
+            "text": "I understood this story after listening to it."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我听懂了这个故事。 means: I understood this story after listening to it.",
+        "audioText": "我听懂了这个故事。"
+      },
+      {
+        "id": "exercise-intermediate-results-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does verb + result complement express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "correct",
+            "text": "A result complement follows the action and says what it achieved."
+          },
+          {
+            "id": "distractor-0",
+            "text": "正在 marks an action in progress at the reference time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result."
+      },
+      {
+        "id": "exercise-intermediate-results-build",
+        "type": "order",
+        "prompt": "Build: I understood this story after listening to it.",
+        "tokens": [
+          "我",
+          "听",
+          "懂",
+          "了",
+          "这个",
+          "故事",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "听",
+            "懂",
+            "了",
+            "这个",
+            "故事",
+            "。"
+          ]
+        ],
+        "explanation": "我听懂了这个故事。 — A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result.",
+        "hint": "Use the pattern verb + result complement."
+      },
+      {
+        "id": "exercise-intermediate-results-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 故事 (gùshi)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "to apologize"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to wear hats, glasses and accessories"
+          },
+          {
+            "id": "correct",
+            "text": "story; tale"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "故事 means story; tale."
+      },
+      {
+        "id": "exercise-intermediate-results-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: She finished reading that book.",
+        "tokens": [
+          "她",
+          "看",
+          "完",
+          "了",
+          "那",
+          "本",
+          "书",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "她",
+            "看",
+            "完",
+            "了",
+            "那",
+            "本",
+            "书",
+            "。"
+          ]
+        ],
+        "explanation": "她看完了那本书。 — She finished reading that book.",
+        "hint": "Use the pattern verb + result complement."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-results"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w00650",
+      "hearmandarin:w00868",
+      "hearmandarin:w00713",
+      "hearmandarin:w01386",
+      "hearmandarin:w01382",
+      "hearmandarin:w01461"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-intermediate-handling-things",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "Handling an object with 把",
+    "description": "Practise subject + 把 + object + action/result in a short, connected intermediate lesson.",
+    "minutes": 9,
+    "category": "objects",
+    "line": "everyday",
+    "position": {
+      "x": 580,
+      "y": 110
+    },
+    "prerequisites": [
+      "lesson-intermediate-ongoing-actions"
+    ],
+    "objectives": [
+      "Use subject + 把 + object + action/result in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "把 places a specific affected object before the action. These examples include the result or direction of the action, rather than ending with a bare action verb.",
+      "Read and listen: 请把门关上。 (Qǐng bǎ mén guānshàng.) — Please close the door.",
+      "Try a new context: 我把房间打扫干净了。 (Wǒ bǎ fángjiān dǎsǎo gānjìng le.) — I cleaned the room."
+    ],
+    "examples": [
+      {
+        "hanzi": "请把门关上。",
+        "pinyin": "Qǐng bǎ mén guānshàng.",
+        "meaning": "Please close the door."
+      },
+      {
+        "hanzi": "我把房间打扫干净了。",
+        "pinyin": "Wǒ bǎ fángjiān dǎsǎo gānjìng le.",
+        "meaning": "I cleaned the room."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-intermediate-handling-things-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "Please close the door."
+          },
+          {
+            "id": "distractor-0",
+            "text": "Please open the door."
+          },
+          {
+            "id": "distractor-1",
+            "text": "The door cannot be closed."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "请把门关上。 means: Please close the door.",
+        "audioText": "请把门关上。"
+      },
+      {
+        "id": "lesson-intermediate-handling-things-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does subject + 把 + object + action/result express?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "distractor-1",
+            "text": "正在 marks an action in progress at the reference time."
+          },
+          {
+            "id": "correct",
+            "text": "把 places a specific affected object before the action."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "把 places a specific affected object before the action. These examples include the result or direction of the action, rather than ending with a bare action verb."
+      },
+      {
+        "id": "lesson-intermediate-handling-things-build",
+        "type": "order",
+        "prompt": "Build: Please close the door.",
+        "tokens": [
+          "请",
+          "把",
+          "门",
+          "关",
+          "上",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "请",
+            "把",
+            "门",
+            "关",
+            "上",
+            "。"
+          ]
+        ],
+        "explanation": "请把门关上。 — 把 places a specific affected object before the action. These examples include the result or direction of the action, rather than ending with a bare action verb.",
+        "hint": "Use the pattern subject + 把 + object + action/result."
+      },
+      {
+        "id": "lesson-intermediate-handling-things-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 整理 (zhěnglǐ)?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "to tidy up; to sort out; to organize"
+          },
+          {
+            "id": "distractor-0",
+            "text": "movement; action"
+          },
+          {
+            "id": "distractor-1",
+            "text": "grammar conjunction: and; but"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "整理 means to tidy up; to sort out; to organize."
+      },
+      {
+        "id": "lesson-intermediate-handling-things-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: I cleaned the room.",
+        "tokens": [
+          "我",
+          "把",
+          "房间",
+          "打扫",
+          "干净",
+          "了",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "把",
+            "房间",
+            "打扫",
+            "干净",
+            "了",
+            "。"
+          ]
+        ],
+        "explanation": "我把房间打扫干净了。 — I cleaned the room.",
+        "hint": "Use the pattern subject + 把 + object + action/result."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-handling-things"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w01930",
+      "hearmandarin:w01005",
+      "hearmandarin:w00698",
+      "hearmandarin:w00571",
+      "hearmandarin:w00636",
+      "hearmandarin:w00052"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-intermediate-reasons",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "challenging",
+    "title": "Explaining a reason and a contrast",
+    "description": "Practise 因为 … 所以 … / 虽然 … 但是 … in a short, connected intermediate lesson.",
+    "minutes": 12,
+    "category": "other",
+    "line": "sentences",
+    "position": {
+      "x": 740,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-intermediate-results",
+      "lesson-intermediate-handling-things"
+    ],
+    "objectives": [
+      "Use 因为 … 所以 … / 虽然 … 但是 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "因为 gives a reason and 所以 its consequence. 虽然 introduces a fact that contrasts with the result expressed by 但是. The two patterns express different relations.",
+      "Read and listen: 因为下雨，所以我们在家学习。 (Yīnwèi xiàyǔ, suǒyǐ wǒmen zài jiā xuéxí.) — Because it is raining, we are studying at home.",
+      "Try a new context: 虽然很累，但是我很高兴。 (Suīrán hěn lèi, dànshì wǒ hěn gāoxìng.) — Although I am tired, I am happy."
+    ],
+    "examples": [
+      {
+        "hanzi": "因为下雨，所以我们在家学习。",
+        "pinyin": "Yīnwèi xiàyǔ, suǒyǐ wǒmen zài jiā xuéxí.",
+        "meaning": "Because it is raining, we are studying at home."
+      },
+      {
+        "hanzi": "虽然很累，但是我很高兴。",
+        "pinyin": "Suīrán hěn lèi, dànshì wǒ hěn gāoxìng.",
+        "meaning": "Although I am tired, I am happy."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-intermediate-reasons-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "It is raining because we are studying at home."
+          },
+          {
+            "id": "correct",
+            "text": "Because it is raining, we are studying at home."
+          },
+          {
+            "id": "distractor-0",
+            "text": "Although it is raining, we are going out to study."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "因为下雨，所以我们在家学习。 means: Because it is raining, we are studying at home.",
+        "audioText": "因为下雨，所以我们在家学习。"
+      },
+      {
+        "id": "lesson-intermediate-reasons-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 因为 … 所以 … / 虽然 … 但是 … express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "因为 gives a reason and 所以 its consequence."
+          },
+          {
+            "id": "distractor-0",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "distractor-1",
+            "text": "正在 marks an action in progress at the reference time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "因为 gives a reason and 所以 its consequence. 虽然 introduces a fact that contrasts with the result expressed by 但是. The two patterns express different relations."
+      },
+      {
+        "id": "lesson-intermediate-reasons-build",
+        "type": "order",
+        "prompt": "Build: Because it is raining, we are studying at home.",
+        "tokens": [
+          "因为",
+          "下雨",
+          "，",
+          "所以",
+          "我们",
+          "在",
+          "家",
+          "学习",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "因为",
+            "下雨",
+            "，",
+            "所以",
+            "我们",
+            "在",
+            "家",
+            "学习",
+            "。"
+          ]
+        ],
+        "explanation": "因为下雨，所以我们在家学习。 — 因为 gives a reason and 所以 its consequence. 虽然 introduces a fact that contrasts with the result expressed by 但是. The two patterns express different relations.",
+        "hint": "Use the pattern 因为 … 所以 … / 虽然 … 但是 …."
+      },
+      {
+        "id": "lesson-intermediate-reasons-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 原因 (yuányīn)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "complicated; complex"
+          },
+          {
+            "id": "correct",
+            "text": "cause"
+          },
+          {
+            "id": "distractor-0",
+            "text": "to relax"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "原因 means cause."
+      },
+      {
+        "id": "lesson-intermediate-reasons-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Although I am tired, I am happy.",
+        "tokens": [
+          "虽然",
+          "很",
+          "累",
+          "，",
+          "但是",
+          "我",
+          "很",
+          "高兴",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "虽然",
+            "很",
+            "累",
+            "，",
+            "但是",
+            "我",
+            "很",
+            "高兴",
+            "。"
+          ]
+        ],
+        "explanation": "虽然很累，但是我很高兴。 — Although I am tired, I am happy.",
+        "hint": "Use the pattern 因为 … 所以 … / 虽然 … 但是 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-reasons"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w01902",
+      "hearmandarin:w00940",
+      "hearmandarin:w01386",
+      "hearmandarin:w00985"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-intermediate-story-checkpoint",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "challenging",
+    "title": "Tell a connected story",
+    "description": "Practise Experience, result and explanation in a short, connected intermediate lesson.",
+    "minutes": 12,
+    "category": "people",
+    "line": "sentences",
+    "position": {
+      "x": 900,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-intermediate-reasons"
+    ],
+    "objectives": [
+      "Use Experience, result and explanation in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other.",
+      "Read and listen: 我参加过这个活动，所以有一些经验。 (Wǒ cānjiā guo zhège huódòng, suǒyǐ yǒu yìxiē jīngyàn.) — I have taken part in this activity, so I have some experience.",
+      "Try a new context: 虽然问题很难，但是我们解决了。 (Suīrán wèntí hěn nán, dànshì wǒmen jiějué le.) — Although the problem was difficult, we solved it."
+    ],
+    "examples": [
+      {
+        "hanzi": "我参加过这个活动，所以有一些经验。",
+        "pinyin": "Wǒ cānjiā guo zhège huódòng, suǒyǐ yǒu yìxiē jīngyàn.",
+        "meaning": "I have taken part in this activity, so I have some experience."
+      },
+      {
+        "hanzi": "虽然问题很难，但是我们解决了。",
+        "pinyin": "Suīrán wèntí hěn nán, dànshì wǒmen jiějué le.",
+        "meaning": "Although the problem was difficult, we solved it."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-intermediate-story-checkpoint-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "I am about to take part in this activity for the first time."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I have never taken part in this activity, so I have no experience."
+          },
+          {
+            "id": "correct",
+            "text": "I have taken part in this activity, so I have some experience."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我参加过这个活动，所以有一些经验。 means: I have taken part in this activity, so I have some experience.",
+        "audioText": "我参加过这个活动，所以有一些经验。"
+      },
+      {
+        "id": "lesson-intermediate-story-checkpoint-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does Experience, result and explanation express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          },
+          {
+            "id": "correct",
+            "text": "Connect an earlier experience with a concrete result."
+          },
+          {
+            "id": "distractor-0",
+            "text": "正在 marks an action in progress at the reference time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other."
+      },
+      {
+        "id": "lesson-intermediate-story-checkpoint-build",
+        "type": "order",
+        "prompt": "Build: I have taken part in this activity, so I have some experience.",
+        "tokens": [
+          "我",
+          "参加",
+          "过",
+          "这个",
+          "活动",
+          "，",
+          "所以",
+          "有",
+          "一些",
+          "经验",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "参加",
+            "过",
+            "这个",
+            "活动",
+            "，",
+            "所以",
+            "有",
+            "一些",
+            "经验",
+            "。"
+          ]
+        ],
+        "explanation": "我参加过这个活动，所以有一些经验。 — Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other.",
+        "hint": "Use the pattern Experience, result and explanation."
+      },
+      {
+        "id": "lesson-intermediate-story-checkpoint-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 经验 (jīngyàn)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "shopping"
+          },
+          {
+            "id": "distractor-1",
+            "text": "arm"
+          },
+          {
+            "id": "correct",
+            "text": "experience"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "经验 means experience."
+      },
+      {
+        "id": "lesson-intermediate-story-checkpoint-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Although the problem was difficult, we solved it.",
+        "tokens": [
+          "虽然",
+          "问题",
+          "很",
+          "难",
+          "，",
+          "但是",
+          "我们",
+          "解决",
+          "了",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "虽然",
+            "问题",
+            "很",
+            "难",
+            "，",
+            "但是",
+            "我们",
+            "解决",
+            "了",
+            "。"
+          ]
+        ],
+        "explanation": "虽然问题很难，但是我们解决了。 — Although the problem was difficult, we solved it.",
+        "hint": "Use the pattern Experience, result and explanation."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-story-checkpoint"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w01399",
+      "hearmandarin:w00546",
+      "hearmandarin:w00713",
+      "hearmandarin:w01902",
+      "hearmandarin:w01382",
+      "hearmandarin:w00689"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-intermediate-story-checkpoint",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "intermediate",
+    "difficulty": "challenging",
+    "title": "Tell a connected story · practice",
+    "description": "A standalone practice session. I have taken part in this activity, so I have some experience.",
+    "minutes": 12,
+    "category": "people",
+    "line": "sentences",
+    "position": {
+      "x": 900,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use Experience, result and explanation in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other.",
+      "Read and listen: 我参加过这个活动，所以有一些经验。 (Wǒ cānjiā guo zhège huódòng, suǒyǐ yǒu yìxiē jīngyàn.) — I have taken part in this activity, so I have some experience.",
+      "Try a new context: 虽然问题很难，但是我们解决了。 (Suīrán wèntí hěn nán, dànshì wǒmen jiějué le.) — Although the problem was difficult, we solved it."
+    ],
+    "examples": [
+      {
+        "hanzi": "我参加过这个活动，所以有一些经验。",
+        "pinyin": "Wǒ cānjiā guo zhège huódòng, suǒyǐ yǒu yìxiē jīngyàn.",
+        "meaning": "I have taken part in this activity, so I have some experience."
+      },
+      {
+        "hanzi": "虽然问题很难，但是我们解决了。",
+        "pinyin": "Suīrán wèntí hěn nán, dànshì wǒmen jiějué le.",
+        "meaning": "Although the problem was difficult, we solved it."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-intermediate-story-checkpoint-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "I have never taken part in this activity, so I have no experience."
+          },
+          {
+            "id": "correct",
+            "text": "I have taken part in this activity, so I have some experience."
+          },
+          {
+            "id": "distractor-0",
+            "text": "I am about to take part in this activity for the first time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我参加过这个活动，所以有一些经验。 means: I have taken part in this activity, so I have some experience.",
+        "audioText": "我参加过这个活动，所以有一些经验。"
+      },
+      {
+        "id": "exercise-intermediate-story-checkpoint-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does Experience, result and explanation express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "Connect an earlier experience with a concrete result."
+          },
+          {
+            "id": "distractor-0",
+            "text": "正在 marks an action in progress at the reference time."
+          },
+          {
+            "id": "distractor-1",
+            "text": "过 after a verb describes an experience at an unspecified time."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other."
+      },
+      {
+        "id": "exercise-intermediate-story-checkpoint-build",
+        "type": "order",
+        "prompt": "Build: I have taken part in this activity, so I have some experience.",
+        "tokens": [
+          "我",
+          "参加",
+          "过",
+          "这个",
+          "活动",
+          "，",
+          "所以",
+          "有",
+          "一些",
+          "经验",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "参加",
+            "过",
+            "这个",
+            "活动",
+            "，",
+            "所以",
+            "有",
+            "一些",
+            "经验",
+            "。"
+          ]
+        ],
+        "explanation": "我参加过这个活动，所以有一些经验。 — Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other.",
+        "hint": "Use the pattern Experience, result and explanation."
+      },
+      {
+        "id": "exercise-intermediate-story-checkpoint-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 经验 (jīngyàn)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "broadcast; radio"
+          },
+          {
+            "id": "correct",
+            "text": "experience"
+          },
+          {
+            "id": "distractor-0",
+            "text": "process; course"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "经验 means experience."
+      },
+      {
+        "id": "exercise-intermediate-story-checkpoint-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Although the problem was difficult, we solved it.",
+        "tokens": [
+          "虽然",
+          "问题",
+          "很",
+          "难",
+          "，",
+          "但是",
+          "我们",
+          "解决",
+          "了",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "虽然",
+            "问题",
+            "很",
+            "难",
+            "，",
+            "但是",
+            "我们",
+            "解决",
+            "了",
+            "。"
+          ]
+        ],
+        "explanation": "虽然问题很难，但是我们解决了。 — Although the problem was difficult, we solved it.",
+        "hint": "Use the pattern Experience, result and explanation."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-intermediate-story-checkpoint"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w01399",
+      "hearmandarin:w00546",
+      "hearmandarin:w00713",
+      "hearmandarin:w01902",
+      "hearmandarin:w01382",
+      "hearmandarin:w00689"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-advanced-viewpoints",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "gentle",
+    "title": "Weighing different viewpoints",
+    "description": "Practise 尽管 … 仍然 … in a short, connected advanced lesson.",
+    "minutes": 7,
+    "category": "other",
+    "line": "everyday",
+    "position": {
+      "x": 110,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use 尽管 … 仍然 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle.",
+      "Read and listen: 尽管存在困难，我们仍然坚持这个决定。 (Jǐnguǎn cúnzài kùnnan, wǒmen réngrán jiānchí zhège juédìng.) — Despite the difficulties, we still stand by this decision.",
+      "Try a new context: 尽管资源有限，我们仍然取得了进步。 (Jǐnguǎn zīyuán yǒuxiàn, wǒmen réngrán qǔdé le jìnbù.) — Despite limited resources, we still made progress."
+    ],
+    "examples": [
+      {
+        "hanzi": "尽管存在困难，我们仍然坚持这个决定。",
+        "pinyin": "Jǐnguǎn cúnzài kùnnan, wǒmen réngrán jiānchí zhège juédìng.",
+        "meaning": "Despite the difficulties, we still stand by this decision."
+      },
+      {
+        "hanzi": "尽管资源有限，我们仍然取得了进步。",
+        "pinyin": "Jǐnguǎn zīyuán yǒuxiàn, wǒmen réngrán qǔdé le jìnbù.",
+        "meaning": "Despite limited resources, we still made progress."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-advanced-viewpoints-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "Because of the difficulties, we have abandoned this decision."
+          },
+          {
+            "id": "distractor-1",
+            "text": "We will only stand by this decision if all difficulties disappear."
+          },
+          {
+            "id": "correct",
+            "text": "Despite the difficulties, we still stand by this decision."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "尽管存在困难，我们仍然坚持这个决定。 means: Despite the difficulties, we still stand by this decision.",
+        "audioText": "尽管存在困难，我们仍然坚持这个决定。"
+      },
+      {
+        "id": "lesson-advanced-viewpoints-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 尽管 … 仍然 … express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative."
+          },
+          {
+            "id": "correct",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "distractor-0",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle."
+      },
+      {
+        "id": "lesson-advanced-viewpoints-build",
+        "type": "order",
+        "prompt": "Build: Despite the difficulties, we still stand by this decision.",
+        "tokens": [
+          "尽管",
+          "存在",
+          "困难",
+          "，",
+          "我们",
+          "仍然",
+          "坚持",
+          "这个",
+          "决定",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "尽管",
+            "存在",
+            "困难",
+            "，",
+            "我们",
+            "仍然",
+            "坚持",
+            "这个",
+            "决定",
+            "。"
+          ]
+        ],
+        "explanation": "尽管存在困难，我们仍然坚持这个决定。 — 尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle.",
+        "hint": "Use the pattern 尽管 … 仍然 …."
+      },
+      {
+        "id": "lesson-advanced-viewpoints-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 存在 (cúnzài)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "to reside"
+          },
+          {
+            "id": "distractor-1",
+            "text": "finals"
+          },
+          {
+            "id": "correct",
+            "text": "to exist"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "存在 means to exist."
+      },
+      {
+        "id": "lesson-advanced-viewpoints-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Despite limited resources, we still made progress.",
+        "tokens": [
+          "尽管",
+          "资源",
+          "有限",
+          "，",
+          "我们",
+          "仍然",
+          "取得",
+          "了",
+          "进步",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "尽管",
+            "资源",
+            "有限",
+            "，",
+            "我们",
+            "仍然",
+            "取得",
+            "了",
+            "进步",
+            "。"
+          ]
+        ],
+        "explanation": "尽管资源有限，我们仍然取得了进步。 — Despite limited resources, we still made progress.",
+        "hint": "Use the pattern 尽管 … 仍然 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-viewpoints"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w02210",
+      "hearmandarin:w00697",
+      "hearmandarin:w01617",
+      "hearmandarin:w03571",
+      "hearmandarin:w01446"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-advanced-viewpoints",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "gentle",
+    "title": "Weighing different viewpoints · practice",
+    "description": "A standalone practice session. Despite the difficulties, we still stand by this decision.",
+    "minutes": 7,
+    "category": "other",
+    "line": "everyday",
+    "position": {
+      "x": 110,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use 尽管 … 仍然 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle.",
+      "Read and listen: 尽管存在困难，我们仍然坚持这个决定。 (Jǐnguǎn cúnzài kùnnan, wǒmen réngrán jiānchí zhège juédìng.) — Despite the difficulties, we still stand by this decision.",
+      "Try a new context: 尽管资源有限，我们仍然取得了进步。 (Jǐnguǎn zīyuán yǒuxiàn, wǒmen réngrán qǔdé le jìnbù.) — Despite limited resources, we still made progress."
+    ],
+    "examples": [
+      {
+        "hanzi": "尽管存在困难，我们仍然坚持这个决定。",
+        "pinyin": "Jǐnguǎn cúnzài kùnnan, wǒmen réngrán jiānchí zhège juédìng.",
+        "meaning": "Despite the difficulties, we still stand by this decision."
+      },
+      {
+        "hanzi": "尽管资源有限，我们仍然取得了进步。",
+        "pinyin": "Jǐnguǎn zīyuán yǒuxiàn, wǒmen réngrán qǔdé le jìnbù.",
+        "meaning": "Despite limited resources, we still made progress."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-advanced-viewpoints-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "We will only stand by this decision if all difficulties disappear."
+          },
+          {
+            "id": "correct",
+            "text": "Despite the difficulties, we still stand by this decision."
+          },
+          {
+            "id": "distractor-0",
+            "text": "Because of the difficulties, we have abandoned this decision."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "尽管存在困难，我们仍然坚持这个决定。 means: Despite the difficulties, we still stand by this decision.",
+        "audioText": "尽管存在困难，我们仍然坚持这个决定。"
+      },
+      {
+        "id": "exercise-advanced-viewpoints-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 尽管 … 仍然 … express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "distractor-0",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          },
+          {
+            "id": "distractor-1",
+            "text": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle."
+      },
+      {
+        "id": "exercise-advanced-viewpoints-build",
+        "type": "order",
+        "prompt": "Build: Despite the difficulties, we still stand by this decision.",
+        "tokens": [
+          "尽管",
+          "存在",
+          "困难",
+          "，",
+          "我们",
+          "仍然",
+          "坚持",
+          "这个",
+          "决定",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "尽管",
+            "存在",
+            "困难",
+            "，",
+            "我们",
+            "仍然",
+            "坚持",
+            "这个",
+            "决定",
+            "。"
+          ]
+        ],
+        "explanation": "尽管存在困难，我们仍然坚持这个决定。 — 尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle.",
+        "hint": "Use the pattern 尽管 … 仍然 …."
+      },
+      {
+        "id": "exercise-advanced-viewpoints-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 存在 (cúnzài)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "space"
+          },
+          {
+            "id": "correct",
+            "text": "to exist"
+          },
+          {
+            "id": "distractor-0",
+            "text": "measure word for small round things"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "存在 means to exist."
+      },
+      {
+        "id": "exercise-advanced-viewpoints-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Despite limited resources, we still made progress.",
+        "tokens": [
+          "尽管",
+          "资源",
+          "有限",
+          "，",
+          "我们",
+          "仍然",
+          "取得",
+          "了",
+          "进步",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "尽管",
+            "资源",
+            "有限",
+            "，",
+            "我们",
+            "仍然",
+            "取得",
+            "了",
+            "进步",
+            "。"
+          ]
+        ],
+        "explanation": "尽管资源有限，我们仍然取得了进步。 — Despite limited resources, we still made progress.",
+        "hint": "Use the pattern 尽管 … 仍然 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-viewpoints"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w02210",
+      "hearmandarin:w00697",
+      "hearmandarin:w01617",
+      "hearmandarin:w03571",
+      "hearmandarin:w01446"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-advanced-decisions",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "Explaining a shared decision",
+    "description": "Practise 既然 … 就 … in a short, connected advanced lesson.",
+    "minutes": 9,
+    "category": "people",
+    "line": "everyday",
+    "position": {
+      "x": 270,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-advanced-viewpoints"
+    ],
+    "objectives": [
+      "Use 既然 … 就 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation. It is useful when the speaker treats the first clause as common ground.",
+      "Read and listen: 既然大家都同意，我们就开始吧。 (Jìrán dàjiā dōu tóngyì, wǒmen jiù kāishǐ ba.) — Since everyone agrees, let us begin.",
+      "Try a new context: 既然目标已经明确，我们就采取行动。 (Jìrán mùbiāo yǐjīng míngquè, wǒmen jiù cǎiqǔ xíngdòng.) — Since the goal is clear, we will take action."
+    ],
+    "examples": [
+      {
+        "hanzi": "既然大家都同意，我们就开始吧。",
+        "pinyin": "Jìrán dàjiā dōu tóngyì, wǒmen jiù kāishǐ ba.",
+        "meaning": "Since everyone agrees, let us begin."
+      },
+      {
+        "hanzi": "既然目标已经明确，我们就采取行动。",
+        "pinyin": "Jìrán mùbiāo yǐjīng míngquè, wǒmen jiù cǎiqǔ xíngdòng.",
+        "meaning": "Since the goal is clear, we will take action."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-advanced-decisions-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "Unless everyone agrees, we will begin."
+          },
+          {
+            "id": "distractor-1",
+            "text": "Even though everyone disagrees, let us begin."
+          },
+          {
+            "id": "correct",
+            "text": "Since everyone agrees, let us begin."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "既然大家都同意，我们就开始吧。 means: Since everyone agrees, let us begin.",
+        "audioText": "既然大家都同意，我们就开始吧。"
+      },
+      {
+        "id": "lesson-advanced-decisions-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 既然 … 就 … express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative."
+          },
+          {
+            "id": "correct",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          },
+          {
+            "id": "distractor-0",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation. It is useful when the speaker treats the first clause as common ground."
+      },
+      {
+        "id": "lesson-advanced-decisions-build",
+        "type": "order",
+        "prompt": "Build: Since everyone agrees, let us begin.",
+        "tokens": [
+          "既然",
+          "大家",
+          "都",
+          "同意",
+          "，",
+          "我们",
+          "就",
+          "开始",
+          "吧",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "既然",
+            "大家",
+            "都",
+            "同意",
+            "，",
+            "我们",
+            "就",
+            "开始",
+            "吧",
+            "。"
+          ]
+        ],
+        "explanation": "既然大家都同意，我们就开始吧。 — 既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation. It is useful when the speaker treats the first clause as common ground.",
+        "hint": "Use the pattern 既然 … 就 …."
+      },
+      {
+        "id": "lesson-advanced-decisions-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 决策 (juécè)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "boss"
+          },
+          {
+            "id": "distractor-1",
+            "text": "pear"
+          },
+          {
+            "id": "correct",
+            "text": "decision; decision-making; to decide (policy)"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "决策 means decision; decision-making; to decide (policy)."
+      },
+      {
+        "id": "lesson-advanced-decisions-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Since the goal is clear, we will take action.",
+        "tokens": [
+          "既然",
+          "目标",
+          "已经",
+          "明确",
+          "，",
+          "我们",
+          "就",
+          "采取",
+          "行动",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "既然",
+            "目标",
+            "已经",
+            "明确",
+            "，",
+            "我们",
+            "就",
+            "采取",
+            "行动",
+            "。"
+          ]
+        ],
+        "explanation": "既然目标已经明确，我们就采取行动。 — Since the goal is clear, we will take action.",
+        "hint": "Use the pattern 既然 … 就 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-decisions"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w04355",
+      "hearmandarin:w02339",
+      "hearmandarin:w03433",
+      "hearmandarin:w02776",
+      "hearmandarin:w01517",
+      "hearmandarin:w00860"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-advanced-alternatives",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "Choosing a better alternative",
+    "description": "Practise 与其 … 不如 … in a short, connected advanced lesson.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 430,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-advanced-decisions"
+    ],
+    "objectives": [
+      "Use 与其 … 不如 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable.",
+      "Read and listen: 与其抱怨，不如采取行动。 (Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.) — Rather than complain, it is better to take action.",
+      "Try a new context: 与其浪费时间，不如认真准备。 (Yǔqí làngfèi shíjiān, bùrú rènzhēn zhǔnbèi.) — Rather than waste time, it is better to prepare carefully."
+    ],
+    "examples": [
+      {
+        "hanzi": "与其抱怨，不如采取行动。",
+        "pinyin": "Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.",
+        "meaning": "Rather than complain, it is better to take action."
+      },
+      {
+        "hanzi": "与其浪费时间，不如认真准备。",
+        "pinyin": "Yǔqí làngfèi shíjiān, bùrú rènzhēn zhǔnbèi.",
+        "meaning": "Rather than waste time, it is better to prepare carefully."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-advanced-alternatives-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "Rather than complain, it is better to take action."
+          },
+          {
+            "id": "distractor-0",
+            "text": "We should wait for others to act before complaining."
+          },
+          {
+            "id": "distractor-1",
+            "text": "Complaining is more useful than taking action."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "与其抱怨，不如采取行动。 means: Rather than complain, it is better to take action.",
+        "audioText": "与其抱怨，不如采取行动。"
+      },
+      {
+        "id": "lesson-advanced-alternatives-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 与其 … 不如 … express?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          },
+          {
+            "id": "distractor-1",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "correct",
+            "text": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable."
+      },
+      {
+        "id": "lesson-advanced-alternatives-build",
+        "type": "order",
+        "prompt": "Build: Rather than complain, it is better to take action.",
+        "tokens": [
+          "与其",
+          "抱怨",
+          "，",
+          "不如",
+          "采取",
+          "行动",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "与其",
+            "抱怨",
+            "，",
+            "不如",
+            "采取",
+            "行动",
+            "。"
+          ]
+        ],
+        "explanation": "与其抱怨，不如采取行动。 — 与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable.",
+        "hint": "Use the pattern 与其 … 不如 …."
+      },
+      {
+        "id": "lesson-advanced-alternatives-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 与其 (yǔqí)?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "rather than"
+          },
+          {
+            "id": "distractor-0",
+            "text": "amazing"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to make use of; to use; to exploit"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "与其 means rather than."
+      },
+      {
+        "id": "lesson-advanced-alternatives-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Rather than waste time, it is better to prepare carefully.",
+        "tokens": [
+          "与其",
+          "浪费",
+          "时间",
+          "，",
+          "不如",
+          "认真",
+          "准备",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "与其",
+            "浪费",
+            "时间",
+            "，",
+            "不如",
+            "认真",
+            "准备",
+            "。"
+          ]
+        ],
+        "explanation": "与其浪费时间，不如认真准备。 — Rather than waste time, it is better to prepare carefully.",
+        "hint": "Use the pattern 与其 … 不如 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-alternatives"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w05208",
+      "hearmandarin:w02035",
+      "hearmandarin:w03288",
+      "hearmandarin:w02086",
+      "hearmandarin:w01453",
+      "hearmandarin:w00817"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-advanced-alternatives",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "Choosing a better alternative · practice",
+    "description": "A standalone practice session. Rather than complain, it is better to take action.",
+    "minutes": 9,
+    "category": "actions",
+    "line": "everyday",
+    "position": {
+      "x": 430,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use 与其 … 不如 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable.",
+      "Read and listen: 与其抱怨，不如采取行动。 (Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.) — Rather than complain, it is better to take action.",
+      "Try a new context: 与其浪费时间，不如认真准备。 (Yǔqí làngfèi shíjiān, bùrú rènzhēn zhǔnbèi.) — Rather than waste time, it is better to prepare carefully."
+    ],
+    "examples": [
+      {
+        "hanzi": "与其抱怨，不如采取行动。",
+        "pinyin": "Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.",
+        "meaning": "Rather than complain, it is better to take action."
+      },
+      {
+        "hanzi": "与其浪费时间，不如认真准备。",
+        "pinyin": "Yǔqí làngfèi shíjiān, bùrú rènzhēn zhǔnbèi.",
+        "meaning": "Rather than waste time, it is better to prepare carefully."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-advanced-alternatives-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "We should wait for others to act before complaining."
+          },
+          {
+            "id": "distractor-1",
+            "text": "Complaining is more useful than taking action."
+          },
+          {
+            "id": "correct",
+            "text": "Rather than complain, it is better to take action."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "与其抱怨，不如采取行动。 means: Rather than complain, it is better to take action.",
+        "audioText": "与其抱怨，不如采取行动。"
+      },
+      {
+        "id": "exercise-advanced-alternatives-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 与其 … 不如 … express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "correct",
+            "text": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative."
+          },
+          {
+            "id": "distractor-0",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable."
+      },
+      {
+        "id": "exercise-advanced-alternatives-build",
+        "type": "order",
+        "prompt": "Build: Rather than complain, it is better to take action.",
+        "tokens": [
+          "与其",
+          "抱怨",
+          "，",
+          "不如",
+          "采取",
+          "行动",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "与其",
+            "抱怨",
+            "，",
+            "不如",
+            "采取",
+            "行动",
+            "。"
+          ]
+        ],
+        "explanation": "与其抱怨，不如采取行动。 — 与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable.",
+        "hint": "Use the pattern 与其 … 不如 …."
+      },
+      {
+        "id": "exercise-advanced-alternatives-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 与其 (yǔqí)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "logic"
+          },
+          {
+            "id": "distractor-1",
+            "text": "dragon"
+          },
+          {
+            "id": "correct",
+            "text": "rather than"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "与其 means rather than."
+      },
+      {
+        "id": "exercise-advanced-alternatives-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Rather than waste time, it is better to prepare carefully.",
+        "tokens": [
+          "与其",
+          "浪费",
+          "时间",
+          "，",
+          "不如",
+          "认真",
+          "准备",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "与其",
+            "浪费",
+            "时间",
+            "，",
+            "不如",
+            "认真",
+            "准备",
+            "。"
+          ]
+        ],
+        "explanation": "与其浪费时间，不如认真准备。 — Rather than waste time, it is better to prepare carefully.",
+        "hint": "Use the pattern 与其 … 不如 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-alternatives"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w05208",
+      "hearmandarin:w02035",
+      "hearmandarin:w03288",
+      "hearmandarin:w02086",
+      "hearmandarin:w01453",
+      "hearmandarin:w00817"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-advanced-arguments",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "Building a balanced argument",
+    "description": "Practise 不仅 … 而且 … in a short, connected advanced lesson.",
+    "minutes": 9,
+    "category": "other",
+    "line": "everyday",
+    "position": {
+      "x": 580,
+      "y": 110
+    },
+    "prerequisites": [
+      "lesson-advanced-decisions"
+    ],
+    "objectives": [
+      "Use 不仅 … 而且 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "不仅 and 而且 connect an initial point with a further point. Here, both benefits belong to the same policy, so the subject stays before 不仅.",
+      "Read and listen: 这项政策不仅提高了效率，而且减少了浪费。 (Zhè xiàng zhèngcè bùjǐn tígāo le xiàolǜ, érqiě jiǎnshǎo le làngfèi.) — This policy improves efficiency and also reduces waste.",
+      "Try a new context: 这个方案不仅合理，而且容易实施。 (Zhège fāng’àn bùjǐn hélǐ, érqiě róngyì shíshī.) — This plan is not only reasonable but also easy to implement."
+    ],
+    "examples": [
+      {
+        "hanzi": "这项政策不仅提高了效率，而且减少了浪费。",
+        "pinyin": "Zhè xiàng zhèngcè bùjǐn tígāo le xiàolǜ, érqiě jiǎnshǎo le làngfèi.",
+        "meaning": "This policy improves efficiency and also reduces waste."
+      },
+      {
+        "hanzi": "这个方案不仅合理，而且容易实施。",
+        "pinyin": "Zhège fāng’àn bùjǐn hélǐ, érqiě róngyì shíshī.",
+        "meaning": "This plan is not only reasonable but also easy to implement."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-advanced-arguments-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "This policy improves efficiency and also reduces waste."
+          },
+          {
+            "id": "distractor-0",
+            "text": "This policy improves efficiency but increases waste."
+          },
+          {
+            "id": "distractor-1",
+            "text": "This policy reduces waste without improving efficiency."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "这项政策不仅提高了效率，而且减少了浪费。 means: This policy improves efficiency and also reduces waste.",
+        "audioText": "这项政策不仅提高了效率，而且减少了浪费。"
+      },
+      {
+        "id": "lesson-advanced-arguments-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 不仅 … 而且 … express?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "distractor-1",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          },
+          {
+            "id": "correct",
+            "text": "不仅 and 而且 connect an initial point with a further point."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "不仅 and 而且 connect an initial point with a further point. Here, both benefits belong to the same policy, so the subject stays before 不仅."
+      },
+      {
+        "id": "lesson-advanced-arguments-build",
+        "type": "order",
+        "prompt": "Build: This policy improves efficiency and also reduces waste.",
+        "tokens": [
+          "这",
+          "项",
+          "政策",
+          "不仅",
+          "提高",
+          "了",
+          "效率",
+          "，",
+          "而且",
+          "减少",
+          "了",
+          "浪费",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "这",
+            "项",
+            "政策",
+            "不仅",
+            "提高",
+            "了",
+            "效率",
+            "，",
+            "而且",
+            "减少",
+            "了",
+            "浪费",
+            "。"
+          ]
+        ],
+        "explanation": "这项政策不仅提高了效率，而且减少了浪费。 — 不仅 and 而且 connect an initial point with a further point. Here, both benefits belong to the same policy, so the subject stays before 不仅.",
+        "hint": "Use the pattern 不仅 … 而且 …."
+      },
+      {
+        "id": "lesson-advanced-arguments-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 政策 (zhèngcè)?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "policy"
+          },
+          {
+            "id": "distractor-0",
+            "text": "close"
+          },
+          {
+            "id": "distractor-1",
+            "text": "clear; definite; to clarify"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "政策 means policy."
+      },
+      {
+        "id": "lesson-advanced-arguments-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: This plan is not only reasonable but also easy to implement.",
+        "tokens": [
+          "这个",
+          "方案",
+          "不仅",
+          "合理",
+          "，",
+          "而且",
+          "容易",
+          "实施",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "这个",
+            "方案",
+            "不仅",
+            "合理",
+            "，",
+            "而且",
+            "容易",
+            "实施",
+            "。"
+          ]
+        ],
+        "explanation": "这个方案不仅合理，而且容易实施。 — This plan is not only reasonable but also easy to implement.",
+        "hint": "Use the pattern 不仅 … 而且 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-arguments"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w05288",
+      "hearmandarin:w03272",
+      "hearmandarin:w01453",
+      "hearmandarin:w03571",
+      "hearmandarin:w02378",
+      "hearmandarin:w03017"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-advanced-conditions",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "challenging",
+    "title": "Conditions and commitment",
+    "description": "Practise 无论 … 都 … in a short, connected advanced lesson.",
+    "minutes": 12,
+    "category": "other",
+    "line": "sentences",
+    "position": {
+      "x": 740,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-advanced-alternatives",
+      "lesson-advanced-arguments"
+    ],
+    "objectives": [
+      "Use 无论 … 都 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "无论 introduces a range of possible conditions, often with a question word. 都 states the outcome that stays the same across those conditions.",
+      "Read and listen: 无论遇到什么困难，我们都不会放弃。 (Wúlùn yùdào shénme kùnnan, wǒmen dōu bú huì fàngqì.) — Whatever difficulties we encounter, we will not give up.",
+      "Try a new context: 无论结果如何，我们都承担责任。 (Wúlùn jiéguǒ rúhé, wǒmen dōu chéngdān zérèn.) — Whatever the result, we will accept responsibility."
+    ],
+    "examples": [
+      {
+        "hanzi": "无论遇到什么困难，我们都不会放弃。",
+        "pinyin": "Wúlùn yùdào shénme kùnnan, wǒmen dōu bú huì fàngqì.",
+        "meaning": "Whatever difficulties we encounter, we will not give up."
+      },
+      {
+        "hanzi": "无论结果如何，我们都承担责任。",
+        "pinyin": "Wúlùn jiéguǒ rúhé, wǒmen dōu chéngdān zérèn.",
+        "meaning": "Whatever the result, we will accept responsibility."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-advanced-conditions-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "We will not encounter any difficulties if we refuse to give up."
+          },
+          {
+            "id": "correct",
+            "text": "Whatever difficulties we encounter, we will not give up."
+          },
+          {
+            "id": "distractor-0",
+            "text": "We will give up only if the difficulties are too great."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "无论遇到什么困难，我们都不会放弃。 means: Whatever difficulties we encounter, we will not give up.",
+        "audioText": "无论遇到什么困难，我们都不会放弃。"
+      },
+      {
+        "id": "lesson-advanced-conditions-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 无论 … 都 … express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "无论 introduces a range of possible conditions, often with a question word."
+          },
+          {
+            "id": "distractor-0",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "distractor-1",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "无论 introduces a range of possible conditions, often with a question word. 都 states the outcome that stays the same across those conditions."
+      },
+      {
+        "id": "lesson-advanced-conditions-build",
+        "type": "order",
+        "prompt": "Build: Whatever difficulties we encounter, we will not give up.",
+        "tokens": [
+          "无论",
+          "遇到",
+          "什么",
+          "困难",
+          "，",
+          "我们",
+          "都",
+          "不",
+          "会",
+          "放弃",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "无论",
+            "遇到",
+            "什么",
+            "困难",
+            "，",
+            "我们",
+            "都",
+            "不",
+            "会",
+            "放弃",
+            "。"
+          ]
+        ],
+        "explanation": "无论遇到什么困难，我们都不会放弃。 — 无论 introduces a range of possible conditions, often with a question word. 都 states the outcome that stays the same across those conditions.",
+        "hint": "Use the pattern 无论 … 都 …."
+      },
+      {
+        "id": "lesson-advanced-conditions-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 承担 (chéngdān)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "jeans"
+          },
+          {
+            "id": "correct",
+            "text": "to undertake"
+          },
+          {
+            "id": "distractor-0",
+            "text": "even"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "承担 means to undertake."
+      },
+      {
+        "id": "lesson-advanced-conditions-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: Whatever the result, we will accept responsibility.",
+        "tokens": [
+          "无论",
+          "结果",
+          "如何",
+          "，",
+          "我们",
+          "都",
+          "承担",
+          "责任",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "无论",
+            "结果",
+            "如何",
+            "，",
+            "我们",
+            "都",
+            "承担",
+            "责任",
+            "。"
+          ]
+        ],
+        "explanation": "无论结果如何，我们都承担责任。 — Whatever the result, we will accept responsibility.",
+        "hint": "Use the pattern 无论 … 都 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-conditions"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w02137",
+      "hearmandarin:w01920",
+      "hearmandarin:w01197",
+      "hearmandarin:w02934",
+      "hearmandarin:w01784",
+      "hearmandarin:w01446"
+    ],
+    "features": []
+  },
+  {
+    "id": "lesson-advanced-proposal-checkpoint",
+    "kind": "lesson",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "challenging",
+    "title": "Make a reasoned proposal",
+    "description": "Practise 之所以 … 是因为 … in a short, connected advanced lesson.",
+    "minutes": 12,
+    "category": "other",
+    "line": "sentences",
+    "position": {
+      "x": 900,
+      "y": 210
+    },
+    "prerequisites": [
+      "lesson-advanced-conditions"
+    ],
+    "objectives": [
+      "Use 之所以 … 是因为 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid.",
+      "Read and listen: 我之所以支持这个方案，是因为它更合理。 (Wǒ zhī suǒyǐ zhīchí zhège fāng’àn, shì yīnwèi tā gèng hélǐ.) — The reason I support this plan is that it is more reasonable.",
+      "Try a new context: 我们之所以改变计划，是因为发现了新的证据。 (Wǒmen zhī suǒyǐ gǎibiàn jìhuà, shì yīnwèi fāxiàn le xīn de zhèngjù.) — We changed the plan because we found new evidence."
+    ],
+    "examples": [
+      {
+        "hanzi": "我之所以支持这个方案，是因为它更合理。",
+        "pinyin": "Wǒ zhī suǒyǐ zhīchí zhège fāng’àn, shì yīnwèi tā gèng hélǐ.",
+        "meaning": "The reason I support this plan is that it is more reasonable."
+      },
+      {
+        "hanzi": "我们之所以改变计划，是因为发现了新的证据。",
+        "pinyin": "Wǒmen zhī suǒyǐ gǎibiàn jìhuà, shì yīnwèi fāxiàn le xīn de zhèngjù.",
+        "meaning": "We changed the plan because we found new evidence."
+      }
+    ],
+    "questions": [
+      {
+        "id": "lesson-advanced-proposal-checkpoint-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "The reason this plan is reasonable is that I support it."
+          },
+          {
+            "id": "distractor-1",
+            "text": "I support this plan even though it is less reasonable."
+          },
+          {
+            "id": "correct",
+            "text": "The reason I support this plan is that it is more reasonable."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我之所以支持这个方案，是因为它更合理。 means: The reason I support this plan is that it is more reasonable.",
+        "audioText": "我之所以支持这个方案，是因为它更合理。"
+      },
+      {
+        "id": "lesson-advanced-proposal-checkpoint-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 之所以 … 是因为 … express?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          },
+          {
+            "id": "correct",
+            "text": "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation."
+          },
+          {
+            "id": "distractor-0",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid."
+      },
+      {
+        "id": "lesson-advanced-proposal-checkpoint-build",
+        "type": "order",
+        "prompt": "Build: The reason I support this plan is that it is more reasonable.",
+        "tokens": [
+          "我",
+          "之所以",
+          "支持",
+          "这个",
+          "方案",
+          "，",
+          "是",
+          "因为",
+          "它",
+          "更",
+          "合理",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "之所以",
+            "支持",
+            "这个",
+            "方案",
+            "，",
+            "是",
+            "因为",
+            "它",
+            "更",
+            "合理",
+            "。"
+          ]
+        ],
+        "explanation": "我之所以支持这个方案，是因为它更合理。 — 之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid.",
+        "hint": "Use the pattern 之所以 … 是因为 …."
+      },
+      {
+        "id": "lesson-advanced-proposal-checkpoint-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 合理 (hélǐ)?",
+        "options": [
+          {
+            "id": "distractor-0",
+            "text": "character"
+          },
+          {
+            "id": "distractor-1",
+            "text": "to cooperate; to coordinate with"
+          },
+          {
+            "id": "correct",
+            "text": "rational"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "合理 means rational."
+      },
+      {
+        "id": "lesson-advanced-proposal-checkpoint-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: We changed the plan because we found new evidence.",
+        "tokens": [
+          "我们",
+          "之所以",
+          "改变",
+          "计划",
+          "，",
+          "是",
+          "因为",
+          "发现",
+          "了",
+          "新",
+          "的",
+          "证据",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我们",
+            "之所以",
+            "改变",
+            "计划",
+            "，",
+            "是",
+            "因为",
+            "发现",
+            "了",
+            "新",
+            "的",
+            "证据",
+            "。"
+          ]
+        ],
+        "explanation": "我们之所以改变计划，是因为发现了新的证据。 — We changed the plan because we found new evidence.",
+        "hint": "Use the pattern 之所以 … 是因为 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-proposal-checkpoint"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w02477",
+      "hearmandarin:w02339",
+      "hearmandarin:w03495",
+      "hearmandarin:w02603",
+      "hearmandarin:w01939",
+      "hearmandarin:w01219"
+    ],
+    "features": []
+  },
+  {
+    "id": "exercise-advanced-proposal-checkpoint",
+    "kind": "exercise",
+    "source": "platform",
+    "revision": 1,
+    "publication": "published",
+    "languageLevel": "advanced",
+    "difficulty": "challenging",
+    "title": "Make a reasoned proposal · practice",
+    "description": "A standalone practice session. The reason I support this plan is that it is more reasonable.",
+    "minutes": 12,
+    "category": "other",
+    "line": "sentences",
+    "position": {
+      "x": 900,
+      "y": 210
+    },
+    "prerequisites": [],
+    "objectives": [
+      "Use 之所以 … 是因为 … in context.",
+      "Connect a Chinese example to its meaning and build a second sentence."
+    ],
+    "explanation": [
+      "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid.",
+      "Read and listen: 我之所以支持这个方案，是因为它更合理。 (Wǒ zhī suǒyǐ zhīchí zhège fāng’àn, shì yīnwèi tā gèng hélǐ.) — The reason I support this plan is that it is more reasonable.",
+      "Try a new context: 我们之所以改变计划，是因为发现了新的证据。 (Wǒmen zhī suǒyǐ gǎibiàn jìhuà, shì yīnwèi fāxiàn le xīn de zhèngjù.) — We changed the plan because we found new evidence."
+    ],
+    "examples": [
+      {
+        "hanzi": "我之所以支持这个方案，是因为它更合理。",
+        "pinyin": "Wǒ zhī suǒyǐ zhīchí zhège fāng’àn, shì yīnwèi tā gèng hélǐ.",
+        "meaning": "The reason I support this plan is that it is more reasonable."
+      },
+      {
+        "hanzi": "我们之所以改变计划，是因为发现了新的证据。",
+        "pinyin": "Wǒmen zhī suǒyǐ gǎibiàn jìhuà, shì yīnwèi fāxiàn le xīn de zhèngjù.",
+        "meaning": "We changed the plan because we found new evidence."
+      }
+    ],
+    "questions": [
+      {
+        "id": "exercise-advanced-proposal-checkpoint-meaning",
+        "type": "choice",
+        "prompt": "Listen or read the example. What does it mean?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "I support this plan even though it is less reasonable."
+          },
+          {
+            "id": "correct",
+            "text": "The reason I support this plan is that it is more reasonable."
+          },
+          {
+            "id": "distractor-0",
+            "text": "The reason this plan is reasonable is that I support it."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "我之所以支持这个方案，是因为它更合理。 means: The reason I support this plan is that it is more reasonable.",
+        "audioText": "我之所以支持这个方案，是因为它更合理。"
+      },
+      {
+        "id": "exercise-advanced-proposal-checkpoint-pattern",
+        "type": "choice",
+        "prompt": "In these examples, what does 之所以 … 是因为 … express?",
+        "options": [
+          {
+            "id": "correct",
+            "text": "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation."
+          },
+          {
+            "id": "distractor-0",
+            "text": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation."
+          },
+          {
+            "id": "distractor-1",
+            "text": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome."
+          }
+        ],
+        "answer": "correct",
+        "explanation": "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid."
+      },
+      {
+        "id": "exercise-advanced-proposal-checkpoint-build",
+        "type": "order",
+        "prompt": "Build: The reason I support this plan is that it is more reasonable.",
+        "tokens": [
+          "我",
+          "之所以",
+          "支持",
+          "这个",
+          "方案",
+          "，",
+          "是",
+          "因为",
+          "它",
+          "更",
+          "合理",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我",
+            "之所以",
+            "支持",
+            "这个",
+            "方案",
+            "，",
+            "是",
+            "因为",
+            "它",
+            "更",
+            "合理",
+            "。"
+          ]
+        ],
+        "explanation": "我之所以支持这个方案，是因为它更合理。 — 之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid.",
+        "hint": "Use the pattern 之所以 … 是因为 …."
+      },
+      {
+        "id": "exercise-advanced-proposal-checkpoint-word",
+        "type": "choice",
+        "prompt": "Which meaning matches 合理 (hélǐ)?",
+        "options": [
+          {
+            "id": "distractor-1",
+            "text": "to destroy; to damage"
+          },
+          {
+            "id": "correct",
+            "text": "rational"
+          },
+          {
+            "id": "distractor-0",
+            "text": "gasoline"
+          }
+        ],
+        "answer": "correct",
+        "explanation": "合理 means rational."
+      },
+      {
+        "id": "exercise-advanced-proposal-checkpoint-transfer",
+        "type": "order",
+        "prompt": "Apply the pattern: We changed the plan because we found new evidence.",
+        "tokens": [
+          "我们",
+          "之所以",
+          "改变",
+          "计划",
+          "，",
+          "是",
+          "因为",
+          "发现",
+          "了",
+          "新",
+          "的",
+          "证据",
+          "。"
+        ],
+        "acceptedOrders": [
+          [
+            "我们",
+            "之所以",
+            "改变",
+            "计划",
+            "，",
+            "是",
+            "因为",
+            "发现",
+            "了",
+            "新",
+            "的",
+            "证据",
+            "。"
+          ]
+        ],
+        "explanation": "我们之所以改变计划，是因为发现了新的证据。 — We changed the plan because we found new evidence.",
+        "hint": "Use the pattern 之所以 … 是因为 …."
+      }
+    ],
+    "grammarTopicIds": [
+      "grammar-advanced-proposal-checkpoint"
+    ],
+    "vocabularyIds": [
+      "hearmandarin:w02477",
+      "hearmandarin:w02339",
+      "hearmandarin:w03495",
+      "hearmandarin:w02603",
+      "hearmandarin:w01939",
+      "hearmandarin:w01219"
+    ],
+    "features": []
   }
 ]

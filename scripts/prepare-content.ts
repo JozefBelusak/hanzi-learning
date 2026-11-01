@@ -1,14 +1,14 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
-import { project, readCatalog } from './content-files.ts'
+import { project, readCatalog, offlineCharacters } from './content-files.ts'
 
 const catalog = await readCatalog()
 const require = createRequire(import.meta.url)
 const dataPackage = dirname(require.resolve('hanzi-writer-data/package.json'))
 const writerPackage = dirname(require.resolve('hanzi-writer/package.json'))
 const directory = join(project, 'src/data/strokes')
-const characters = new Set(catalog.vocabulary.flatMap((word) => [...word.hanzi].filter((char) => /\p{Script=Han}/u.test(char))))
+const characters = offlineCharacters(catalog)
 const prepared = await Promise.all([...characters].map(async (character) => {
   let raw: string
   try { raw = await readFile(join(directory, `${character}.json`), 'utf8') }

@@ -1,6 +1,7 @@
 import { expect, test } from './fixtures'
 import type { Page } from '@playwright/test'
-import { exercises, lessons } from '../src/data/learning'
+import { exercises, lessons as allLessons } from '../src/data/learning'
+const lessons = allLessons.filter((lesson) => lesson.languageLevel === 'beginner')
 import type { LearningActivity, LearningQuestion, LearningSession } from '../src/types/learning'
 
 async function storedSessions(page: Page): Promise<LearningSession[]> {
@@ -73,10 +74,10 @@ test('independent lesson reviews unlock the tram map in order and require both f
     }
     await expect(page.getByRole('button', { name: new RegExp(`Lesson ${lessons.length}:.*${index < lessons.length - 2 ? 'Not yet unlocked' : 'Ready to start'}`) })).toBeVisible()
   }
-  await expect(page.locator('.course-progress')).toContainText(`5 / ${lessons.length}`)
+  await expect(page.locator('.course-progress')).toContainText(`6 / ${lessons.length}`)
   await page.reload()
-  await expect(page.getByRole('button', { name: /Lesson 6:.*Ready to start/ })).toBeVisible()
-  expect((await storedSessions(page)).filter((session) => session.finishedAt)).toHaveLength(5)
+  await expect(page.getByRole('button', { name: /Lesson 7:.*Ready to start/ })).toBeVisible()
+  expect((await storedSessions(page)).filter((session) => session.finishedAt)).toHaveLength(6)
   expect(errors).toEqual([])
 })
 

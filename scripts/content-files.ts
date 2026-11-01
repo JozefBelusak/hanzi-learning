@@ -10,7 +10,7 @@ async function json(path: string) { return JSON.parse(await readFile(join(projec
 export async function readCatalog() {
   const [manifest, rawTaxonomy, activities, grammarTopics, sentences, extra, source] = await Promise.all([
     'src/data/content/manifest.json', 'src/data/content/taxonomy.json', 'src/data/content/activities.json',
-    'src/data/content/grammar.json', 'src/data/content/sentences.json', 'src/data/content/vocabulary-extra.json', 'src/data/vocabulary-hsk1.json',
+    'src/data/content/grammar.json', 'src/data/content/sentences.json', 'src/data/content/vocabulary-extra.json', 'src/data/vocabulary-hsk.json',
   ].map(json))
   const taxonomy = parseTaxonomy(rawTaxonomy)
   if (!Array.isArray(source.words) || source.words.some((word: Record<string, unknown>) => taxonomy.vocabularySelection.hsk2Levels.includes(Number(word.hsk2_level)) && !isHskWord(word))) throw new Error('The selected vocabulary contains incomplete records.')
@@ -24,4 +24,11 @@ export async function readCatalog() {
     if (!activity || !isDeepStrictEqual(activity.questions, old.questions)) throw new Error(`Keep the published revision 1 answer contract for ${old.id}; append a new revision instead.`)
   }
   return catalog
+}
+
+// Bundle the original beginner characters and all vocabulary explicitly taught
+// in the authored curriculum. The rest uses the existing on-demand loader.
+export function offlineCharacters(catalog: Awaited<ReturnType<typeof readCatalog>>) {
+  const taught = new Set(catalog.activities.flatMap((activity) => activity.vocabularyIds))
+  return new Set(catalog.vocabulary.filter((word) => word.level === 1 || taught.has(word.id)).flatMap((word) => [...word.hanzi].filter((character) => /\p{Script=Han}/u.test(character))))
 }

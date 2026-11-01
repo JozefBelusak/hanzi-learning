@@ -1,9 +1,9 @@
 import { difficulties, languageLevels } from '../data/taxonomy'
 import type { ContentFilter } from '../lib/contentFilter'
 import './ContentFilters.css'
-export default function ContentFilters({ id, value, onChange }: { id: string; value: ContentFilter; onChange: (filter: ContentFilter) => void }) {
+export default function ContentFilters({ id, value, onChange, showLevel = true, showDifficulty = true }: { id: string; value: ContentFilter; onChange: (filter: ContentFilter) => void; showLevel?: boolean; showDifficulty?: boolean }) {
   return <div className="content-filters" role="group" aria-label="Content level and difficulty">
-    <fieldset className="filter-group filter-levels">
+    {showLevel && <fieldset className="filter-group filter-levels">
       <legend>Language level</legend>
       <div className="filter-options">
         <label className="filter-option filter-all">
@@ -15,8 +15,8 @@ export default function ContentFilters({ id, value, onChange }: { id: string; va
           <span className="filter-step" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><span>{level.label}</span>
         </label>)}
       </div>
-    </fieldset>
-    <fieldset className="filter-group filter-difficulties">
+    </fieldset>}
+    {showDifficulty && <fieldset className="filter-group filter-difficulties">
       <legend>Difficulty</legend>
       <div className="filter-options">
         <label className="filter-option filter-all">
@@ -28,6 +28,6 @@ export default function ContentFilters({ id, value, onChange }: { id: string; va
           <span className="filter-intensity" aria-hidden="true">{[0, 1, 2].map((bar) => <i key={bar} className={bar <= index ? 'is-filled' : undefined} />)}</span><span>{difficulty.label}</span>
         </label>)}
       </div>
-    </fieldset>
+    </fieldset>}
   </div>
 }

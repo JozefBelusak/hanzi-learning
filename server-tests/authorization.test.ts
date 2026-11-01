@@ -44,6 +44,7 @@ beforeAll(async () => {
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101090000_learning_profiles.sql', import.meta.url), 'utf8'))
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101120000_content_classification.sql', import.meta.url), 'utf8'))
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101150000_platform_content_admin.sql', import.meta.url), 'utf8'))
+  await db.exec(readFileSync(new URL('../supabase/migrations/20261101180000_expanded_curriculum.sql', import.meta.url), 'utf8'))
 }, 30_000)
 afterAll(async () => { await db.close() })
 
@@ -179,36 +180,39 @@ async function adminSave(kind: string, id: string, payload: unknown, revision: n
   return (await db.query<{ snapshot: CatalogSnapshot }>(adminSaveSql, [kind, id, payload === null ? null : JSON.stringify(payload), revision])).rows[0].snapshot
 }
 
-describe('platform content administration API and database rules', () => {
+describe('platform content administration API and database rules', { timeout: 20_000 }, () => {
   it('seeds original data and permits only verified sessions to read it', async () => {
     await expect(asUser(null, () => db.query('select public.get_platform_catalog()'))).rejects.toMatchObject({ code: '42501' })
     for (const id of [ids.student, ids.lecturer, ids.admin]) await asUser(id, async () => {
       const { rows } = await db.query<{ snapshot: CatalogSnapshot }>('select public.get_platform_catalog() as snapshot')
-      expect(rows[0].snapshot.revision).toBe(1)
-      expect(parseContentCatalog(rows[0].snapshot.data)).toEqual(catalog)
+      expect(rows[0].snapshot.revision).toBe(2)
+      const restored = parseContentCatalog(rows[0].snapshot.data)
+      // Upgrades retain the existing vocabulary order and append new words.
+      expect({ ...restored, vocabulary: [...restored.vocabulary].sort((a, b) => a.id.localeCompare(b.id)) })
+        .toEqual({ ...catalog, vocabulary: [...catalog.vocabulary].sort((a, b) => a.id.localeCompare(b.id)) })
     })
   })
   it('rejects student/lecturer/anonymous writes, direct table writes and forged or revoked admin sessions', async () => {
-    for (const id of [null, ids.student, ids.lecturer]) await expect(asUser(id, () => adminSave('vocabulary', newWord.id, newWord, 1))).rejects.toMatchObject({ code: '42501' })
+    for (const id of [null, ids.student, ids.lecturer]) await expect(asUser(id, () => adminSave('vocabulary', newWord.id, newWord, 2))).rejects.toMatchObject({ code: '42501' })
     for (const id of [ids.student, ids.admin]) await expect(asUser(id, () => db.query('update public.platform_catalog set revision=100'))).rejects.toMatchObject({ code: '42501' })
-    await expect(asUser(ids.admin, () => adminSave('vocabulary', newWord.id, newWord, 1), 'revoked-session')).rejects.toMatchObject({ code: '42501' })
+    await expect(asUser(ids.admin, () => adminSave('vocabulary', newWord.id, newWord, 2), 'revoked-session')).rejects.toMatchObject({ code: '42501' })
     await expect(asUser(ids.admin, () => db.query('select private.validate_platform_catalog($1::jsonb)', [JSON.stringify(catalog)]))).rejects.toMatchObject({ code: '42501' })
   })
   it('creates linked words, grammar examples, lessons and exercises with server-owned identity and revisions', async () => {
     await asUser(ids.admin, async () => {
-      let result = await adminSave('vocabulary', newWord.id, newWord, 1)
+      let result = await adminSave('vocabulary', newWord.id, newWord, 2)
       result = await adminSave('grammar', newGrammar.id, newGrammar, result.revision)
       result = await adminSave('lesson', newLesson.id, { ...newLesson, id: 'forged-id', revision: 400, source: 'lecturer', kind: 'exercise' }, result.revision)
       expect(result.data.activities.find((item) => item.id === newLesson.id)).toMatchObject({ kind: 'lesson', source: 'platform', revision: 1 })
       result = await adminSave('exercise', 'platform:db-exercise', { ...newLesson, id: 'platform:db-exercise', kind: 'exercise' }, result.revision)
-      expect(result.revision).toBe(5)
+      expect(result.revision).toBe(6)
       expect(parseContentCatalog(result.data)).toBeDefined()
     })
   })
   it('updates answer banks through new revisions and retains every original question bank', async () => {
     await asUser(ids.admin, async () => {
       const original = catalog.activities[0]
-      const result = await adminSave('lesson', original.id, { ...original, title: 'Updated tone lesson', questions: original.questions.slice(0, 2) }, 1)
+      const result = await adminSave('lesson', original.id, { ...original, title: 'Updated tone lesson', questions: original.questions.slice(0, 2) }, 2)
       expect(result.data.activities.find((item) => item.id === original.id && item.revision === 1)?.questions).toEqual(original.questions)
       expect(result.data.activities.find((item) => item.id === original.id && item.revision === 1)?.publication).toBe('archived')
       expect(result.data.activities.find((item) => item.id === original.id && item.revision === 2)?.questions).toHaveLength(2)
@@ -217,7 +221,7 @@ describe('platform content administration API and database rules', () => {
   })
   it('archives and restores unreferenced content without deleting historical data', async () => {
     await asUser(ids.admin, async () => {
-      let result = await adminSave('vocabulary', newWord.id, newWord, 1)
+      let result = await adminSave('vocabulary', newWord.id, newWord, 2)
       result = await adminSave('vocabulary', newWord.id, null, result.revision)
       expect(result.data.vocabulary.find((word) => word.id === newWord.id)?.archived).toBe(true)
       result = await adminSave('vocabulary', newWord.id, { ...newWord, meaning: 'restored word' }, result.revision)
@@ -230,8 +234,8 @@ describe('platform content administration API and database rules', () => {
     })
   })
   it('blocks deleting published prerequisites and grammar/word dependencies', async () => {
-    for (const [kind, id] of [['lesson', 'lesson-tones'], ['grammar', 'identity-shi'], ['vocabulary', 'wo']]) await expect(asUser(ids.admin, () => adminSave(kind, id, null, 1))).rejects.toMatchObject({ code: '22023' })
-    await expect(asUser(ids.admin, () => adminSave('vocabulary', 'wo', { ...catalog.vocabulary.find((word) => word.id === 'wo')!, hanzi: 'different identity' }, 1))).rejects.toMatchObject({ code: '22023' })
+    for (const [kind, id] of [['lesson', 'lesson-tones'], ['grammar', 'identity-shi'], ['vocabulary', 'wo']]) await expect(asUser(ids.admin, () => adminSave(kind, id, null, 2))).rejects.toMatchObject({ code: '22023' })
+    await expect(asUser(ids.admin, () => adminSave('vocabulary', 'wo', { ...catalog.vocabulary.find((word) => word.id === 'wo')!, hanzi: 'different identity' }, 2))).rejects.toMatchObject({ code: '22023' })
   })
   it('validates API payloads independently of frontend validation and rolls back failures', async () => {
     const original = catalog.activities[0]
@@ -245,17 +249,17 @@ describe('platform content administration API and database rules', () => {
       { ...original, prerequisites: ['lesson-greetings'] },
       { ...original, features: ['tone-guide', 'tone-guide'] },
     ]
-    for (const payload of bad) await expect(asUser(ids.admin, () => adminSave('lesson', original.id, payload, 1))).rejects.toMatchObject({ code: '22023' })
-    expect((await db.query('select revision from public.platform_catalog')).rows).toEqual([{ revision: 1 }])
+    for (const payload of bad) await expect(asUser(ids.admin, () => adminSave('lesson', original.id, payload, 2))).rejects.toMatchObject({ code: '22023' })
+    expect((await db.query('select revision from public.platform_catalog')).rows).toEqual([{ revision: 2 }])
   })
   it('detects stale revisions atomically instead of overwriting another administrator’s work', async () => {
     await asUser(ids.admin, async () => {
-      await adminSave('vocabulary', newWord.id, newWord, 1)
+      await adminSave('vocabulary', newWord.id, newWord, 2)
       await db.exec('savepoint stale_revision')
-      await expect(adminSave('grammar', newGrammar.id, newGrammar, 1)).rejects.toMatchObject({ code: '40001' })
+      await expect(adminSave('grammar', newGrammar.id, newGrammar, 2)).rejects.toMatchObject({ code: '40001' })
       await db.exec('rollback to savepoint stale_revision')
       const { rows } = await db.query<{ data: typeof catalog; revision: number }>('select data,revision from public.platform_catalog')
-      expect(rows[0].revision).toBe(2)
+      expect(rows[0].revision).toBe(3)
       expect(rows[0].data.vocabulary.find((word) => word.id === newWord.id)).toBeDefined()
       expect(rows[0].data.grammarTopics.find((topic) => topic.id === newGrammar.id)).toBeUndefined()
     })

@@ -16,6 +16,7 @@ export default function CharacterPicker({ characters, selected, onSelect, onClos
   const dialogRef = useRef<HTMLDialogElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const [query, setQuery] = useState('')
+  const [limit, setLimit] = useState(80)
   const search = searchable(query.trim())
   const matches = characters.filter(({ character, card }) =>
     searchable(`${character} ${card.hanzi} ${card.pinyin} ${card.meaning}`).includes(search),
@@ -82,15 +83,17 @@ export default function CharacterPicker({ characters, selected, onSelect, onClos
           type="search"
           placeholder="Character, pinyin or meaning"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => { setQuery(event.target.value); setLimit(80) }}
         />
       </div>
       <div className="character-picker-content">
+        <p className="character-picker-count">{matches.length} characters{matches.length > limit ? ` · Showing ${limit}; search or load more.` : ''}</p>
+        {matches.length > limit && <button type="button" className="secondary-btn" onClick={() => setLimit((value) => value + 80)}>Load more characters</button>}
         {matches.length === 0 ? (
           <p className="character-picker-empty" role="status">No characters match your search.</p>
         ) : (
           <div className="character-grid">
-            {matches.map(({ character, card }) => (
+            {matches.slice(0, limit).map(({ character, card }) => (
               <button
                 key={character}
                 type="button"

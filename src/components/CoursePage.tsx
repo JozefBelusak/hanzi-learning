@@ -5,11 +5,17 @@ import type { LearningActivity, LearningSession } from '../types/learning'
 import './CoursePage.css'
 import { taxonomy, difficultyLabel, levelLabel } from '../data/taxonomy'
 import ContentFilters from './ContentFilters'
-import { allContent, matchesContent } from '../lib/contentFilter'
+import CoursePathPicker from './CoursePathPicker'
+import { coursePaths } from '../data/coursePaths'
+import type { LanguageLevel } from '../types/content'
+import { matchesContent, type ContentFilter } from '../lib/contentFilter'
 
 type Props = {
   sessions: LearningSession[]
   onSelect: (id: string) => void
+  level: LanguageLevel
+  difficulty: ContentFilter['difficulty']
+  onFilterChange: (value: ContentFilter) => void
 }
 
 const routes = Object.fromEntries(taxonomy.courseLines.map((line) => [line.id, line]))
@@ -29,8 +35,11 @@ function trackPath(from: LearningActivity, to: LearningActivity) {
   return `M ${startX} ${startY} H ${bend} L ${endX} ${endY}`
 }
 
-export default function CoursePage({ sessions, onSelect }: Props) {
-  const [contentFilter, setContentFilter] = useState(allContent)
+export default function CoursePage({ sessions, onSelect, level, difficulty, onFilterChange }: Props) {
+  const contentFilter: ContentFilter = { languageLevel: level, difficulty }
+  const setContentFilter = onFilterChange
+  const path = coursePaths.find((item) => item.level === level)!
+  const picker = <CoursePathPicker value={level} lessons={allLessons} sessions={sessions} onChange={(languageLevel) => setContentFilter({ ...contentFilter, languageLevel })} />
   const lessons = allLessons.filter((lesson) => matchesContent(lesson, contentFilter))
   const suggested = getNextLesson(sessions, lessons)
   const [selectedId, setSelectedId] = useState(() => suggested?.id ?? lessons[0]?.id)
@@ -38,7 +47,7 @@ export default function CoursePage({ sessions, onSelect }: Props) {
   const completed = lessons.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length
   const next = suggested ?? lessons[0]
 
-  if (!selected || !next) return <main className="course-page"><h1>Your Chinese journey</h1><ContentFilters id="course" value={contentFilter} onChange={setContentFilter} /><p>No lessons match this level and difficulty yet.</p><button type="button" onClick={() => setContentFilter(allContent)}>Show all lessons</button></main>
+  if (!selected || !next) return <main className="course-page"><h1>Your Chinese journey</h1>{picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} /><p>No lessons match this level and difficulty yet.</p><button type="button" onClick={() => setContentFilter({ languageLevel: level, difficulty: 'all' })}>Show all lessons</button></main>
 
   const selectedStatus = activityStatus(selected, sessions)
   const nextSession = getLatestSession(next.id, sessions)
@@ -53,7 +62,7 @@ export default function CoursePage({ sessions, onSelect }: Props) {
       <div className="course-heading">
         <div>
           <h1>Your Chinese journey</h1>
-          <p>A short course in sounds, useful words and your first sentences. Take it one stop at a time.</p>
+          <p>{path.title} · {path.description}</p>
         </div>
         <div className="course-progress" aria-label={`${completed} of ${lessons.length} lessons completed`}>
           <strong>{completed}<span> / {lessons.length}</span></strong>
@@ -61,13 +70,13 @@ export default function CoursePage({ sessions, onSelect }: Props) {
           <progress aria-label="Course completion" value={completed} max={lessons.length} />
         </div>
       </div>
-      <ContentFilters id="course" value={contentFilter} onChange={setContentFilter} />
+      {picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} />
 
       <section className="course-next" aria-label="Recommended lesson">
         <div className="course-next-symbol" lang="zh-CN" aria-hidden="true">{completed === lessons.length ? '成' : '学'}</div>
         <div>
-          <p>{completed === lessons.length ? 'You have reached the end of this starter course' : nextSession && !nextSession.finishedAt ? 'Pick up where you left off' : 'Your next stop'}</p>
-          <h2>{completed === lessons.length ? 'Keep your first Chinese fresh' : next.title}</h2>
+          <p>{completed === lessons.length ? 'You have reached the end of this path' : nextSession && !nextSession.finishedAt ? 'Pick up where you left off' : 'Your next stop'}</p>
+          <h2>{completed === lessons.length ? 'Keep your Chinese fresh' : next.title}</h2>
           <span>{completed === lessons.length ? 'Revisit a station or try a mixed exercise.' : `${next.minutes} min · a little learning, then a short review`}</span>
         </div>
         <button type="button" onClick={() => onSelect(next.id)}>{completed === lessons.length ? 'Revisit first lesson' : activityStatus(next, sessions) === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>

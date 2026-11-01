@@ -17,8 +17,10 @@ In the Supabase SQL Editor, run the complete contents of these files **in order*
 1. `supabase/migrations/20261028090000_auth_and_roles.sql`
 2. `supabase/migrations/20261101090000_learning_profiles.sql`
 3. `supabase/migrations/20261101120000_content_classification.sql`
+4. `supabase/migrations/20261101150000_platform_content_admin.sql`
+5. `supabase/migrations/20261101180000_expanded_curriculum.sql`
 
-Run each file once on a new project. **On existing projects, run only migrations that have not been applied.** If accounts and onboarding already work, only the third file is new; it adds level/difficulty metadata to lecturer lessons. These migrations retain existing profiles, lessons and enrollments. Do not rerun earlier migrations. They install profiles, roles, learning preferences, authored lessons, classrooms, memberships, signup triggers and permission policies. Existing Auth users are backfilled as Students by the first migration. The `private` schema must stay outside the Data API's exposed schemas; expose `public` only for these application tables/functions.
+Run each file once on a new project. **On existing projects, run only migrations that have not been applied.** If accounts, onboarding and the content admin already work, apply only the fifth file before deploying the expanded frontend. It adds missing words and activities while preserving edits, archived items and existing revisions. See [curriculum expansion](curriculum-expansion.md). These migrations retain existing profiles, lessons and enrollments. Do not rerun earlier migrations. They install profiles, roles, learning preferences, authored lessons, classrooms, memberships, signup triggers and permission policies. Existing Auth users are backfilled as Students by the first migration. The `private` schema must stay outside the Data API's exposed schemas; expose `public` only for these application tables/functions.
 
 You can check that all application tables have RLS enabled:
 
@@ -26,10 +28,10 @@ You can check that all application tables have RLS enabled:
 select tablename, rowsecurity
 from pg_tables
 where schemaname = 'public'
-  and tablename in ('profiles', 'public_lessons', 'classrooms', 'classroom_members');
+  and tablename in ('profiles', 'public_lessons', 'classrooms', 'classroom_members', 'platform_catalog');
 ```
 
-All four rows must report `rowsecurity = true`. The migration grants no anonymous access to these tables. [Supabase RLS documentation](https://supabase.com/docs/guides/database/postgres/row-level-security).
+All five rows must report `rowsecurity = true`. The migration grants no anonymous access to these tables. [Supabase RLS documentation](https://supabase.com/docs/guides/database/postgres/row-level-security).
 
 For subsequent changes, add a new migration instead of editing a migration already applied to your project. With the Supabase CLI, the alternative deployment is `supabase link --project-ref YOUR_PROJECT_REF` followed by `supabase db push`.
 
@@ -100,9 +102,9 @@ The signup trigger creates the profile row; only a successful `save_learning_pro
 
 All roles complete onboarding before entering the workspace. Settings reuses the same form. The database is authoritative for the display name and daily goal; per-account local progress uses those values while retaining attempt histories, review schedules and learning sessions. Home shows preferred practice shortcuts, and Home/Progress display the learning plan and daily target. Preferences follow the account across devices; practice history still needs a backup to move between devices.
 
-Language level and difficulty are self-reported preferences. The current curriculum remains HSK 1; these settings do not generate advanced content, adapt assessment difficulty or change scores. Daily targets count free practice attempts, with course/exercise completion tracked separately. See [the onboarding guide](profile-onboarding.md) for deployment and verification.
+Language level and difficulty are self-reported preferences. The profile level selects the initial course path and vocabulary level. Four course paths and HSK 1–6 vocabulary are available; users can switch levels without changing scoring. This is not an adaptive placement system. Daily targets count free practice attempts, with course/exercise completion tracked separately. See [the onboarding guide](profile-onboarding.md) for deployment and verification.
 
-Published means visible to **signed-in users**. The platform course is a versioned JSON catalog in `src/data/content/`, accessed through `src/data/learning.ts`; the management interface creates and manages separate lecturer database lessons. They share language-level/difficulty models but not curriculum ownership or course answer keys. See [content models and authoring](content-model.md).
+Published means visible to **signed-in users**. The platform course is a versioned catalog seeded from `src/data/content/` and stored in Supabase `platform_catalog`. Admin edits it through restricted RPCs; lecturer database lessons remain separate. They share language-level/difficulty models but not curriculum ownership or course answer keys. See [content models and authoring](content-model.md).
 
 ## Access rules and data storage
 
@@ -111,6 +113,7 @@ Published means visible to **signed-in users**. The platform course is a version
 | Course, exercises and free practice | Yes | Yes | Yes |
 | Read published database lessons | Yes | Yes | Yes |
 | Join/leave a classroom | Own enrollment | — | — |
+| Manage platform curriculum | No | No | Yes |
 | Create/edit/delete authored lessons | No | Own lessons | All lessons |
 | Manage classrooms and student rosters | No | Own classrooms | All classrooms |
 | Read account profiles | Own | Own + enrolled students | All |

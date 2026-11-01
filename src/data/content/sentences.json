@@ -317,5 +317,253 @@
     "languageLevel": "beginner",
     "difficulty": "balanced",
     "grammarTopicId": "also-ye"
+  },
+  {
+    "id": "sentence-elementary-getting-around",
+    "languageLevel": "elementary",
+    "difficulty": "gentle",
+    "meaning": "How do I get from here to the railway station?",
+    "pinyin": "Cóng zhèr dào huǒchēzhàn zěnme zǒu?",
+    "tokens": [
+      "从",
+      "这儿",
+      "到",
+      "火车站",
+      "怎么",
+      "走"
+    ],
+    "punctuation": "？",
+    "grammarTopicId": "grammar-elementary-getting-around",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "从 … 到 …"
+      },
+      {
+        "label": "Example",
+        "text": "从这儿到火车站怎么走？"
+      }
+    ]
+  },
+  {
+    "id": "sentence-elementary-making-plans",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "meaning": "Tomorrow I am going travelling with a friend.",
+    "pinyin": "Míngtiān wǒ yào hé péngyou yìqǐ qù lǚyóu.",
+    "tokens": [
+      "明天",
+      "我",
+      "要",
+      "和",
+      "朋友",
+      "一起",
+      "去",
+      "旅游"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-elementary-making-plans",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "要 + action"
+      },
+      {
+        "label": "Example",
+        "text": "明天我要和朋友一起去旅游。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-elementary-finished-actions",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "meaning": "Yesterday I bought a book.",
+    "pinyin": "Zuótiān wǒ mǎi le yì běn shū.",
+    "tokens": [
+      "昨天",
+      "我",
+      "买",
+      "了",
+      "一",
+      "本",
+      "书"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-elementary-finished-actions",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "verb + 了"
+      },
+      {
+        "label": "Example",
+        "text": "昨天我买了一本书。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-intermediate-experiences",
+    "languageLevel": "intermediate",
+    "difficulty": "gentle",
+    "meaning": "I have been to Beijing.",
+    "pinyin": "Wǒ qù guo Běijīng.",
+    "tokens": [
+      "我",
+      "去",
+      "过",
+      "北京"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-intermediate-experiences",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "verb + 过"
+      },
+      {
+        "label": "Example",
+        "text": "我去过北京。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-intermediate-ongoing-actions",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "meaning": "He is preparing for an exam.",
+    "pinyin": "Tā zhèngzài zhǔnbèi kǎoshì.",
+    "tokens": [
+      "他",
+      "正在",
+      "准备",
+      "考试"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-intermediate-ongoing-actions",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "正在 + action"
+      },
+      {
+        "label": "Example",
+        "text": "他正在准备考试。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-intermediate-results",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "meaning": "I understood this story after listening to it.",
+    "pinyin": "Wǒ tīngdǒng le zhège gùshi.",
+    "tokens": [
+      "我",
+      "听",
+      "懂",
+      "了",
+      "这个",
+      "故事"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-intermediate-results",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "verb + result complement"
+      },
+      {
+        "label": "Example",
+        "text": "我听懂了这个故事。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-advanced-viewpoints",
+    "languageLevel": "advanced",
+    "difficulty": "gentle",
+    "meaning": "Despite the difficulties, we still stand by this decision.",
+    "pinyin": "Jǐnguǎn cúnzài kùnnan, wǒmen réngrán jiānchí zhège juédìng.",
+    "tokens": [
+      "尽管",
+      "存在",
+      "困难",
+      "，",
+      "我们",
+      "仍然",
+      "坚持",
+      "这个",
+      "决定"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-advanced-viewpoints",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "尽管 … 仍然 …"
+      },
+      {
+        "label": "Example",
+        "text": "尽管存在困难，我们仍然坚持这个决定。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-advanced-decisions",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "meaning": "Since everyone agrees, let us begin.",
+    "pinyin": "Jìrán dàjiā dōu tóngyì, wǒmen jiù kāishǐ ba.",
+    "tokens": [
+      "既然",
+      "大家",
+      "都",
+      "同意",
+      "，",
+      "我们",
+      "就",
+      "开始",
+      "吧"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-advanced-decisions",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "既然 … 就 …"
+      },
+      {
+        "label": "Example",
+        "text": "既然大家都同意，我们就开始吧。"
+      }
+    ]
+  },
+  {
+    "id": "sentence-advanced-alternatives",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "meaning": "Rather than complain, it is better to take action.",
+    "pinyin": "Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.",
+    "tokens": [
+      "与其",
+      "抱怨",
+      "，",
+      "不如",
+      "采取",
+      "行动"
+    ],
+    "punctuation": "。",
+    "grammarTopicId": "grammar-advanced-alternatives",
+    "grammarParts": [
+      {
+        "label": "Pattern",
+        "text": "与其 … 不如 …"
+      },
+      {
+        "label": "Example",
+        "text": "与其抱怨，不如采取行动。"
+      }
+    ]
   }
 ]

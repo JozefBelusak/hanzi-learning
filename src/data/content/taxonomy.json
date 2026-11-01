@@ -42,7 +42,7 @@
     {
       "id": "all",
       "title": "All words",
-      "description": "The complete beginner vocabulary.",
+      "description": "Vocabulary from HSK 2.0 levels 1–6, filtered to your chosen level.",
       "symbol": "全"
     },
     {
@@ -224,8 +224,8 @@
     },
     {
       "id": "other",
-      "title": "Phrases and grammar",
-      "description": "Greetings, questions and connecting words.",
+      "title": "More words and expressions",
+      "description": "Expressions, descriptive words and additional vocabulary.",
       "symbol": "好"
     }
   ],
@@ -267,7 +267,12 @@
   ],
   "vocabularySelection": {
     "hsk2Levels": [
-      1
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
     ],
     "levelMapping": {
       "1": "beginner",

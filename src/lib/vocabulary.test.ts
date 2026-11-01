@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import snapshot from '../data/vocabulary-hsk1.json'
+import snapshot from '../data/vocabulary-hsk.json'
 
 const storage = vi.hoisted(() => ({ read: vi.fn(), write: vi.fn() }))
 vi.mock('./storage', () => ({ readStoredString: storage.read, writeStoredString: storage.write }))
@@ -12,7 +12,7 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals())
 
 describe('public vocabulary normalization', () => {
-  it('preserves the starter card IDs and includes only HSK 1 words', () => {
+  it('preserves the starter card IDs while including higher HSK levels', () => {
     const words = [
       { id: '1', simplified: '我', pinyin: ' wǒ ', gloss_en: ' I ', hsk2_level: 1 },
       { id: '2', simplified: '好', pinyin: 'hǎo', gloss_en: 'good', hsk2_level: 1 },
@@ -21,10 +21,11 @@ describe('public vocabulary normalization', () => {
       { id: '5', simplified: '坏', pinyin: '', gloss_en: 'bad', hsk2_level: 1 },
     ]
     const result = parseVocabulary({ words })
-    expect(result.map((card) => card.id)).toEqual(['wo', 'hao', 'shui'])
+    expect(result.map((card) => card.id)).toEqual(['wo', 'hao', 'shui', 'hearmandarin:4'])
     expect(result[0]).toMatchObject({ pinyin: 'wǒ', meaning: 'I', categoryId: 'people', level: 1 })
     expect(result[2].categoryId).toBe('food')
-    expect(bundledVocabulary).toHaveLength(150)
+    expect(result[3]).toMatchObject({ level: 4, languageLevel: 'intermediate' })
+    expect(bundledVocabulary).toHaveLength(5000)
   })
 
   it('rejects invalid datasets and duplicate IDs instead of creating conflicting progress keys', () => {
@@ -54,16 +55,16 @@ describe('offline vocabulary and explicit refresh', () => {
     await expect(loadVocabulary(controller.signal)).rejects.toMatchObject({ name: 'AbortError' })
   })
 
-  it('accepts edited glosses for the same IDs and caches only the starter subset', async () => {
+  it('accepts edited glosses for the same IDs and caches the supported six-level selection', async () => {
     const updated = structuredClone(snapshot)
     updated.words[0].gloss_en = 'updated teaching gloss'
-    const extra = { ...updated.words[0], id: 'advanced-only', simplified: '高级', hsk2_level: 4 }
+    const extra = { ...updated.words[0], id: 'advanced-only', simplified: '额外词条', hsk2_level: null }
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ...updated, words: [...updated.words, extra] }) }))
     const cards = await refreshVocabulary()
     expect(cards[0].meaning).toBe('updated teaching gloss')
     const [key, raw] = storage.write.mock.calls[0]
     expect(key).toBe(VOCABULARY_KEY)
-    expect(JSON.parse(raw).words).toHaveLength(150)
+    expect(JSON.parse(raw).words).toHaveLength(5000)
     storage.read.mockResolvedValue(raw)
     expect((await loadVocabulary())[0].meaning).toBe('updated teaching gloss')
   })

@@ -228,5 +228,506 @@
     "languageLevel": "beginner",
     "difficulty": "balanced",
     "prerequisites": []
+  },
+  {
+    "id": "grammar-elementary-getting-around",
+    "languageLevel": "elementary",
+    "difficulty": "gentle",
+    "title": "从 … 到 …",
+    "explanation": "从 introduces the starting point and 到 the destination. Place the route before the question 怎么走 to ask how to get there.",
+    "examples": [
+      {
+        "hanzi": "从这儿到火车站怎么走？",
+        "pinyin": "Cóng zhèr dào huǒchēzhàn zěnme zǒu?",
+        "meaning": "How do I get from here to the railway station?"
+      },
+      {
+        "hanzi": "从学校到商店很近。",
+        "pinyin": "Cóng xuéxiào dào shāngdiàn hěn jìn.",
+        "meaning": "It is close from the school to the shop."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w11007",
+      "hearmandarin:w11006",
+      "hearmandarin:w00500",
+      "hearmandarin:w00482",
+      "hearmandarin:w00371",
+      "hearmandarin:w00484"
+    ]
+  },
+  {
+    "id": "grammar-elementary-making-plans",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "要 + action",
+    "explanation": "要 before an action can express an intention. A time word such as 明天 comes before the action; 一起 means doing something together.",
+    "examples": [
+      {
+        "hanzi": "明天我要和朋友一起去旅游。",
+        "pinyin": "Míngtiān wǒ yào hé péngyou yìqǐ qù lǚyóu.",
+        "meaning": "Tomorrow I am going travelling with a friend."
+      },
+      {
+        "hanzi": "我们明天一起看电影。",
+        "pinyin": "Wǒmen míngtiān yìqǐ kàn diànyǐng.",
+        "meaning": "We are watching a film together tomorrow."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w00473",
+      "hearmandarin:w00394",
+      "hearmandarin:w00252",
+      "hearmandarin:w00129",
+      "hearmandarin:w00156",
+      "hearmandarin:w00038"
+    ]
+  },
+  {
+    "id": "grammar-elementary-finished-actions",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "verb + 了",
+    "explanation": "了 after a verb can mark a completed event. A time expression supplies the time reference; 了 is not a general past-tense ending.",
+    "examples": [
+      {
+        "hanzi": "昨天我买了一本书。",
+        "pinyin": "Zuótiān wǒ mǎi le yì běn shū.",
+        "meaning": "Yesterday I bought a book."
+      },
+      {
+        "hanzi": "我已经吃了早饭。",
+        "pinyin": "Wǒ yǐjīng chī le zǎofàn.",
+        "meaning": "I have already eaten breakfast."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w00472",
+      "hearmandarin:w00116",
+      "hearmandarin:w00275",
+      "hearmandarin:w00010",
+      "hearmandarin:w00190",
+      "hearmandarin:w00297"
+    ]
+  },
+  {
+    "id": "grammar-elementary-comparisons",
+    "languageLevel": "elementary",
+    "difficulty": "balanced",
+    "title": "A 比 B + adjective",
+    "explanation": "比 introduces the comparison standard. The adjective follows both items. Do not add 很 simply to turn the comparison into an adjective sentence.",
+    "examples": [
+      {
+        "hanzi": "今天比昨天冷。",
+        "pinyin": "Jīntiān bǐ zuótiān lěng.",
+        "meaning": "Today is colder than yesterday."
+      },
+      {
+        "hanzi": "这本书比那本书便宜。",
+        "pinyin": "Zhè běn shū bǐ nà běn shū piányi.",
+        "meaning": "This book is cheaper than that book."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w00309",
+      "hearmandarin:w00498",
+      "hearmandarin:w00065",
+      "hearmandarin:w00157",
+      "hearmandarin:w00109",
+      "hearmandarin:w00169"
+    ]
+  },
+  {
+    "id": "grammar-elementary-requests",
+    "languageLevel": "elementary",
+    "difficulty": "challenging",
+    "title": "请 + person + action",
+    "explanation": "请 introduces a polite request. 帮 means help, and 一下 can make a short request sound less abrupt. The request still needs an action or context.",
+    "examples": [
+      {
+        "hanzi": "请你帮我一下。",
+        "pinyin": "Qǐng nǐ bāng wǒ yíxià.",
+        "meaning": "Please give me a hand."
+      },
+      {
+        "hanzi": "你可以帮我吗？",
+        "pinyin": "Nǐ kěyǐ bāng wǒ ma?",
+        "meaning": "Can you help me?"
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w00102",
+      "hearmandarin:w00514",
+      "hearmandarin:w00422",
+      "hearmandarin:w00165",
+      "hearmandarin:w00219",
+      "hearmandarin:w00432"
+    ]
+  },
+  {
+    "id": "grammar-elementary-city-checkpoint",
+    "languageLevel": "elementary",
+    "difficulty": "challenging",
+    "title": "Routes, plans and comparisons",
+    "explanation": "Combine a time expression with a plan, then use 从 and 到 for a route. A comparison with 比 helps explain a choice. This checkpoint reuses the patterns of this path.",
+    "examples": [
+      {
+        "hanzi": "明天我们一起去火车站。",
+        "pinyin": "Míngtiān wǒmen yìqǐ qù huǒchēzhàn.",
+        "meaning": "Tomorrow we are going to the railway station together."
+      },
+      {
+        "hanzi": "坐公共汽车比走路快。",
+        "pinyin": "Zuò gōnggòngqìchē bǐ zǒulù kuài.",
+        "meaning": "Taking the bus is faster than walking."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w11007",
+      "hearmandarin:w11006",
+      "hearmandarin:w00473",
+      "hearmandarin:w00384",
+      "hearmandarin:w00484",
+      "hearmandarin:w00371"
+    ]
+  },
+  {
+    "id": "grammar-intermediate-experiences",
+    "languageLevel": "intermediate",
+    "difficulty": "gentle",
+    "title": "verb + 过",
+    "explanation": "过 after a verb describes an experience at an unspecified time. It differs from simply narrating one completed event with 了. A negative experience uses 没有 + verb + 过.",
+    "examples": [
+      {
+        "hanzi": "我去过北京。",
+        "pinyin": "Wǒ qù guo Běijīng.",
+        "meaning": "I have been to Beijing."
+      },
+      {
+        "hanzi": "我没有参加过这个活动。",
+        "pinyin": "Wǒ méiyǒu cānjiā guo zhège huódòng.",
+        "meaning": "I have never taken part in this activity."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w01398",
+      "hearmandarin:w00529",
+      "hearmandarin:w00689",
+      "hearmandarin:w01873",
+      "hearmandarin:w01312",
+      "hearmandarin:w00546"
+    ]
+  },
+  {
+    "id": "grammar-intermediate-ongoing-actions",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "正在 + action",
+    "explanation": "正在 marks an action in progress at the reference time. The activity follows it directly. It does not by itself say that the action is finished.",
+    "examples": [
+      {
+        "hanzi": "他正在准备考试。",
+        "pinyin": "Tā zhèngzài zhǔnbèi kǎoshì.",
+        "meaning": "He is preparing for an exam."
+      },
+      {
+        "hanzi": "我们正在讨论这个问题。",
+        "pinyin": "Wǒmen zhèngzài tǎolùn zhège wèntí.",
+        "meaning": "We are discussing this question."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w00493",
+      "hearmandarin:w01393",
+      "hearmandarin:w01723",
+      "hearmandarin:w00220",
+      "hearmandarin:w00381",
+      "hearmandarin:w01329"
+    ]
+  },
+  {
+    "id": "grammar-intermediate-results",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "verb + result complement",
+    "explanation": "A result complement follows the action and says what it achieved. 听懂 means listen and understand; 看完 means read or watch to the end. 了 can mark completion of that result.",
+    "examples": [
+      {
+        "hanzi": "我听懂了这个故事。",
+        "pinyin": "Wǒ tīngdǒng le zhège gùshi.",
+        "meaning": "I understood this story after listening to it."
+      },
+      {
+        "hanzi": "她看完了那本书。",
+        "pinyin": "Tā kànwán le nà běn shū.",
+        "meaning": "She finished reading that book."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w00650",
+      "hearmandarin:w00868",
+      "hearmandarin:w00713",
+      "hearmandarin:w01386",
+      "hearmandarin:w01382",
+      "hearmandarin:w01461"
+    ]
+  },
+  {
+    "id": "grammar-intermediate-handling-things",
+    "languageLevel": "intermediate",
+    "difficulty": "balanced",
+    "title": "subject + 把 + object + action/result",
+    "explanation": "把 places a specific affected object before the action. These examples include the result or direction of the action, rather than ending with a bare action verb.",
+    "examples": [
+      {
+        "hanzi": "请把门关上。",
+        "pinyin": "Qǐng bǎ mén guānshàng.",
+        "meaning": "Please close the door."
+      },
+      {
+        "hanzi": "我把房间打扫干净了。",
+        "pinyin": "Wǒ bǎ fángjiān dǎsǎo gānjìng le.",
+        "meaning": "I cleaned the room."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w01930",
+      "hearmandarin:w01005",
+      "hearmandarin:w00698",
+      "hearmandarin:w00571",
+      "hearmandarin:w00636",
+      "hearmandarin:w00052"
+    ]
+  },
+  {
+    "id": "grammar-intermediate-reasons",
+    "languageLevel": "intermediate",
+    "difficulty": "challenging",
+    "title": "因为 … 所以 … / 虽然 … 但是 …",
+    "explanation": "因为 gives a reason and 所以 its consequence. 虽然 introduces a fact that contrasts with the result expressed by 但是. The two patterns express different relations.",
+    "examples": [
+      {
+        "hanzi": "因为下雨，所以我们在家学习。",
+        "pinyin": "Yīnwèi xiàyǔ, suǒyǐ wǒmen zài jiā xuéxí.",
+        "meaning": "Because it is raining, we are studying at home."
+      },
+      {
+        "hanzi": "虽然很累，但是我很高兴。",
+        "pinyin": "Suīrán hěn lèi, dànshì wǒ hěn gāoxìng.",
+        "meaning": "Although I am tired, I am happy."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w01902",
+      "hearmandarin:w00940",
+      "hearmandarin:w01386",
+      "hearmandarin:w00985"
+    ]
+  },
+  {
+    "id": "grammar-intermediate-story-checkpoint",
+    "languageLevel": "intermediate",
+    "difficulty": "challenging",
+    "title": "Experience, result and explanation",
+    "explanation": "Connect an earlier experience with a concrete result. Use an explicit reason or contrast to explain what happened rather than placing unrelated sentences next to each other.",
+    "examples": [
+      {
+        "hanzi": "我参加过这个活动，所以有一些经验。",
+        "pinyin": "Wǒ cānjiā guo zhège huódòng, suǒyǐ yǒu yìxiē jīngyàn.",
+        "meaning": "I have taken part in this activity, so I have some experience."
+      },
+      {
+        "hanzi": "虽然问题很难，但是我们解决了。",
+        "pinyin": "Suīrán wèntí hěn nán, dànshì wǒmen jiějué le.",
+        "meaning": "Although the problem was difficult, we solved it."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w01399",
+      "hearmandarin:w00546",
+      "hearmandarin:w00713",
+      "hearmandarin:w01902",
+      "hearmandarin:w01382",
+      "hearmandarin:w00689"
+    ]
+  },
+  {
+    "id": "grammar-advanced-viewpoints",
+    "languageLevel": "advanced",
+    "difficulty": "gentle",
+    "title": "尽管 … 仍然 …",
+    "explanation": "尽管 introduces a concession: an acknowledged difficulty does not prevent the main outcome. 仍然 emphasizes that the situation or action continues despite that obstacle.",
+    "examples": [
+      {
+        "hanzi": "尽管存在困难，我们仍然坚持这个决定。",
+        "pinyin": "Jǐnguǎn cúnzài kùnnan, wǒmen réngrán jiānchí zhège juédìng.",
+        "meaning": "Despite the difficulties, we still stand by this decision."
+      },
+      {
+        "hanzi": "尽管资源有限，我们仍然取得了进步。",
+        "pinyin": "Jǐnguǎn zīyuán yǒuxiàn, wǒmen réngrán qǔdé le jìnbù.",
+        "meaning": "Despite limited resources, we still made progress."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w02210",
+      "hearmandarin:w00697",
+      "hearmandarin:w01617",
+      "hearmandarin:w03571",
+      "hearmandarin:w01446"
+    ]
+  },
+  {
+    "id": "grammar-advanced-decisions",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "既然 … 就 …",
+    "explanation": "既然 introduces an accepted premise and 就 connects it to a consequent decision or recommendation. It is useful when the speaker treats the first clause as common ground.",
+    "examples": [
+      {
+        "hanzi": "既然大家都同意，我们就开始吧。",
+        "pinyin": "Jìrán dàjiā dōu tóngyì, wǒmen jiù kāishǐ ba.",
+        "meaning": "Since everyone agrees, let us begin."
+      },
+      {
+        "hanzi": "既然目标已经明确，我们就采取行动。",
+        "pinyin": "Jìrán mùbiāo yǐjīng míngquè, wǒmen jiù cǎiqǔ xíngdòng.",
+        "meaning": "Since the goal is clear, we will take action."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w04355",
+      "hearmandarin:w02339",
+      "hearmandarin:w03433",
+      "hearmandarin:w02776",
+      "hearmandarin:w01517",
+      "hearmandarin:w00860"
+    ]
+  },
+  {
+    "id": "grammar-advanced-alternatives",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "与其 … 不如 …",
+    "explanation": "与其 presents an option the speaker considers less useful, and 不如 introduces the preferred alternative. Keep the two actions or propositions comparable.",
+    "examples": [
+      {
+        "hanzi": "与其抱怨，不如采取行动。",
+        "pinyin": "Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.",
+        "meaning": "Rather than complain, it is better to take action."
+      },
+      {
+        "hanzi": "与其浪费时间，不如认真准备。",
+        "pinyin": "Yǔqí làngfèi shíjiān, bùrú rènzhēn zhǔnbèi.",
+        "meaning": "Rather than waste time, it is better to prepare carefully."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w05208",
+      "hearmandarin:w02035",
+      "hearmandarin:w03288",
+      "hearmandarin:w02086",
+      "hearmandarin:w01453",
+      "hearmandarin:w00817"
+    ]
+  },
+  {
+    "id": "grammar-advanced-arguments",
+    "languageLevel": "advanced",
+    "difficulty": "balanced",
+    "title": "不仅 … 而且 …",
+    "explanation": "不仅 and 而且 connect an initial point with a further point. Here, both benefits belong to the same policy, so the subject stays before 不仅.",
+    "examples": [
+      {
+        "hanzi": "这项政策不仅提高了效率，而且减少了浪费。",
+        "pinyin": "Zhè xiàng zhèngcè bùjǐn tígāo le xiàolǜ, érqiě jiǎnshǎo le làngfèi.",
+        "meaning": "This policy improves efficiency and also reduces waste."
+      },
+      {
+        "hanzi": "这个方案不仅合理，而且容易实施。",
+        "pinyin": "Zhège fāng’àn bùjǐn hélǐ, érqiě róngyì shíshī.",
+        "meaning": "This plan is not only reasonable but also easy to implement."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w05288",
+      "hearmandarin:w03272",
+      "hearmandarin:w01453",
+      "hearmandarin:w03571",
+      "hearmandarin:w02378",
+      "hearmandarin:w03017"
+    ]
+  },
+  {
+    "id": "grammar-advanced-conditions",
+    "languageLevel": "advanced",
+    "difficulty": "challenging",
+    "title": "无论 … 都 …",
+    "explanation": "无论 introduces a range of possible conditions, often with a question word. 都 states the outcome that stays the same across those conditions.",
+    "examples": [
+      {
+        "hanzi": "无论遇到什么困难，我们都不会放弃。",
+        "pinyin": "Wúlùn yùdào shénme kùnnan, wǒmen dōu bú huì fàngqì.",
+        "meaning": "Whatever difficulties we encounter, we will not give up."
+      },
+      {
+        "hanzi": "无论结果如何，我们都承担责任。",
+        "pinyin": "Wúlùn jiéguǒ rúhé, wǒmen dōu chéngdān zérèn.",
+        "meaning": "Whatever the result, we will accept responsibility."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w02137",
+      "hearmandarin:w01920",
+      "hearmandarin:w01197",
+      "hearmandarin:w02934",
+      "hearmandarin:w01784",
+      "hearmandarin:w01446"
+    ]
+  },
+  {
+    "id": "grammar-advanced-proposal-checkpoint",
+    "languageLevel": "advanced",
+    "difficulty": "challenging",
+    "title": "之所以 … 是因为 …",
+    "explanation": "之所以 introduces the claim whose reason is explained, and 是因为 gives the explanation. Use evidence and a clear causal relation; the pattern itself does not make an argument valid.",
+    "examples": [
+      {
+        "hanzi": "我之所以支持这个方案，是因为它更合理。",
+        "pinyin": "Wǒ zhī suǒyǐ zhīchí zhège fāng’àn, shì yīnwèi tā gèng hélǐ.",
+        "meaning": "The reason I support this plan is that it is more reasonable."
+      },
+      {
+        "hanzi": "我们之所以改变计划，是因为发现了新的证据。",
+        "pinyin": "Wǒmen zhī suǒyǐ gǎibiàn jìhuà, shì yīnwèi fāxiàn le xīn de zhèngjù.",
+        "meaning": "We changed the plan because we found new evidence."
+      }
+    ],
+    "prerequisites": [],
+    "vocabularyIds": [
+      "hearmandarin:w02477",
+      "hearmandarin:w02339",
+      "hearmandarin:w03495",
+      "hearmandarin:w02603",
+      "hearmandarin:w01939",
+      "hearmandarin:w01219"
+    ]
   }
 ]

@@ -4,28 +4,30 @@ import { lessons } from '../data/learning'
 import type { PracticeMode, StudyData } from '../types/study'
 import type { UserProfile } from '../types/auth'
 import LearningPlan from './LearningPlan'
+import { levelLabel } from '../data/taxonomy'
 
 type Props = { study: StudyData; profile: UserProfile; onEditProfile: () => void; onPreferredPractice: (mode: PracticeMode) => void; onLearn: () => void; onCourse: () => void; onLesson: (id: string) => void; onExercises: () => void; onProgress: () => void }
 
 export default function HomePage({ study, profile, onEditProfile, onPreferredPractice, onLearn, onCourse, onLesson, onExercises, onProgress }: Props) {
   const summary = studySummary(study.attempts)
   const sessions = study.learningSessions ?? []
-  const next = getNextLesson(sessions)
-  const complete = lessons.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length
+  const pathLessons = lessons.filter((lesson) => lesson.languageLevel === (profile.language_level ?? 'beginner'))
+  const next = getNextLesson(sessions, pathLessons)
+  const complete = pathLessons.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length
   return (
     <main className="home-page">
       <h1>Home</h1>
       {study.displayName && <p className="home-greeting">Hi, {study.displayName}.</p>}
       <section className="home-study">
         <div>
-          <span className="home-course-label">Starter course</span>
-          <h2>{next?.title ?? 'Your first journey, complete'}</h2>
+          <span className="home-course-label">{levelLabel(profile.language_level ?? 'beginner')} path</span>
+          <h2>{next?.title ?? 'Your learning path, complete'}</h2>
           <p>{next?.description ?? 'Revisit any stop on the course map, or put your skills to work in a themed exercise.'}</p>
           <div className="action-row">
             <button type="button" onClick={() => next ? onLesson(next.id) : onCourse()}>{next ? sessions.some((session) => session.activityId === next.id && !session.finishedAt) ? 'Continue lesson' : 'Start course' : 'Revisit course'}</button>
             <button type="button" className="home-map-button" onClick={onCourse}>View course map</button>
           </div>
-          <span className="home-course-progress">{complete} / {lessons.length} stops completed</span>
+          <span className="home-course-progress">{complete} / {pathLessons.length} stops completed</span>
         </div>
         <span className="home-character" lang="zh-CN" aria-hidden="true">学</span>
       </section>

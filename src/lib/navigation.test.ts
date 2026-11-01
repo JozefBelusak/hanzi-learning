@@ -13,8 +13,18 @@ describe('course, exercises and contextual practice routes', () => {
       { page: 'practice', category: lesson.category, mode: 'speech', activityId: lesson.id },
       { page: 'practice', category: 'food', mode: 'writing' },
       { page: 'modes', category: 'people' },
+      { page: 'course', level: 'advanced', difficulty: 'challenging' },
+      { page: 'topics', level: 'intermediate' },
+      { page: 'modes', category: 'all', level: 'all' },
+      { page: 'practice', category: 'all', mode: 'writing', level: 'advanced' },
     ]
     for (const route of routes) expect(parseRoute(routeHash(route))).toEqual(route)
+  })
+
+  it('ignores unsupported level and difficulty query parameters', () => {
+    expect(parseRoute('#/course?level=expert&difficulty=impossible')).toEqual({ page: 'course' })
+    expect(parseRoute('#/topics?level=expert')).toEqual({ page: 'topics' })
+    expect(parseRoute('#/home?level=advanced')).toEqual({ page: 'home' })
   })
 
   it('rejects missing IDs, wrong activity kinds, invalid modes and mismatched practice context', () => {

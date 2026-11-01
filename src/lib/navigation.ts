@@ -1,22 +1,26 @@
 import { useSyncExternalStore } from 'react'
 import { categories } from '../data/categories'
 import { getActivity } from '../data/learning'
+import { languageLevelIds, difficultyIds, type LanguageLevel, type Difficulty } from '../types/content'
 import type { CategoryId, PracticeMode } from '../types/study'
 
-type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'course' | 'exercises' | 'topics' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
+type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'exercises' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
 export type AppRoute =
   | { page: StaticPage }
+  | { page: 'course'; level?: LanguageLevel; difficulty?: Difficulty | 'all' }
+  | { page: 'topics'; level?: LanguageLevel | 'all' }
   | { page: 'public-lesson'; lessonId: string }
   | { page: 'lesson'; activityId: string }
   | { page: 'exercise'; activityId: string }
-  | { page: 'modes'; category: CategoryId }
-  | { page: 'practice'; category: CategoryId; mode: PracticeMode; activityId?: string }
+  | { page: 'modes'; category: CategoryId; level?: LanguageLevel | 'all' }
+  | { page: 'practice'; category: CategoryId; mode: PracticeMode; activityId?: string; level?: LanguageLevel | 'all' }
 
 const modes: PracticeMode[] = ['flashcards', 'speech', 'writing', 'sentences']
 const validCategory = (value: string): value is CategoryId => categories.some((category) => category.id === value)
 
-export function parseRoute(hash: string): AppRoute {
+function parsePath(hash: string): AppRoute {
   const parts = hash.replace(/^#\/?/, '').split('/')
+  if (parts.length === 1 && (parts[0] === 'course' || parts[0] === 'topics')) return { page: parts[0] }
   if (parts.length === 1 && ['welcome', 'login', 'register', 'onboarding', 'home', 'course', 'exercises', 'topics', 'progress', 'settings', 'lessons', 'classes', 'teach', 'admin'].includes(parts[0])) {
     return { page: parts[0] as StaticPage }
   }
@@ -41,13 +45,35 @@ export function parseRoute(hash: string): AppRoute {
   return { page: hash ? 'home' : 'welcome' }
 }
 
-export function routeHash(route: AppRoute): string {
+function pathHash(route: AppRoute): string {
   if (route.page === 'public-lesson') return `#/lessons/${route.lessonId}`
   if (route.page === 'modes') return `#/topics/${route.category}`
   if (route.page === 'lesson') return `#/course/${route.activityId}`
   if (route.page === 'exercise') return `#/exercises/${route.activityId}`
   if (route.page === 'practice') return `#/practice/${route.category}/${route.mode}${route.activityId ? `/from/${route.activityId}` : ''}`
   return `#/${route.page}`
+}
+
+export function parseRoute(hash: string): AppRoute {
+  const [path, query = ''] = hash.split('?')
+  const route = parsePath(path)
+  const params = new URLSearchParams(query)
+  const level = params.get('level')
+  if (route.page === 'course') {
+    const difficulty = params.get('difficulty')
+    return { ...route, ...(languageLevelIds.includes(level as LanguageLevel) ? { level: level as LanguageLevel } : {}), ...(difficultyIds.includes(difficulty as Difficulty) ? { difficulty: difficulty as Difficulty } : {}) }
+  }
+  if (route.page === 'topics' || route.page === 'modes' || route.page === 'practice') {
+    if (level === 'all' || languageLevelIds.includes(level as LanguageLevel)) return { ...route, level: level as LanguageLevel | 'all' }
+  }
+  return route
+}
+export function routeHash(route: AppRoute): string {
+  const params = new URLSearchParams()
+  if ('level' in route && route.level) params.set('level', route.level)
+  if (route.page === 'course' && route.difficulty && route.difficulty !== 'all') params.set('difficulty', route.difficulty)
+  const query = params.toString()
+  return pathHash(route) + (query ? `?${query}` : '')
 }
 
 function subscribe(onChange: () => void) {

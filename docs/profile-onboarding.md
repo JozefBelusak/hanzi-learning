@@ -23,7 +23,7 @@ The database creates the profile during signup. The `save_learning_profile` RPC 
 - Settings uses the same editable form; equivalent session/focus refreshes preserve unsaved edits. Saves persist in Supabase and follow the account on another device.
 - Home offers shortcuts for selected practice modes. Home and Progress show learning goals and the daily target. All practice modes remain available.
 - The account's display name and daily target override device defaults and backup values. Import still merges learning history, without clearing attempts or review/session progress.
-- The current HSK 1 curriculum and scoring are unchanged. Language level and difficulty record preferences; adaptive content and a placement test are not implemented. Daily targets count free practice, while course/exercise completion has a separate summary.
+- The selected level determines the initial course path and free-practice vocabulary. Four paths cover Beginner through Advanced, and users can switch levels. Difficulty remains a preference with explicit course/exercise filters; adaptive placement and automatic assessment changes are not implemented. Daily targets count free practice, while course/exercise completion has a separate summary.
 
 ## Verification
 

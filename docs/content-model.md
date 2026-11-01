@@ -1,6 +1,6 @@
 # Educational content model
 
-The platform curriculum is a validated, versioned JSON catalog. The browser and Android build use the same catalog and generic exercise runner. Lecturer-authored public reading lessons remain in Supabase. There is no new platform content administration interface in this change.
+The platform curriculum is a validated, versioned JSON catalog. The browser and Android build use the same catalog and generic exercise runner. The bundled catalog seeds Supabase `platform_catalog`; Admin can edit it through validated, role-protected RPCs. Lecturer-authored public reading lessons remain separate in `public_lessons`.
 
 ## Models and boundaries
 
@@ -81,9 +81,9 @@ npm run content:check
 npm run build
 ```
 
-Preparation copies missing offline character templates from the already installed Hanzi Writer Data package, retains old assets and includes the existing licences. It validates all required templates before writing. If a character is absent from the package, provide a compatible, licensed template in `src/data/strokes/` before building. Word additions are data changes plus asset preparation; no component/algorithm edit is required.
+Preparation selects HSK 1 vocabulary and all activity-linked words, then copies missing offline character templates from the already installed Hanzi Writer Data package, retains old assets and includes the existing licences. It validates all required templates before writing. If a character is absent from the package, provide a compatible, licensed template in `src/data/strokes/` before building. Word additions are data changes plus asset preparation; no component/algorithm edit is required.
 
-The original public vocabulary snapshot remains in `src/data/vocabulary-hsk1.json` with source attribution, licence and provider IDs. Its filename is retained for compatibility. To import more public vocabulary, update the configured `vocabularySelection.hsk2Levels`/mapping and use `npm run data:import`. `npm run data:import -- --file path/to/dataset.json` imports a local provider-format snapshot without downloading. Imports keep existing IDs/characters and prepare stroke assets. The runtime Refresh vocabulary operation only refreshes the compatible shipped public selection; it retains authored vocabulary and does not silently introduce words with missing offline assets.
+The original public vocabulary snapshot remains in `src/data/vocabulary-hsk.json` with source attribution, licence and provider IDs. It includes 5,000 entries across HSK 2.0 levels 1–6; word IDs, rather than the snapshot filename, preserve saved progress. To import more public vocabulary, update the configured `vocabularySelection.hsk2Levels`/mapping and use `npm run data:import`. `npm run data:import -- --file path/to/dataset.json` imports a local provider-format snapshot without downloading. Imports keep existing IDs/characters and prepare stroke assets. The runtime Refresh vocabulary operation only refreshes the compatible shipped public selection; it retains authored vocabulary. With a server catalog it refreshes that catalog instead. Beginner and course-linked characters are bundled; other characters use the existing pinned CDN loader.
 
 ## Preserve published content and progress
 
@@ -97,6 +97,6 @@ New sessions record their revision. Old unfinished sessions resume their origina
 
 `npm run content:check` runs before production builds. It checks supported schema/ownership, stable/unique IDs, revisions, language levels, difficulty, reference integrity, acyclic prerequisites, valid question options/token inventories and required offline strokes. `tests/fixtures/content-v1.json` freezes original identities and question contracts. Tests also cover legacy backups, revision scoring, data-only additions and lecturer classification permissions.
 
-This is the content foundation, **not** a database editor or automatic live curriculum sync. Platform content changes are reviewed/versioned and distributed in a new build. A future admin service can implement the same catalog/repository contract and publication/versioning rules instead of coupling the UI to separate database models. Published answer banks should remain versioned on that backend; a future adapter must preserve old revisions needed by progress.
+The content administration interface stores the same schema in Supabase `platform_catalog`. Signed-in reads and Admin-only mutations use the existing RLS and restricted RPC functions. Updates keep immutable answer-bank revisions, soft archive records, check dependencies and reject stale catalog revisions. Collections allow up to 12,000 entries, with the existing overall payload limit retained.
 
-For the current lecturer metadata persistence, run `supabase/migrations/20261101120000_content_classification.sql` once after the earlier migrations, then deploy. It adds defaults to existing public lessons and column grants under existing ownership policies; it does not delete or convert lessons into platform content.
+The checked-in catalog is the release seed and compatibility baseline. Adding content in Admin does not require a new app build. Adding a new interaction type still does. New application releases must ship append-only migrations for new seeded content; they must preserve editor changes and historical revisions. See [the expansion and deployment guide](curriculum-expansion.md) for this release.

@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest'
-import snapshot from '../data/vocabulary-hsk1.json'
+import snapshot from '../data/vocabulary-hsk.json'
 
 const storage = vi.hoisted(() => ({ read: vi.fn(), write: vi.fn() }))
 vi.mock('./storage', () => ({ readStoredString: storage.read, writeStoredString: storage.write }))

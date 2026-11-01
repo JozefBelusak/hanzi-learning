@@ -3,7 +3,7 @@ import bundledActivities from './content/activities.json' with { type: 'json' }
 import grammarTopics from './content/grammar.json' with { type: 'json' }
 import sentences from './content/sentences.json' with { type: 'json' }
 import extraWords from './content/vocabulary-extra.json' with { type: 'json' }
-import sourceWords from './vocabulary-hsk1.json' with { type: 'json' }
+import sourceWords from './vocabulary-hsk.json' with { type: 'json' }
 import { taxonomy } from './taxonomy'
 import { normalizeVocabulary } from '../lib/contentVocabulary'
 import { parseContentCatalog } from '../lib/contentValidation'

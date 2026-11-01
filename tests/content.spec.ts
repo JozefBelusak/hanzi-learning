@@ -1,20 +1,107 @@
 import { test, expect, accountStudyKey } from './fixtures'
 import { lessons } from '../src/data/learning'
 
-test('course and exercise filters use the catalog language levels and difficulty', async ({ page }) => {
+test('course paths and exercise filters include higher levels and challenging lessons', async ({ page }) => {
   await page.goto('/#/course')
-  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(6)
+  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(7)
   await page.getByRole('radio', { name: 'Advanced', exact: true }).check()
-  await expect(page.getByText('No lessons match this level and difficulty yet.', { exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'Show all lessons', exact: true }).click()
-  await page.getByRole('radio', { name: 'Gentle', exact: true }).check()
-  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(1)
+  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(6)
+  await page.getByRole('radio', { name: 'Challenging', exact: true }).check()
+  await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(2)
+  await page.reload()
+  await expect(page.getByRole('radio', { name: 'Advanced', exact: true })).toBeChecked()
+  await expect(page.getByRole('radio', { name: 'Challenging', exact: true })).toBeChecked()
   await page.goto('/#/exercises')
-  await expect(page.locator('.exercise-card')).toHaveCount(3)
+  await expect(page.locator('.exercise-card')).toHaveCount(12)
   await page.getByRole('radio', { name: 'Intermediate', exact: true }).check()
-  await expect(page.getByRole('heading', { name: 'No exercises found', exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'Show all exercises', exact: true }).click()
   await expect(page.locator('.exercise-card')).toHaveCount(3)
+})
+
+test('an elementary lesson starts independently, saves its review and unlocks only its path', async ({ page }) => {
+  const lesson = lessons.find((item) => item.languageLevel === 'elementary')!
+  await page.goto('/#/course?level=elementary')
+  await expect(page.getByRole('button', { name: /Lesson 1:.*Ready to start/ })).toBeVisible()
+  await page.locator('.course-preview').getByRole('button', { name: 'Start lesson', exact: true }).click()
+  await page.getByRole('button', { name: 'Start lesson', exact: true }).click()
+  for (const [index, question] of lesson.questions.entries()) {
+    const task = page.getByRole('region', { name: 'Practice task', exact: true })
+    if (question.type === 'choice') {
+      const answer = question.options.find((option) => option.id === question.answer)!
+      await task.locator('.session-option').filter({ has: page.getByText(answer.text, { exact: true }) }).click()
+    } else {
+      for (const token of question.acceptedOrders[0]) await task.getByRole('button', { name: `Add ${token}`, exact: true }).first().click()
+    }
+    await task.getByRole('button', { name: 'Check answer', exact: true }).click()
+    await page.getByRole('button', { name: index === lesson.questions.length - 1 ? 'See results' : 'Next question', exact: true }).click()
+  }
+  await expect(page.locator('.session-result-score')).toContainText('100%')
+  await page.getByRole('button', { name: 'Return to course map', exact: true }).click()
+  await expect(page).toHaveURL(/#\/course\?level=elementary$/)
+  await expect(page.getByRole('button', { name: /Lesson 2:.*Ready to start/ })).toBeVisible()
+  await page.reload()
+  await expect(page.locator('.course-progress')).toContainText('1 / 6')
+  await page.getByRole('radio', { name: 'Beginner', exact: true }).check()
+  await expect(page.locator('.course-progress')).toContainText('0 / 7')
+})
+
+test('free practice preserves a higher vocabulary level through mode selection, reload and Back', async ({ page }) => {
+  await page.goto('/#/topics')
+  await page.getByRole('radio', { name: 'Intermediate', exact: true }).check()
+  await expect(page.getByRole('status')).toHaveText('900 words · Intermediate')
+  await page.getByRole('radio', { name: 'Advanced', exact: true }).check()
+  await expect(page.getByRole('status')).toHaveText('3,800 words · Advanced')
+  await page.getByRole('button', { name: /^All words/ }).click()
+  await expect(page.getByText('3,800 words · Advanced', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: /^Speaking/ }).click()
+  await expect(page).toHaveURL(/#\/practice\/all\/speech\?level=advanced$/)
+  const word = await page.locator('.speech-card .hanzi').textContent()
+  const { catalog } = await import('../src/data/catalog')
+  expect(catalog.vocabulary.filter((item) => item.languageLevel === 'advanced').some((item) => item.hanzi === word?.trim())).toBe(true)
+  await page.reload()
+  await page.getByRole('button', { name: 'Back', exact: true }).click()
+  await page.getByRole('button', { name: /^Sentence building/ }).click()
+  await expect(page.locator('.sentence-header')).toContainText('1 / 3')
+  await page.getByRole('button', { name: 'Back', exact: true }).click()
+  await page.getByRole('button', { name: 'Change topic', exact: true }).click()
+  await expect(page.getByRole('radio', { name: 'Advanced', exact: true })).toBeChecked()
+  await page.getByRole('radio', { name: 'All levels', exact: true }).check()
+  await expect(page.getByRole('status')).toHaveText('5,000 words · All levels')
+})
+
+test('all path cards fit a mobile viewport and support keyboard switching', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 850 })
+  await page.goto('/#/course')
+  const first = page.getByRole('radio', { name: 'Beginner', exact: true })
+  await first.focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(page.getByRole('radio', { name: 'Elementary', exact: true })).toBeChecked()
+  await page.getByRole('radio', { name: 'Advanced', exact: true }).check()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: 'playwright-report/expanded-course-360.png', fullPage: true, animations: 'disabled' })
+})
+
+test.describe('large admin vocabulary', () => {
+  test.use({ account: 'admin' })
+  test('pages the word list and searches references beyond the initial batch', async ({ page }) => {
+    const { catalog } = await import('../src/data/catalog')
+    const last = catalog.vocabulary.at(-1)!
+    await page.goto('/#/admin')
+    const sections = page.getByRole('navigation', { name: 'Platform content sections', exact: true })
+    await sections.getByRole('button', { name: 'Vocabulary', exact: true }).click()
+    await expect(page.locator('.admin-content-list > li')).toHaveCount(60)
+    await page.getByRole('button', { name: 'Load more content', exact: true }).click()
+    await expect(page.locator('.admin-content-list > li')).toHaveCount(120)
+    await page.getByLabel('Search content', { exact: true }).fill(last.id)
+    await expect(page.locator('.admin-content-list > li')).toHaveCount(1)
+    await expect(page.locator('.admin-content-list')).toContainText(last.hanzi)
+    await sections.getByRole('button', { name: 'Grammar topics', exact: true }).click()
+    await page.getByRole('button', { name: 'Create grammar topic', exact: true }).click()
+    await page.getByLabel('Search vocabulary', { exact: true }).fill(last.id)
+    const reference = page.getByRole('group', { name: 'Vocabulary', exact: true })
+    await expect(reference.getByRole('checkbox')).toHaveCount(1)
+    await reference.getByRole('checkbox').check()
+    await expect(reference).toContainText('1 selected')
+  })
 })
 
 test('a pre-catalog completed lesson and its grammar notes remain available after reload', async ({ page }) => {
@@ -55,7 +142,7 @@ test.describe('lecturer lessons remain separate from platform curriculum', () =>
     await page.getByRole('button', { name: 'Read lesson', exact: true }).click()
     await expect(page.locator('.lesson-reader')).toContainText('Lecturer lesson · Intermediate · Challenging')
     await page.goto('/#/course')
-    await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(6)
+    await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(7)
   })
 })
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { activities, exercises, getActivity, lessons } from '../data/learning'
-import vocabulary from '../data/vocabulary-hsk1.json'
+import vocabulary from '../data/vocabulary-hsk.json'
 import type { LearningActivity, LearningQuestion, LearningSession } from '../types/learning'
 import {
   activityStatus, getLatestSession, getNextLesson, gradeAnswer, sessionScore,

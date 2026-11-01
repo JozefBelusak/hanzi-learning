@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import { sentences, type SentenceExercise } from '../data/sentences'
+import { sentences as allSentences, type SentenceExercise } from '../data/sentences'
 import {
   createSentenceTokens,
   isSentenceOrderCorrect,
   sentenceText,
   shuffleSentenceTokens,
 } from '../lib/sentences'
+import type { LanguageLevel } from '../types/content'
 import type { AttemptInput } from '../types/study'
 
 type SentencesPageProps = {
+  level?: LanguageLevel | 'all'
   onBack: () => void
   onAttempt: (attempt: AttemptInput) => void
 }
@@ -221,7 +223,8 @@ function SentencePractice({
   )
 }
 
-function SentencesPage({ onBack, onAttempt }: SentencesPageProps) {
+function SentencesPage({ onBack, onAttempt, level = 'all' }: SentencesPageProps) {
+  const sentences = allSentences.filter((sentence) => level === 'all' || sentence.languageLevel === level)
   const [currentIndex, setCurrentIndex] = useState(0)
   const currentSentence = sentences[currentIndex]
 

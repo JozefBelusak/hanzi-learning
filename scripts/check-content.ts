@@ -1,10 +1,10 @@
-import { readCatalog } from './content-files.ts'
+import { readCatalog, offlineCharacters } from './content-files.ts'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { project } from './content-files.ts'
 
 const catalog = await readCatalog()
-for (const character of new Set(catalog.vocabulary.flatMap((word) => [...word.hanzi].filter((char) => /\p{Script=Han}/u.test(char))))) {
+for (const character of offlineCharacters(catalog)) {
   let stroke
   try { stroke = JSON.parse(await readFile(join(project, 'src/data/strokes', `${character}.json`), 'utf8')) }
   catch { throw new Error(`Missing stroke data for ${character}. Run npm run content:prepare before building.`) }

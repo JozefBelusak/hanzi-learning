@@ -13,7 +13,7 @@ npm run dev
 
 Open `http://localhost:5173`. Python is not required. Browser microphone access requires localhost or HTTPS; plain HTTP from another device may not support it. The development server listens on this computer only by default.
 
-Learning requires a signed-in account and a completed learning profile. Before using it, follow [the Supabase setup guide](docs/auth-setup.md): create the project, apply the database migrations in order, configure email confirmation and copy `.env.example` to `.env.local`. Existing projects apply only new migrations; projects with working onboarding need `20261101120000_content_classification.sql` for lecturer lesson metadata. Missing configuration keeps learning locked; there is no guest or demo authentication bypass.
+Learning requires a signed-in account and a completed learning profile. Before using it, follow [the Supabase setup guide](docs/auth-setup.md): create the project, apply the database migrations in order, configure email confirmation and copy `.env.example` to `.env.local`. Existing projects apply only new migrations; projects with an existing admin catalog need the new `20261101180000_expanded_curriculum.sql` migration before deploying this release. See [curriculum expansion](docs/curriculum-expansion.md). Missing configuration keeps learning locked; there is no guest or demo authentication bypass.
 
 ```sh
 npm run lint
@@ -38,15 +38,15 @@ Try speaking in a supported browser such as Chrome or Edge and allow microphone 
 
 - **Content catalog:** shared models for platform lessons/exercises, grammar, vocabulary, language levels and difficulty. JSON content files drive the existing runner; validated references and immutable activity revisions preserve old progress. Platform curriculum and lecturer public lessons share classification models while retaining separate ownership/storage. See [the content model and authoring guide](docs/content-model.md).
 - **Accounts and permissions:** confirmed-email registration, password sign-in, session restoration/refresh and sign-out. Students learn, lecturers publish lessons and manage their classrooms, administrators manage roles and authored content. Frontend route guards and PostgreSQL RLS enforce access; registration always creates a Student.
-- **Learning profiles:** mandatory setup after the first verified login, with language level, difficulty preference, preferred practice modes, learning goals and a daily target. Preferences are stored in Supabase, editable in Settings and connected to the local progress view. All roles, including existing users, complete setup. Home offers preferred practice shortcuts. Level/difficulty are preferences; the current HSK 1 course and assessment scores are unchanged. See [onboarding setup](docs/profile-onboarding.md).
-- **Public lessons and classrooms:** signed-in learners read published lecturer lessons and join classrooms through invitation codes. Lecturers manage their own drafts, published lessons and student enrollments; Admin can manage all of them. The original starter course remains versioned in code.
-- **Course:** a six-stop starter course shown as a tram map. Read short explanations, listen to Mandarin examples and take a lesson review. Greetings and introductions lead to two parallel branches (family and food), then a combined checkpoint. Locked lessons can be previewed; passing a review unlocks the next stops.
-- **Exercises:** three independent themed sessions covering introductions, family and a café. Each combines meaning/listening questions and sentence ordering in a workspace with instructions, a task and feedback. They are accessible without course completion.
-- **Topics:** 150 HSK 2.0 level 1 words grouped into eight themes. Topic selection applies to flashcards, speaking and writing.
+- **Learning profiles:** mandatory setup after the first verified login, with language level, difficulty preference, preferred practice modes, learning goals and a daily target. Preferences are stored in Supabase, editable in Settings and connected to the local progress view. All roles, including existing users, complete setup. Home offers preferred practice shortcuts. The profile level selects the initial course path and free-practice vocabulary level. Users can switch levels; assessment scoring is unchanged. See [onboarding setup](docs/profile-onboarding.md).
+- **Public lessons and classrooms:** signed-in learners read published lecturer lessons and join classrooms through invitation codes. Lecturers manage their own drafts, published lessons and student enrollments; Admin can manage all of them. The platform curriculum uses a separate versioned catalog managed by Admin.
+- **Course:** 25 lessons across four independent tram-map paths: Beginner (7 stops), Elementary (6), Intermediate (6) and Advanced (6). Every path includes gentle, balanced and challenging lessons. Review prerequisites unlock stops within that path; starting a higher path does not require finishing Beginner.
+- **Exercises:** 12 independent themed sessions combining meaning/listening questions and sentence ordering. They are accessible without course completion and filter by topic, level and difficulty.
+- **Topics:** 5,000 HearMandarin entries spanning HSK 2.0 levels 1–6, grouped into eight themes. Free practice supports level selection, including all levels; the selection survives reloads and Back navigation.
 - **Flashcards:** practice in either direction, reveal answers, listen to synthesized pronunciation, rate recall and schedule reviews.
 - **Speaking:** listen to a reference Chinese voice, record and replay your own voice, recognize Mandarin text and compare it with the expected word. Typed answers are a separate assisted mode.
-- **Writing:** 174 individual vocabulary characters, stroke animation, hints, outline tracing and writing from memory. Hanzi Writer checks stroke shape, order and direction. Mouse, pen and touch input are supported.
-- **Sentence building:** ten word-order examples with movable words, grammar explanations and hints. Examples are shared across topics.
+- **Writing:** 293 bundled character templates covering the original beginner words and the vocabulary taught in the courses. Additional dictionary characters load on demand from the pinned Hanzi Writer Data CDN. Includes stroke animation, hints, outline tracing and writing from memory. Hanzi Writer checks stroke shape, order and direction. Mouse, pen and touch input are supported.
+- **Sentence building:** 19 word-order examples, filtered by the selected language level, with movable words, grammar explanations and hints. Examples are shared across topics.
 - **Progress:** a shared history, daily goal, streak, points, seven-day chart, results by mode and JSON backup import/export.
 
 All interface text, explanations and app-generated messages are in English, matching the dataset's English definitions. Chinese characters and pinyin remain in their original form. Speech recognition and synthesis use Mandarin (`zh-CN`).
@@ -71,17 +71,20 @@ Interface labels use normal sentence case. Exercise topics are selected with vis
 
 Words and pinyin come from the public [HearMandarin dataset](https://hearmandarin.com/datasets/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Definitions retain the source's English wording. The source does not include audio recordings; playback uses the device's synthesized voice. Topic grouping and demo sentences are authored for this application.
 
-`src/data/vocabulary-hsk1.json` contains an imported subset and source metadata. It is bundled, so the first launch does not need to download the vocabulary. **Refresh vocabulary** in Settings downloads and validates the current public dataset, then stores only the starter subset. Refresh can update pinyin and definitions. Changing the set of words or characters requires a new import and build so that the corresponding stroke data remains available.
+`src/data/vocabulary-hsk.json` contains the imported 5,000-entry selection and source metadata. HSK 2.0 levels 1/2/3/4/5/6 contribute 150/150/300/600/1,300/2,500 entries. The app groups these as Beginner (HSK 1), Elementary (HSK 2), Intermediate (HSK 3–4) and Advanced (HSK 5–6). This is an editorial grouping, not a CEFR equivalence or a complete exam-preparation course. Homographs with different provider IDs/readings remain separate entries.
 
-To reproduce the import during development:
+The snapshot is bundled. For a configured server catalog, **Refresh vocabulary** fetches the published Supabase catalog and preserves administrator edits. The bundled-only fallback refreshes compatible definitions from HearMandarin. To reproduce the public import during development:
 
 ```sh
 npm run data:import
+# Or: npm run data:import -- --file path/to/provider-dataset.json
 ```
 
-The script downloads the dataset, validates records, bundles the required characters from the installed `hanzi-writer-data` package and updates license files. Review the diff and run tests and a build before committing. This is an **HSK 2.0 level 1** subset; the source dataset's HSK 3.0 name does not mean its entire vocabulary is enabled.
+The import preserves existing IDs and prepares offline templates for beginner and explicitly taught vocabulary, rather than bundling every dictionary character. Review the diff and run tests/build. The source URL contains HSK 3.0 in its name; this app intentionally selects the source's **HSK 2.0 level 1–6** classification.
 
-Writing uses [Hanzi Writer](https://hanziwriter.org/) (MIT) and [Hanzi Writer Data](https://github.com/chanind/hanzi-writer-data), derived from Make Me a Hanzi (Arphic Public License). Full notices are in `public/licenses/`. Stroke data loads from the app's own build without a public CDN request.
+Writing uses [Hanzi Writer](https://hanziwriter.org/) (MIT) and [Hanzi Writer Data](https://github.com/chanind/hanzi-writer-data), derived from Make Me a Hanzi (Arphic Public License). Full notices remain in `public/licenses/`. Non-bundled templates require network access and report unavailable data rather than grading a substitute character. Character and admin reference pickers limit initial rendering and support search for the larger dictionary.
+
+New lesson explanations, examples and answer keys are app-authored teaching content and should be reviewed by a Mandarin lecturer before formal educational evaluation. Higher-level topic classification uses English keyword hints after explicit curated assignments; ambiguous entries remain in More words and expressions.
 
 ## Evaluation methods and limits
 
@@ -93,7 +96,7 @@ Writing counts an independent attempt as correct after a character is completed 
 
 These are prototype metrics. Their educational suitability and assessment accuracy still require evaluation with learners and a teacher.
 
-Course and exercise scores are calculated from the authored answer keys, not from a general language model. Multiple-choice listening uses device speech synthesis; if a Mandarin voice is unavailable, users can still work with written examples. These reviews assess the concepts and examples in the starter unit. They do not demonstrate spoken tone mastery. Optional culture notes link to their sources; tone diagrams and explanatory animation are teaching illustrations rather than measurements of the learner's voice.
+Course and exercise scores are calculated from the authored answer keys, not from a general language model. Multiple-choice listening uses device speech synthesis; if a Mandarin voice is unavailable, users can still work with written examples. These reviews assess the concepts and examples in the selected lesson. They do not demonstrate spoken tone mastery. Optional culture notes link to their sources; tone diagrams and explanatory animation are teaching illustrations rather than measurements of the learner's voice.
 
 ## User data
 
@@ -101,7 +104,7 @@ The web app stores progress in `localStorage`; Android uses Capacitor Preference
 
 Exports include results, display name, daily goal and lesson/exercise sessions. Import validates the format, merges histories, removes duplicate attempt IDs and rebuilds the review schedule; the name and daily goal saved in the Supabase account remain authoritative. Older backups without learning sessions remain supported. Session answers are validated against the current curriculum; imported completion scores are recalculated, and newer copies of the same session are kept. The daily practice goal and streak currently count the quick-practice attempt history; course and exercise completion has its own summary in Progress. Voice recordings exist only during the current practice session and are not exported. The recognition service may process audio outside the device; this application has no audio-processing server.
 
-Vocabulary, exercises and stroke data are bundled in the Android app. The browser still needs to load the application from a web server; there is no service worker for opening the entire page offline.
+Vocabulary, exercises and the 293 core stroke templates are bundled in the Android app; additional writing templates load on demand. The browser still needs to load the application from a web server; there is no service worker for opening the entire page offline.
 
 ## Android
 
@@ -123,7 +126,7 @@ Use Android Studio to run the app on a phone/emulator or build an APK. Repeat `n
 - `supabase/migrations/`: backend tables, grants, RLS and restricted RPC functions. `server-tests/`: PostgreSQL authorization tests.
 - `src/components/`: screens and practice interactions, including the character picker.
 - `src/data/categories.ts`, `sentences.ts`: topics and demo sentences.
-- `src/types/learning.ts`, `src/data/learning.ts`, `src/lib/learning.ts`: curated starter curriculum, answer grading, lesson prerequisites and learning-session validation.
+- `src/types/learning.ts`, `src/data/learning.ts`, `src/lib/learning.ts`: curated multi-level curriculum, answer grading, lesson prerequisites and learning-session validation.
 - `src/components/CoursePage.tsx`, `ExercisesPage.tsx`, `LearningSessionPage.tsx`: course map, exercise catalogue and shared learning workspace.
 - `src/lib/vocabulary.ts`: dataset validation, bundled subset and refresh.
 - `src/lib/study.ts`, `storage.ts`, `useStudy.ts`: history, scheduling, migration and persistence.
@@ -131,4 +134,4 @@ Use Android Studio to run the app on a phone/emulator or build an APK. Repeat `n
 - `src/lib/brush.ts`, `brushRenderer.ts`: tapered brush geometry and a renderer using Hanzi Writer's `rendererOverride` contract, including reference-stroke animation and live pen pressure.
 - `src/lib/*.test.ts`, `tests/*.spec.ts`: unit and browser tests.
 
-Next stages: acoustic tone and pronunciation assessment, additional vocabulary levels and systematic user evaluation.
+Next stages: acoustic tone and pronunciation assessment, lecturer review of expanded course content and systematic user evaluation.

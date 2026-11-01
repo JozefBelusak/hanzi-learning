@@ -22,16 +22,24 @@ if (!Array.isArray(source.words) || source.license !== 'CC BY 4.0') {
 }
 const words = source.words.filter((word) => levels.includes(word.hsk2_level))
 if (!words.length || words.some((word) => [word.id, word.simplified, word.pinyin, word.gloss_en].some((field) => typeof field !== 'string' || !field.trim()))) {
-  throw new Error('Starter vocabulary is empty or contains incomplete records.')
+  throw new Error('Selected vocabulary is empty or contains incomplete records.')
 }
-if (new Set(words.map((word) => word.id)).size !== words.length || new Set(words.map((word) => word.simplified)).size !== words.length) {
-  throw new Error('Starter vocabulary contains duplicate identifiers or words.')
+// Homographs can have distinct readings/meanings and provider IDs (还 hái/huán).
+if (new Set(words.map((word) => word.id)).size !== words.length) {
+  throw new Error('Selected vocabulary contains duplicate identifiers.')
 }
-const previous = JSON.parse(await readFile(join(project, 'src/data/vocabulary-hsk1.json'), 'utf8'))
+const previous = JSON.parse(await readFile(join(project, 'src/data/vocabulary-hsk.json'), 'utf8'))
 for (const old of previous.words) {
   if (!words.some((word) => word.id === old.id && word.simplified === old.simplified)) throw new Error(`Keep existing vocabulary identity ${old.id}; imports may add words but cannot remove or reassign published identities.`)
 }
-const characters = [...new Set(words.flatMap((word) => [...word.simplified].filter((character) => /\p{Script=Han}/u.test(character))))]
+let taught = new Set()
+try {
+  const activities = JSON.parse(await readFile(join(project, 'src/data/content/activities.json'), 'utf8'))
+  taught = new Set(activities.flatMap((activity) => activity.vocabularyIds))
+} catch (error) { if (error.code !== 'ENOENT') throw error }
+const legacyIds = { 我: 'wo', 好: 'hao', 水: 'shui' }
+const offline = words.filter((word) => word.hsk2_level === 1 || taught.has(legacyIds[word.simplified] ?? `hearmandarin:${word.id}`))
+const characters = [...new Set(offline.flatMap((word) => [...word.simplified].filter((character) => /\p{Script=Han}/u.test(character))))]
 const dataPackage = dirname(require.resolve('hanzi-writer-data/package.json'))
 const writerPackage = dirname(require.resolve('hanzi-writer/package.json'))
 // Validate every trajectory before changing the checked-in vocabulary snapshot.
@@ -54,8 +62,8 @@ await mkdir(licenseDirectory, { recursive: true })
 for (const [character, raw] of strokes) await writeFile(join(strokeDirectory, `${character}.json`), raw)
 await writeFile(join(licenseDirectory, 'hanzi-writer-data-LICENSE.txt'), dataLicense)
 await writeFile(join(licenseDirectory, 'hanzi-writer-LICENSE.txt'), writerLicense)
-const destination = join(project, 'src/data/vocabulary-hsk1.json')
+const destination = join(project, 'src/data/vocabulary-hsk.json')
 await writeFile(`${destination}.tmp`, `${JSON.stringify(snapshot, null, 2)}\n`)
 await rename(`${destination}.tmp`, destination)
-console.log(`Imported ${words.length} words and ${characters.length} characters from HearMandarin (${source.version}).`)
+console.log(`Imported ${words.length} words and prepared ${characters.length} curriculum characters from HearMandarin (${source.version}).`)
 console.log('Review the data diff, then run npm test and npm run build before synchronizing Android.')

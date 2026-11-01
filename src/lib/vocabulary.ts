@@ -1,4 +1,4 @@
-import snapshot from '../data/vocabulary-hsk1.json'
+import snapshot from '../data/vocabulary-hsk.json'
 import { catalog, getActiveCatalog, getServerRevision, installCatalog } from '../data/catalog'
 import { taxonomy } from '../data/taxonomy'
 import { isHskWord, normalizeVocabulary } from './contentVocabulary'
@@ -13,11 +13,12 @@ export const vocabularyInfo = {
 }
 export function parseVocabulary(data: unknown): Card[] { return normalizeVocabulary(data, taxonomy) }
 const sourceVocabulary = parseVocabulary(snapshot)
-const authoredVocabulary = catalog.vocabulary.filter((word) => !sourceVocabulary.some((original) => original.id === word.id))
+const sourceIdentities = new Map(sourceVocabulary.map((word) => [word.id, word.hanzi]))
+const authoredVocabulary = catalog.vocabulary.filter((word) => !sourceIdentities.has(word.id))
 export const bundledVocabulary = catalog.vocabulary
 function isCompatible(cards: Card[]): boolean {
   return cards.length === sourceVocabulary.length && cards.every((card) =>
-    sourceVocabulary.some((original) => original.id === card.id && original.hanzi === card.hanzi),
+    sourceIdentities.get(card.id) === card.hanzi,
   )
 }
 export async function loadVocabulary(signal?: AbortSignal): Promise<Card[]> {
@@ -48,7 +49,7 @@ export async function refreshVocabulary(signal?: AbortSignal): Promise<Card[]> {
   const data: unknown = await response.json()
   const cards = parseVocabulary(data)
   if (!isCompatible(cards)) {
-    throw new Error('The source word list has changed. Update the app to include the matching stroke data.')
+    throw new Error('The source word list has changed. Update the app to include the matching vocabulary catalog.')
   }
   signal?.throwIfAborted()
   const source = data as Record<string, unknown> & { words: unknown[] }
