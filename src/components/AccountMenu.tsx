@@ -45,7 +45,7 @@ export default function AccountMenu({ profile, activePage, onNavigate, onLogout 
     </button>
     {open && <section id={id} ref={panel} className="account-panel" role="dialog" aria-label="Your account">
       <div className="account-panel-heading"><div><strong>{profile.display_name}</strong><span className="account-role">{roleLabels[profile.role]}</span></div><button type="button" className="account-close" aria-label="Close account panel" onClick={() => { setOpen(false); trigger.current?.focus() }}>×</button></div>
-      <div className="account-links">{links.map((link) => <button type="button" key={link.page} className="account-link" aria-label={link.label} aria-current={activePage === link.page || (link.page === 'lessons' && activePage === 'public-lesson') ? 'page' : undefined} onClick={() => visit(link.page)}><span className="account-link-symbol" lang="zh-CN" aria-hidden="true">{link.symbol}</span><span><strong>{link.label}</strong><small>{link.description}</small></span><span aria-hidden="true">↗</span></button>)}</div>
+      <div className="account-links">{links.map((link) => <button type="button" key={link.page} className="account-link" aria-label={link.label} aria-current={activePage === link.page || (link.page === 'lessons' && activePage === 'public-lesson') ? 'page' : undefined} onClick={() => visit(link.page)}><span className="account-link-symbol" lang="zh-CN" aria-hidden="true">{link.symbol}</span><span><strong>{link.label}</strong><small>{link.description}</small></span></button>)}</div>
       <button type="button" className="account-signout" onClick={() => { setOpen(false); onLogout() }}>Sign out</button>
     </section>}
   </div>

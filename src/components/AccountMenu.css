@@ -11,12 +11,11 @@
 .account-role { display: inline-block; padding: 3px 8px; border-radius: 6px; color: var(--green); background: #edf2e8; font-size: 11px; font-weight: 600; }
 .account-close { flex-shrink: 0; padding: 0; width: 44px; background: #f3f5ef; color: var(--muted); font-size: 25px; line-height: 1; border-radius: 50%; }
 .account-links { display: grid; gap: 5px; padding: 12px 0; }
-.account-link { width: 100%; display: grid; grid-template-columns: 34px minmax(0, 1fr) 14px; align-items: center; gap: 10px; padding: 12px 8px; background: transparent; color: var(--green); text-align: left; }
+.account-link { width: 100%; display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; padding: 12px 8px; background: transparent; color: var(--green); text-align: left; }
 .account-link:hover, .account-link[aria-current=page] { background: #edf2e8; }
 .account-link-symbol { display: grid; place-items: center; height: 34px; border: 1px solid var(--line); border-radius: 10px; font: 20px var(--hanzi-font); }
 .account-link strong { display: block; font-size: 13px; }
 .account-link small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; line-height: 1.5; }
-.account-link > span:last-child { color: #8ca18f; font-size: 15px; }
 .account-signout { width: 100%; padding: 13px; border-top: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--green); text-align: left; font-size: 13px; }
 @keyframes account-reveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 1000px) { .account-trigger-name { display: none; } }
