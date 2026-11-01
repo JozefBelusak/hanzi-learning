@@ -1,7 +1,4 @@
 .app-shell { padding-bottom: max(32px, env(safe-area-inset-bottom)); }
-.content-filters { display: flex; flex-wrap: wrap; gap: 16px; margin: 18px 0 24px; }
-.content-filters > div { display: grid; gap: 6px; min-width: 0; }
-.content-filters label { display: grid; gap: 6px; min-width: 0; font-size: 14px; }
 .content-classification { color: var(--accent); font-size: 14px; }
 .app-header {
   display: flex;
@@ -15,10 +12,15 @@
 .brand { display: flex; align-items: center; gap: 10px; padding: 0; background: transparent; color: var(--green); font-size: 23px; }
 .brand > span:first-child { font-family: var(--hanzi-font); font-size: 29px; }
 .app-header nav { display: flex; gap: 6px; }
-.app-header nav { flex-wrap: wrap; justify-content: flex-end; }
+.app-header nav { flex-wrap: wrap; justify-content: center; margin-left: auto; }
 .nav-button { color: var(--muted); background: transparent; font-size: 14px; padding: 10px 16px; }
 .nav-button[aria-current=page] { background: #edf2e8; color: var(--green); }
 .nav-icon { display: none; }
+@media (min-width: 701px) and (max-width: 1000px) {
+  .app-header { gap: 16px; }
+  .app-header nav { flex-wrap: nowrap; gap: 2px; }
+  .nav-button { padding-inline: 9px; font-size: 13px; }
+}
 .home-page, .topics-page, .learning-page, .progress-page, .settings-page {
   width: min(960px, calc(100% - 48px));
   margin: 40px auto;
@@ -284,7 +286,7 @@
   .landing-character { opacity: .18; right: 2%; }
   .landing-content { max-width: 470px; }
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   html { scroll-padding-bottom: calc(94px + env(safe-area-inset-bottom)); }
   .writing-board { scroll-margin-bottom: calc(94px + env(safe-area-inset-bottom)); }
   .app-shell { padding-bottom: calc(94px + env(safe-area-inset-bottom)); }
@@ -292,6 +294,8 @@
   .app-header nav { position: fixed; z-index: 10; bottom: 0; left: 0; width: 100%; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; padding: 8px 4px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: white; }
   .nav-button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 1px; font-size: 10px; min-width: 0; }
   .nav-icon { display: block; width: 20px; height: 20px; }
+}
+@media (max-width: 600px) {
   .home-page, .topics-page, .learning-page, .progress-page, .settings-page, .practice-page, .speech-page, .sentence-page { width: calc(100% - 32px); margin: 24px auto; }
   .home-study { padding: 24px; }
   .home-study h2 { font-size: 23px; }

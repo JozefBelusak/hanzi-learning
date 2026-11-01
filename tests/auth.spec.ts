@@ -3,6 +3,11 @@ import type { Page } from '@playwright/test'
 
 test.use({ account: null })
 const password = 'Correct-password-123'
+async function signOut(page: Page) {
+  const account = page.getByRole('button', { name: 'Your account', exact: true })
+  if (await account.isVisible()) await account.click()
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+}
 async function login(page: Page, email: string) {
   await page.goto('/#/login')
   await page.getByLabel('Email', { exact: true }).fill(email)
@@ -24,7 +29,7 @@ test('guards direct learning links, returns after login, restores sessions and b
   await expect(page.locator('.speech-card')).toBeVisible()
   await page.reload()
   await expect(page.locator('.speech-card')).toBeVisible()
-  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+  await signOut(page)
   await expect(page).toHaveURL(/#\/login$/)
   await page.goBack()
   await expect(page.locator('.speech-card')).toHaveCount(0)
@@ -93,7 +98,7 @@ test('fails closed when account permissions cannot be loaded', async ({ page, ba
   await login(page, 'student@example.test')
   await expect(page.getByRole('heading', { name: 'Account unavailable', exact: true })).toBeVisible({ timeout: 15_000 })
   await expect(page.getByRole('navigation', { name: 'Main navigation' })).toHaveCount(0)
-  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+  await signOut(page)
   await expect(page).toHaveURL(/#\/login$/)
 })
 
@@ -106,7 +111,7 @@ test('isolates accounts on a shared device and explicitly imports earlier anonym
   await page.getByRole('button', { name: 'Show answer', exact: true }).click()
   await page.getByRole('button', { name: 'Good', exact: true }).click()
   await expect.poll(() => page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? '{}').attempts?.length, accountStudyKey)).toBe(1)
-  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+  await signOut(page)
   await login(page, 'other@example.test')
   await page.goto('/#/progress')
   await expect(page.locator('.stat-card').filter({ hasText: 'Total attempts' })).toContainText('0')
@@ -129,8 +134,9 @@ test('lecturers publish a lesson that students can read as plain text', async ({
   await page.getByRole('button', { name: 'Save lesson', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Lesson saved.')
   expect(backend.lessons[0]).toMatchObject({ title: 'Ordering tea', published: true })
-  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+  await signOut(page)
   await login(page, 'student@example.test')
+  await page.getByRole('button', { name: 'Your account', exact: true }).click()
   await page.getByRole('button', { name: 'Public lessons', exact: true }).click()
   await page.getByRole('button', { name: 'Read lesson', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Ordering tea', exact: true })).toBeVisible()
@@ -144,14 +150,15 @@ test('a lecturer creates a classroom, a student joins and the lecturer removes t
   await page.getByRole('button', { name: 'Create classroom', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Classroom created.')
   const code = backend.classrooms[0].join_code
-  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+  await signOut(page)
   await login(page, 'student@example.test')
+  await page.getByRole('button', { name: 'Your account', exact: true }).click()
   await page.getByRole('button', { name: 'Your classrooms', exact: true }).click()
   await page.getByLabel('Invitation code', { exact: true }).fill(code)
   await page.getByRole('button', { name: 'Join classroom', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('You joined the classroom.')
   await expect(page.locator('.management-list')).toContainText('Mandarin beginners')
-  await page.getByRole('button', { name: 'Sign out', exact: true }).click()
+  await signOut(page)
   await login(page, 'lecturer@example.test')
   await page.getByRole('button', { name: 'Manage students', exact: true }).click()
   await expect(page.getByRole('region', { name: 'Classroom students' })).toContainText('student@example.test')

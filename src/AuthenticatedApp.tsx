@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { getCatalogSnapshot, subscribeCatalog } from './data/catalog'
 import ManagementPage from './components/ManagementPage'
+import AccountMenu from './components/AccountMenu'
 import PublicLessonsPage from './components/PublicLessonsPage'
 import ClassroomsPage from './components/ClassroomsPage'
 import HomePage from './components/HomePage'
@@ -21,7 +22,6 @@ import { activityStatus } from './lib/learning'
 import { loadVocabulary, refreshVocabulary } from './lib/vocabulary'
 import { useStudy } from './lib/useStudy'
 import type { useNavigation } from './lib/navigation'
-import { canTeach, roleLabels } from './lib/access'
 import { loadStudyData } from './lib/storage'
 import type { Card } from './types/study'
 import type { UserProfile } from './types/auth'
@@ -139,8 +139,8 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
         <nav aria-label="Main navigation">
           {navigation.map((item) => <button key={item.page} className="nav-button" type="button" aria-current={activePage === item.page ? 'page' : undefined} onClick={() => navigate({ page: item.page })}><svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={item.icon} /></svg><span>{item.label}</span></button>)}
         </nav>
+        <AccountMenu key={hash} profile={profile} activePage={route.page} onNavigate={(page) => navigate({ page })} onLogout={onLogout} />
       </header>
-      <div className="account-bar" aria-label="Your account"><span>{profile.display_name}</span><span className="account-role">{roleLabels[profile.role]}</span><button type="button" className="text-btn" onClick={() => navigate({ page: 'lessons' })}>Public lessons</button><button type="button" className="text-btn" onClick={() => navigate({ page: 'classes' })}>Your classrooms</button>{canTeach(profile.role) && <button type="button" className="text-btn" onClick={() => navigate({ page: 'teach' })}>Lecturer workspace</button>}{profile.role === 'admin' && <button type="button" className="text-btn" onClick={() => navigate({ page: 'admin' })}>Administration</button>}<button type="button" className="text-btn" onClick={onLogout}>Sign out</button></div>
       {logoutError && <p className="global-notice" role="alert">{logoutError}</p>}
       {study.storageError && <p className="global-notice" role="alert">{study.storageError}</p>}
       {content}

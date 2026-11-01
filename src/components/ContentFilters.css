@@ -1,0 +1,24 @@
+.content-filters { display: flex; flex-wrap: wrap; gap: 24px; margin: 28px 0; padding: 22px 0; border-block: 1px solid var(--line); }
+.filter-group { flex: 1 1 410px; min-width: 0; padding: 0; margin: 0; border: 0; }
+.filter-levels { flex-basis: 570px; }
+.filter-group legend { padding: 0; margin-bottom: 12px; font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-option { position: relative; display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 24px; color: var(--muted); background: var(--surface); font-size: 13px; font-weight: 600; cursor: pointer; transition: background 150ms, border-color 150ms, color 150ms; }
+.filter-option input { position: absolute; inset: 50% auto auto 50%; width: 1px; height: 1px; min-height: 0; padding: 0; margin: 0; opacity: 0; }
+.filter-option:hover { border-color: #8ba596; background: #f0f4ed; }
+.filter-option:has(input:checked) { background: var(--green); border-color: var(--green); color: white; }
+.filter-option:has(input:focus-visible) { outline: 3px solid #b68450; outline-offset: 3px; }
+.filter-option input:focus-visible { outline: none; }
+.filter-step { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: #edf2e8; color: var(--green); font-size: 10px; font-variant-numeric: tabular-nums; }
+.filter-option:has(input:checked) .filter-step { background: #ffffff24; color: white; }
+.filter-intensity { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+.filter-intensity i { width: 3px; height: 6px; border-radius: 2px; background: currentColor; opacity: .2; }
+.filter-intensity i:nth-child(2) { height: 10px; }
+.filter-intensity i:nth-child(3) { height: 15px; }
+.filter-intensity .is-filled { opacity: 1; }
+@media (max-width: 500px) {
+  .content-filters { margin: 22px 0; padding: 20px 0; }
+  .filter-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter-option { justify-content: flex-start; border-radius: 12px; padding-inline: 12px; }
+  .filter-levels .filter-all { grid-column: 1 / -1; justify-content: center; }
+}

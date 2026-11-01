@@ -1,8 +1,33 @@
 import { difficulties, languageLevels } from '../data/taxonomy'
 import type { ContentFilter } from '../lib/contentFilter'
+import './ContentFilters.css'
 export default function ContentFilters({ id, value, onChange }: { id: string; value: ContentFilter; onChange: (filter: ContentFilter) => void }) {
   return <div className="content-filters" role="group" aria-label="Content level and difficulty">
-    <div><label htmlFor={`${id}-level`}>Language level</label><select id={`${id}-level`} value={value.languageLevel} onChange={(event) => onChange({ ...value, languageLevel: event.target.value as ContentFilter['languageLevel'] })}><option value="all">All levels</option>{languageLevels.map((level) => <option key={level.id} value={level.id}>{level.label}</option>)}</select></div>
-    <div><label htmlFor={`${id}-difficulty`}>Difficulty</label><select id={`${id}-difficulty`} value={value.difficulty} onChange={(event) => onChange({ ...value, difficulty: event.target.value as ContentFilter['difficulty'] })}><option value="all">All difficulties</option>{difficulties.map((difficulty) => <option key={difficulty.id} value={difficulty.id}>{difficulty.label}</option>)}</select></div>
+    <fieldset className="filter-group filter-levels">
+      <legend>Language level</legend>
+      <div className="filter-options">
+        <label className="filter-option filter-all">
+          <input type="radio" name={`${id}-level`} value="all" checked={value.languageLevel === 'all'} onChange={() => onChange({ ...value, languageLevel: 'all' })} />
+          <span>All levels</span>
+        </label>
+        {languageLevels.map((level, index) => <label className="filter-option" key={level.id} title={level.description}>
+          <input type="radio" name={`${id}-level`} value={level.id} checked={value.languageLevel === level.id} onChange={() => onChange({ ...value, languageLevel: level.id })} />
+          <span className="filter-step" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><span>{level.label}</span>
+        </label>)}
+      </div>
+    </fieldset>
+    <fieldset className="filter-group filter-difficulties">
+      <legend>Difficulty</legend>
+      <div className="filter-options">
+        <label className="filter-option filter-all">
+          <input type="radio" name={`${id}-difficulty`} value="all" checked={value.difficulty === 'all'} onChange={() => onChange({ ...value, difficulty: 'all' })} />
+          <span>All difficulties</span>
+        </label>
+        {difficulties.map((difficulty, index) => <label className="filter-option" key={difficulty.id} title={difficulty.description}>
+          <input type="radio" name={`${id}-difficulty`} value={difficulty.id} checked={value.difficulty === difficulty.id} onChange={() => onChange({ ...value, difficulty: difficulty.id })} />
+          <span className="filter-intensity" aria-hidden="true">{[0, 1, 2].map((bar) => <i key={bar} className={bar <= index ? 'is-filled' : undefined} />)}</span><span>{difficulty.label}</span>
+        </label>)}
+      </div>
+    </fieldset>
   </div>
 }
