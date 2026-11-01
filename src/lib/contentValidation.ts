@@ -13,6 +13,7 @@ function rows(value: unknown, path: string): Row[] { return list(value, path).ma
 function ids(value: unknown, path: string): Set<string> { const entries = rows(value, path); entries.forEach((r) => id(r.id, `${path}.id`)); const result = entries.map((r) => r.id as string); unique(result, path); return new Set(result) }
 function references(values: unknown, target: Set<string>, path: string) { const refs = strings(values, path); unique(refs, path); refs.forEach((ref) => check(target.has(ref), `${path}: unknown reference ${ref}.`)) }
 function metadata(value: Row, path: string, taxonomy: ContentTaxonomy) {
+  check(value.archived === undefined || typeof value.archived === 'boolean', `${path}: invalid archive flag.`)
   check(taxonomy.languageLevels.some(({ id }) => id === value.languageLevel), `${path}: unknown language level.`)
   check(taxonomy.difficulties.some(({ id }) => id === value.difficulty), `${path}: unknown difficulty.`)
 }
@@ -67,7 +68,7 @@ export function parseContentCatalog(value: unknown): ContentCatalog {
     for (const field of ['sourceEntryId', 'traditional', 'partOfSpeech']) if (word[field] !== undefined) text(word[field], `vocabulary.${field}`)
   })
   const grammarRows = rows(pack.grammarTopics, 'grammarTopics')
-  grammarRows.forEach((topic) => { metadata(topic, `grammar ${topic.id}`, taxonomy); text(topic.title, 'grammar.title'); text(topic.explanation, 'grammar.explanation'); examples(topic.examples, 'grammar.examples'); references(topic.prerequisites, grammar, 'grammar.prerequisites') })
+  grammarRows.forEach((topic) => { metadata(topic, `grammar ${topic.id}`, taxonomy); text(topic.title, 'grammar.title'); text(topic.explanation, 'grammar.explanation'); examples(topic.examples, 'grammar.examples'); references(topic.prerequisites, grammar, 'grammar.prerequisites'); if (topic.vocabularyIds !== undefined) references(topic.vocabularyIds, words, 'grammar.vocabularyIds') })
   acyclic(new Map(grammarRows.map((topic) => [topic.id as string, topic.prerequisites as string[]])), 'Grammar')
   const activities = rows(pack.activities, 'activities')
   const revisionKeys: string[] = []

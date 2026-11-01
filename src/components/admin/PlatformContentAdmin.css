@@ -1,0 +1,30 @@
+.admin-workspace-tabs, .admin-content-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
+.admin-workspace-tabs button, .admin-content-tabs button { color: var(--green); background: white; border-color: var(--line); }
+.admin-workspace-tabs button[aria-current=page], .admin-content-tabs button[aria-current=page] { background: var(--green); color: white; }
+.platform-content-admin { margin-top: 28px; }
+.admin-revision { font-size: 13px; }
+.admin-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin: 24px 0; }
+.admin-summary { display: grid; text-align: left; color: var(--green); gap: 8px; }
+.admin-summary strong { font-size: 32px; }
+.admin-list-tools { display: flex; flex-wrap: wrap; align-items: end; gap: 20px; }
+.admin-list-tools > label:first-child { display: grid; gap: 6px; flex: 1 1 240px; }
+.admin-content-list strong { overflow-wrap: anywhere; }
+.content-editor { margin-top: 22px; }
+.content-editor > p { max-width: 700px; }
+.editor-fields { display: grid; gap: 16px; padding: 0; border: 0; margin: 0; min-width: 0; }
+.editor-fields label { display: grid; gap: 6px; font-size: 14px; }
+.editor-fields .checkbox-field { display: flex; }
+.editor-fields textarea { width: 100%; min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 7px; color: inherit; font: inherit; resize: vertical; }
+.editor-fields small { color: var(--muted); }
+.editor-columns, .editor-option { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.editor-section, .editor-question { min-width: 0; margin: 0; padding: 18px; border: 1px solid var(--line); border-radius: 9px; display: grid; gap: 14px; }
+.editor-section > legend, .editor-question > legend { font-weight: 600; padding: 0 6px; }
+.editor-repeat { display: grid; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 7px; }
+.editor-option { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.editor-options { display: grid; gap: 14px; }
+.editor-references { max-height: 240px; overflow: auto; display: grid; gap: 4px; }
+.editor-references label { padding: 8px; min-height: 44px; }
+.editor-references span { overflow-wrap: anywhere; }
+.editor-actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+.editor-fields > button, .editor-section > button, .editor-question > button, .editor-repeat > button { justify-self: start; }
+@media (max-width: 560px) { .editor-columns, .editor-option { grid-template-columns: 1fr; } .editor-section, .editor-question { padding: 12px; } .content-editor { padding: 18px; } }

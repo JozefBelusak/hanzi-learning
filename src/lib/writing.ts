@@ -28,11 +28,14 @@ export function writingCharacters(cards: Card[]): WritingCharacter[] {
 export async function loadStrokeData(character: string): Promise<CharacterJson> {
   const load = strokeModules[`../data/strokes/${character}.json`]
 
-  if (!load) {
-    throw new Error(`No stroke template is available for ${character} yet.`)
+  let data: CharacterJson
+  if (load) data = await load()
+  else {
+    if (!/^\p{Script=Han}$/u.test(character)) throw new Error('Choose a single Chinese character.')
+    const response = await fetch(`https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0.1/${encodeURIComponent(character)}.json`, { signal: AbortSignal.timeout(10_000) })
+    if (!response.ok) throw new Error(`No stroke template is available for ${character} yet.`)
+    data = await response.json() as CharacterJson
   }
-
-  const data = await load()
 
   if (
     !Array.isArray(data.strokes) ||

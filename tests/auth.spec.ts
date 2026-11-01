@@ -163,6 +163,7 @@ test('a lecturer creates a classroom, a student joins and the lecturer removes t
 test('admin role changes use the backend RPC and the last admin cannot be demoted', async ({ page, backend }) => {
   page.on('dialog', (dialog) => { void dialog.accept() })
   await login(page, 'admin@example.test')
+  await page.getByRole('navigation', { name: 'Administration sections', exact: true }).getByRole('button', { name: 'Users and roles', exact: true }).click()
   const role = page.getByLabel('Role for other@example.test', { exact: true })
   await role.selectOption('lecturer')
   await role.locator('..').getByRole('button', { name: 'Save role', exact: true }).click()

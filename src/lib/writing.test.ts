@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { Card } from '../types/study'
 import { loadStrokeData, writingCharacters } from './writing'
 import snapshot from '../data/vocabulary-hsk1.json'
@@ -35,7 +35,21 @@ describe('offline stroke data', () => {
   })
 
   it('reports missing data instead of substituting or grading another character', async () => {
-    await expect(loadStrokeData('not-a-character')).rejects.toThrow('No stroke template')
+    await expect(loadStrokeData('not-a-character')).rejects.toThrow('single Chinese character')
+  })
+
+  it('loads and validates additional admin-created characters from the pinned public data source', async () => {
+    const valid = await loadStrokeData('我')
+    const fetch = vi.fn().mockResolvedValue({ ok: true, json: async () => valid })
+    vi.stubGlobal('fetch', fetch)
+    try {
+      expect(await loadStrokeData('白')).toEqual(valid)
+      expect(fetch.mock.calls[0][0]).toContain('hanzi-writer-data@2.0.1/')
+      fetch.mockResolvedValueOnce({ ok: false })
+      await expect(loadStrokeData('白')).rejects.toThrow('No stroke template')
+      fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ strokes: ['bad'], medians: [] }) })
+      await expect(loadStrokeData('白')).rejects.toThrow('invalid')
+    } finally { vi.unstubAllGlobals() }
   })
 
   it('includes valid offline trajectories for every Hanzi in the starter vocabulary', async () => {

@@ -19,7 +19,7 @@ describe('course, exercises and contextual practice routes', () => {
 
   it('rejects missing IDs, wrong activity kinds, invalid modes and mismatched practice context', () => {
     for (const hash of [
-      '#/course/missing', `#/course/${exercises[0].id}`, `#/exercises/${lessons[0].id}`,
+      '#/course/invalid%20id', `#/course/${exercises[0].id}`, `#/exercises/${lessons[0].id}`,
       '#/practice/food/wrong', `#/practice/food/speech/from/${lessons[0].id}`,
     ]) expect(parseRoute(hash)).toEqual({ page: 'home' })
   })

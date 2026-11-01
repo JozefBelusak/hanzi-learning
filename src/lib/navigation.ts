@@ -23,8 +23,9 @@ export function parseRoute(hash: string): AppRoute {
   if (parts.length === 2 && parts[0] === 'lessons' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(parts[1])) return { page: 'public-lesson', lessonId: parts[1] }
   if (parts.length === 2 && (parts[0] === 'course' || parts[0] === 'exercises')) {
     const activity = getActivity(parts[1])
-    if (activity && activity.kind === (parts[0] === 'course' ? 'lesson' : 'exercise')) {
-      return { page: activity.kind === 'lesson' ? 'lesson' : 'exercise', activityId: activity.id }
+    const kind = parts[0] === 'course' ? 'lesson' : 'exercise'
+    if ((!activity && /^[a-z0-9][a-z0-9:_-]{0,159}$/.test(parts[1])) || activity?.kind === kind) {
+      return { page: kind, activityId: parts[1] }
     }
   }
   if (parts.length === 2 && parts[0] === 'topics' && validCategory(parts[1])) {

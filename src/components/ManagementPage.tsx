@@ -5,6 +5,7 @@ import type { UserProfile, UserRole } from '../types/auth'
 import LessonManager from './LessonManager'
 import ClassroomsPage from './ClassroomsPage'
 import './PlatformPages.css'
+import PlatformContentAdmin from './admin/PlatformContentAdmin'
 
 function UserRoles({ onOwnRoleChange, ownId }: { onOwnRoleChange: () => void; ownId: string }) {
   const [users, setUsers] = useState<UserProfile[]>([])
@@ -41,9 +42,12 @@ function UserRoles({ onOwnRoleChange, ownId }: { onOwnRoleChange: () => void; ow
 }
 
 export default function ManagementPage({ profile, admin, onRead, onRefreshAccount }: { profile: UserProfile; admin: boolean; onRead: (id: string) => void; onRefreshAccount: () => void }) {
+  const [section, setSection] = useState('content')
   return <main className="platform-page"><h1>{admin ? 'Administration' : 'Lecturer workspace'}</h1><p>{admin ? 'Manage platform roles, authored lessons and classrooms.' : 'Publish lessons and work with your students.'}</p>
-    {admin && <UserRoles ownId={profile.id} onOwnRoleChange={onRefreshAccount} />}
-    <LessonManager profile={profile} onRead={onRead} />
-    <ClassroomsPage profile={profile} embedded />
+    {admin && <nav className="admin-workspace-tabs" aria-label="Administration sections">{[{ id: 'content', label: 'Platform content' }, { id: 'users', label: 'Users and roles' }, { id: 'lecturer', label: 'Lecturer public lessons' }, { id: 'classes', label: 'Classrooms' }].map((item) => <button type="button" key={item.id} aria-current={section === item.id ? 'page' : undefined} onClick={() => setSection(item.id)}>{item.label}</button>)}</nav>}
+    {admin && section === 'content' && <PlatformContentAdmin />}
+    {admin && section === 'users' && <UserRoles ownId={profile.id} onOwnRoleChange={onRefreshAccount} />}
+    {(!admin || section === 'lecturer') && <LessonManager profile={profile} onRead={onRead} />}
+    {(!admin || section === 'classes') && <ClassroomsPage profile={profile} embedded />}
   </main>
 }

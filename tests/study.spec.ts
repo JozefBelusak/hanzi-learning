@@ -126,13 +126,14 @@ test('manual speech fallback is available and cannot inflate recognized speech a
   await expect(statistics).toContainText('—')
 })
 
-test('bundled public vocabulary works on the first launch with external network unavailable', async ({ page }) => {
+test('published vocabulary works with external network unavailable and a failed refresh retains words', async ({ page, backend }) => {
   await page.route('https://**/*', (route) => route.abort('internetdisconnected'))
   await page.addInitScript(() => Object.defineProperty(navigator, 'onLine', { get: () => false, configurable: true }))
   await openLearning(page)
   await expect(page.getByRole('button', { name: /All words/ })).toBeVisible()
   await page.getByRole('navigation', { name: 'Main navigation' })
     .getByRole('button', { name: 'Settings', exact: true }).click()
+  backend.setCatalogFailure(true)
   await page.getByRole('button', { name: 'Refresh vocabulary', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Vocabulary refresh failed.')
   await page.getByRole('navigation', { name: 'Main navigation' })

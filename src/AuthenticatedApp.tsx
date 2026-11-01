@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { getCatalogSnapshot, subscribeCatalog } from './data/catalog'
 import ManagementPage from './components/ManagementPage'
 import PublicLessonsPage from './components/PublicLessonsPage'
 import ClassroomsPage from './components/ClassroomsPage'
@@ -30,6 +31,7 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   profile: UserProfile; navigation: ReturnType<typeof useNavigation>; onLogout: () => void; onRefreshAccount: () => void; onSaveProfile: (input: LearningProfileInput) => Promise<void>; logoutError: string | null
 }) {
   const { route, navigate, back, hash } = router
+  const catalogSnapshot = useSyncExternalStore(subscribeCatalog, getCatalogSnapshot)
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -43,11 +45,11 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   useEffect(() => {
     const controller = new AbortController()
     loadVocabulary(controller.signal)
-      .then((loaded) => { if (!controller.signal.aborted) setCards(loaded) })
+      .then((loaded) => { if (!controller.signal.aborted) { setCards(loaded); setLoadError(null) } })
       .catch(() => { if (!controller.signal.aborted) setLoadError('Could not load the vocabulary. Please try again.') })
       .finally(() => { if (!controller.signal.aborted) setLoading(false) })
     return () => controller.abort()
-  }, [loadAttempt])
+  }, [loadAttempt, catalogSnapshot])
 
   useEffect(() => () => refreshRef.current?.abort(), [hash])
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
 
   if (loading || !study.ready) {
     content = <main className="practice-page"><p role="status">Loading…</p></main>
-  } else if (loadError || !cards.length) {
+  } else if (loadError || (!cards.length && route.page === 'practice' && route.mode !== 'sentences')) {
     content = <main className="practice-page"><h1>Vocabulary unavailable</h1><p role="alert">{loadError}</p><button type="button" onClick={() => { setLoading(true); setLoadError(null); setLoadAttempt((value) => value + 1) }}>Try again</button></main>
   } else if (route.page === 'practice') {
     const returnToModes = () => activity ? back({ page: activity.kind === 'lesson' ? 'lesson' : 'exercise', activityId: activity.id }) : back({ page: 'modes', category: route.category })
@@ -102,6 +104,8 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
     content = <ExercisesPage sessions={sessions} onSelect={(activityId) => navigate({ page: 'exercise', activityId })} onPractice={learn} />
   } else if ((route.page === 'lesson' || route.page === 'exercise') && activity) {
     content = <LearningSessionPage key={activity.id} activity={activity} sessions={sessions} locked={activityStatus(activity, sessions) === 'locked'} onSaveSession={study.recordLearningSession} onBack={() => back({ page: activity.kind === 'lesson' ? 'course' : 'exercises' })} onPractice={(mode) => navigate({ page: 'practice', category: activity.category, mode, activityId: activity.id })} />
+  } else if (route.page === 'lesson' || route.page === 'exercise') {
+    content = <main className="practice-page"><h1>Content not found</h1><p>This lesson or exercise is not in the published catalog.</p><button type="button" onClick={() => navigate({ page: route.page === 'lesson' ? 'course' : 'exercises' })}>Browse learning content</button></main>
   } else if (route.page === 'topics') {
     content = <TopicsPage onBack={() => back({ page: 'home' })} onSelect={(category) => navigate({ page: 'modes', category })} />
   } else if (route.page === 'modes') {

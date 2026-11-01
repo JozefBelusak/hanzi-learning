@@ -1,7 +1,9 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState, useSyncExternalStore } from 'react'
 import LandingPage from './components/LandingPage'
 import AuthPage from './components/AuthPage'
 import OnboardingPage from './components/OnboardingPage'
+import ContentGate from './components/ContentGate'
+import { subscribeCatalog, getCatalogSnapshot } from './data/catalog'
 import { parseRoute, routeHash, useNavigation } from './lib/navigation'
 import { canAccessPage, isPublicPage, roleHome } from './lib/access'
 import { useAuth } from './lib/useAuth'
@@ -12,6 +14,7 @@ import './App.css'
 const AuthenticatedApp = lazy(() => import('./AuthenticatedApp'))
 
 export default function App() {
+  useSyncExternalStore(subscribeCatalog, getCatalogSnapshot)
   const auth = useAuth()
   const navigation = useNavigation()
   const { route, navigate } = navigation
@@ -57,5 +60,5 @@ export default function App() {
   }
   if (!hasCompletedOnboarding(auth.profile)) return <OnboardingPage key={auth.profile.id} profile={auth.profile} onSave={auth.saveProfile} onLogout={() => void logout()} logoutError={logoutError} />
   if (route.page === 'onboarding' || isPublicPage(route.page) || !canAccessPage(auth.profile.role, route.page)) return <main className="auth-page"><p role="status">Opening your workspace…</p></main>
-  return <Suspense fallback={<main className="auth-page"><p role="status">Opening your workspace…</p></main>}><AuthenticatedApp key={auth.profile.id} profile={auth.profile} navigation={navigation} onLogout={() => void logout()} onRefreshAccount={auth.retry} onSaveProfile={auth.saveProfile} logoutError={logoutError} /></Suspense>
+  return <ContentGate key={auth.profile.id} onLogout={() => void logout()}><Suspense fallback={<main className="auth-page"><p role="status">Opening your workspace…</p></main>}><AuthenticatedApp key={auth.profile.id} profile={auth.profile} navigation={navigation} onLogout={() => void logout()} onRefreshAccount={auth.retry} onSaveProfile={auth.saveProfile} logoutError={logoutError} /></Suspense></ContentGate>
 }

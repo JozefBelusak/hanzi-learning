@@ -225,6 +225,8 @@ function SentencesPage({ onBack, onAttempt }: SentencesPageProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const currentSentence = sentences[currentIndex]
 
+  if (!currentSentence) return <main className="sentence-page"><button type="button" className="back-button" onClick={onBack}>Back</button><h1>Sentence building</h1><p>No sentence exercises are currently published.</p></main>
+
   return (
     <main className="sentence-page">
       <header className="sentence-header">
@@ -243,7 +245,7 @@ function SentencesPage({ onBack, onAttempt }: SentencesPageProps) {
       />
       <details className="practice-help">
         <summary>How this exercise works</summary>
-        <p>This demo has ten examples of word order, questions and negation. Answers are checked against the accepted versions of each sentence.</p>
+        <p>The published catalog has {sentences.length} sentence exercises. Answers are checked against the accepted versions of each sentence.</p>
         <p>The hint shows the answer. Attempts made with a hint are saved as assisted practice and excluded from your unassisted accuracy.</p>
       </details>
     </main>

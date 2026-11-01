@@ -1,5 +1,7 @@
 import { test as base, expect, type Page } from '@playwright/test'
 import type { UserProfile, UserRole, PublicLesson, Classroom, ClassroomMember } from '../src/types/auth'
+import { catalog } from '../src/data/catalog'
+import { applyContentMutation, type ContentEntity, type ContentKind } from '../src/lib/contentMutation'
 
 export const studentId = '00000000-0000-4000-8000-000000000001'
 export const accountStudyKey = `hanzi-learning-study-v1:${studentId}`
@@ -19,6 +21,8 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
   const revoked = new Set<string>()
   let failProfile = false
   let failSave = false
+  let failCatalog = false
+  const platform = { revision: 1, data: structuredClone(catalog), updated_at: timestamp }
   const authUser = (user: UserProfile) => ({ id: user.id, email: user.email, aud: 'authenticated', role: 'authenticated', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { display_name: user.display_name }, created_at: timestamp })
   const session = (user: UserProfile) => {
     const payload = Buffer.from(JSON.stringify({ sub: user.id, exp: Math.floor(Date.now() / 1000) + 3600, aud: 'authenticated', role: 'authenticated', session_id: user.id })).toString('base64url')
@@ -52,6 +56,20 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
     if (url.pathname === '/auth/v1/user') { await respond(caller ? authUser(caller) : { code: 'bad_jwt', msg: 'Invalid token' }, caller ? 200 : 401); return }
     if (url.pathname === '/auth/v1/logout') { if (request.headers().authorization) revoked.add(request.headers().authorization.replace(/^Bearer /, '')); await respond(null, 204); return }
     if (!caller) { await denied(); return }
+    if (url.pathname === '/rest/v1/rpc/get_platform_catalog') {
+      if (failCatalog) { await respond({ message: 'Catalog unavailable' }, 503); return }
+      await respond(platform); return
+    }
+    if (url.pathname === '/rest/v1/rpc/admin_save_platform_content') {
+      if (caller.role !== 'admin') { await denied(); return }
+      if (body?.expected_revision !== platform.revision) { await respond({ code: '40001', message: 'Catalog changed' }, 409); return }
+      try {
+        platform.data = applyContentMutation(platform.data, body?.entity_kind as ContentKind, String(body?.entity_id), body?.payload as ContentEntity | null)
+        platform.revision += 1; platform.updated_at = new Date().toISOString()
+        await respond(platform)
+      } catch (failure) { await respond({ code: '22023', message: failure instanceof Error ? failure.message : 'Invalid content' }, 400) }
+      return
+    }
     const single = request.headers().accept?.includes('vnd.pgrst.object')
     const matches = (value: Record<string, unknown>) => [...url.searchParams].every(([field, filter]) => !filter.startsWith('eq.') || String(value[field]) === filter.slice(3))
     const result = (rows: unknown[]) => single ? respond(rows[0] ?? { code: 'PGRST116', message: 'Not found' }, rows.length ? 200 : 406) : respond(rows)
@@ -109,7 +127,7 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
     }
     await respond({ message: 'Unknown test endpoint' }, 404)
   })
-  return { users, lessons, classrooms, memberships, requests, failProfile: () => { failProfile = true }, setSaveFailure: (fail: boolean) => { failSave = fail }, needsOnboarding: (email = 'student@example.test') => { Object.assign(users.find((user) => user.email === email)!, emptyPreferences) }, session }
+  return { users, lessons, classrooms, memberships, requests, platform, setCatalogFailure: (fail: boolean) => { failCatalog = fail }, failProfile: () => { failProfile = true }, setSaveFailure: (fail: boolean) => { failSave = fail }, needsOnboarding: (email = 'student@example.test') => { Object.assign(users.find((user) => user.email === email)!, emptyPreferences) }, session }
 }
 
 type Backend = Awaited<ReturnType<typeof mockSupabase>>

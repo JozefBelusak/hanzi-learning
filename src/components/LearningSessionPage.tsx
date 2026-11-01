@@ -5,6 +5,7 @@ import type { LearningActivity, LearningAnswer, LearningQuestion, LearningSessio
 import type { PracticeMode } from '../types/study'
 import ToneGuide from './ToneGuide'
 import { getActivity, getGrammarTopic } from '../data/learning'
+import { contentRepository } from '../data/catalog'
 import { difficultyLabel, levelLabel } from '../data/taxonomy'
 import './LearningSessionPage.css'
 
@@ -319,7 +320,10 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveS
           <div className="session-explanation">{activity.explanation.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
           {activity.grammarTopicIds.length > 0 && <details className="practice-help"><summary>Language and grammar topics</summary>{activity.grammarTopicIds.map((id) => {
             const topic = getGrammarTopic(id)!
-            return <section key={id}><h3>{topic.title}</h3><p>{topic.explanation}</p></section>
+            return <section key={id}><h3>{topic.title}</h3><p>{topic.explanation}</p>{topic.examples.map((example, index) => <p key={index}><strong lang="zh-CN">{example.hanzi}</strong> · {example.pinyin}<br />{example.meaning}</p>)}{(topic.vocabularyIds ?? []).length > 0 && <ul>{topic.vocabularyIds!.map((wordId) => {
+              const word = contentRepository.getVocabulary(wordId)!
+              return <li key={wordId}><span lang="zh-CN">{word.hanzi}</span> · {word.pinyin} · {word.meaning}</li>
+            })}</ul>}</section>
           })}</details>}
           {activity.examples.length > 0 && (
             <section className="session-examples" aria-label="Mandarin examples">

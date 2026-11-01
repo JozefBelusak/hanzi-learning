@@ -1,6 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { PGlite } from '@electric-sql/pglite'
 import { readFileSync } from 'node:fs'
+import { catalog } from '../src/data/catalog'
+import { parseContentCatalog } from '../src/lib/contentValidation'
+import type { CatalogSnapshot } from '../src/lib/contentMutation'
 
 const db = new PGlite()
 const ids = {
@@ -40,6 +43,7 @@ beforeAll(async () => {
   // Upgrade a database that already has accounts and learning content.
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101090000_learning_profiles.sql', import.meta.url), 'utf8'))
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101120000_content_classification.sql', import.meta.url), 'utf8'))
+  await db.exec(readFileSync(new URL('../supabase/migrations/20261101150000_platform_content_admin.sql', import.meta.url), 'utf8'))
 }, 30_000)
 afterAll(async () => { await db.close() })
 
@@ -166,6 +170,97 @@ describe('backend authorization using the actual PostgreSQL migration', () => {
 
 const saveProfileSql = 'select public.save_learning_profile($1,$2,$3,$4::text[],$5::text[],$6) as profile'
 const validProfile = ['Learner', 'elementary', 'gentle', ['speech', 'writing'], ['travel', 'culture'], 15]
+
+const adminSaveSql = 'select public.admin_save_platform_content($1,$2,$3::jsonb,$4) as snapshot'
+const newWord = { ...catalog.vocabulary[0], id: 'platform:db-word', hanzi: '明白', meaning: 'to understand', sourceId: 'hanzi-original', sourceEntryId: undefined, level: null }
+const newGrammar = { id: 'platform:db-grammar', title: 'Database grammar', explanation: 'A reusable explanation.', languageLevel: 'beginner', difficulty: 'balanced', examples: [{ hanzi: '我明白。', pinyin: 'Wǒ míngbai.', meaning: 'I understand.' }], prerequisites: [], vocabularyIds: [newWord.id] }
+const newLesson = { ...catalog.activities[0], id: 'platform:db-lesson', title: 'Database lesson', prerequisites: [], vocabularyIds: [newWord.id], grammarTopicIds: [newGrammar.id], features: [] }
+async function adminSave(kind: string, id: string, payload: unknown, revision: number): Promise<CatalogSnapshot> {
+  return (await db.query<{ snapshot: CatalogSnapshot }>(adminSaveSql, [kind, id, payload === null ? null : JSON.stringify(payload), revision])).rows[0].snapshot
+}
+
+describe('platform content administration API and database rules', () => {
+  it('seeds original data and permits only verified sessions to read it', async () => {
+    await expect(asUser(null, () => db.query('select public.get_platform_catalog()'))).rejects.toMatchObject({ code: '42501' })
+    for (const id of [ids.student, ids.lecturer, ids.admin]) await asUser(id, async () => {
+      const { rows } = await db.query<{ snapshot: CatalogSnapshot }>('select public.get_platform_catalog() as snapshot')
+      expect(rows[0].snapshot.revision).toBe(1)
+      expect(parseContentCatalog(rows[0].snapshot.data)).toEqual(catalog)
+    })
+  })
+  it('rejects student/lecturer/anonymous writes, direct table writes and forged or revoked admin sessions', async () => {
+    for (const id of [null, ids.student, ids.lecturer]) await expect(asUser(id, () => adminSave('vocabulary', newWord.id, newWord, 1))).rejects.toMatchObject({ code: '42501' })
+    for (const id of [ids.student, ids.admin]) await expect(asUser(id, () => db.query('update public.platform_catalog set revision=100'))).rejects.toMatchObject({ code: '42501' })
+    await expect(asUser(ids.admin, () => adminSave('vocabulary', newWord.id, newWord, 1), 'revoked-session')).rejects.toMatchObject({ code: '42501' })
+    await expect(asUser(ids.admin, () => db.query('select private.validate_platform_catalog($1::jsonb)', [JSON.stringify(catalog)]))).rejects.toMatchObject({ code: '42501' })
+  })
+  it('creates linked words, grammar examples, lessons and exercises with server-owned identity and revisions', async () => {
+    await asUser(ids.admin, async () => {
+      let result = await adminSave('vocabulary', newWord.id, newWord, 1)
+      result = await adminSave('grammar', newGrammar.id, newGrammar, result.revision)
+      result = await adminSave('lesson', newLesson.id, { ...newLesson, id: 'forged-id', revision: 400, source: 'lecturer', kind: 'exercise' }, result.revision)
+      expect(result.data.activities.find((item) => item.id === newLesson.id)).toMatchObject({ kind: 'lesson', source: 'platform', revision: 1 })
+      result = await adminSave('exercise', 'platform:db-exercise', { ...newLesson, id: 'platform:db-exercise', kind: 'exercise' }, result.revision)
+      expect(result.revision).toBe(5)
+      expect(parseContentCatalog(result.data)).toBeDefined()
+    })
+  })
+  it('updates answer banks through new revisions and retains every original question bank', async () => {
+    await asUser(ids.admin, async () => {
+      const original = catalog.activities[0]
+      const result = await adminSave('lesson', original.id, { ...original, title: 'Updated tone lesson', questions: original.questions.slice(0, 2) }, 1)
+      expect(result.data.activities.find((item) => item.id === original.id && item.revision === 1)?.questions).toEqual(original.questions)
+      expect(result.data.activities.find((item) => item.id === original.id && item.revision === 1)?.publication).toBe('archived')
+      expect(result.data.activities.find((item) => item.id === original.id && item.revision === 2)?.questions).toHaveLength(2)
+      expect(parseContentCatalog(result.data)).toBeDefined()
+    })
+  })
+  it('archives and restores unreferenced content without deleting historical data', async () => {
+    await asUser(ids.admin, async () => {
+      let result = await adminSave('vocabulary', newWord.id, newWord, 1)
+      result = await adminSave('vocabulary', newWord.id, null, result.revision)
+      expect(result.data.vocabulary.find((word) => word.id === newWord.id)?.archived).toBe(true)
+      result = await adminSave('vocabulary', newWord.id, { ...newWord, meaning: 'restored word' }, result.revision)
+      expect(result.data.vocabulary.find((word) => word.id === newWord.id)).toMatchObject({ archived: false, meaning: 'restored word' })
+      const independent = { ...catalog.activities.find((item) => item.kind === 'exercise')!, id: 'platform:temporary', prerequisites: [] }
+      result = await adminSave('exercise', independent.id, independent, result.revision)
+      result = await adminSave('exercise', independent.id, null, result.revision)
+      expect(result.data.activities.filter((item) => item.id === independent.id)).toHaveLength(2)
+      expect(result.data.activities.find((item) => item.id === independent.id && item.revision === 2)?.publication).toBe('archived')
+    })
+  })
+  it('blocks deleting published prerequisites and grammar/word dependencies', async () => {
+    for (const [kind, id] of [['lesson', 'lesson-tones'], ['grammar', 'identity-shi'], ['vocabulary', 'wo']]) await expect(asUser(ids.admin, () => adminSave(kind, id, null, 1))).rejects.toMatchObject({ code: '22023' })
+    await expect(asUser(ids.admin, () => adminSave('vocabulary', 'wo', { ...catalog.vocabulary.find((word) => word.id === 'wo')!, hanzi: 'different identity' }, 1))).rejects.toMatchObject({ code: '22023' })
+  })
+  it('validates API payloads independently of frontend validation and rolls back failures', async () => {
+    const original = catalog.activities[0]
+    const bad = [
+      { ...original, questions: [{ ...original.questions[0], answer: 'missing-answer' }] },
+      { ...original, questions: [{ ...original.questions[0], id: 7 }] },
+      { ...original, grammarTopicIds: ['missing-topic'] },
+      { ...original, vocabularyIds: ['missing-word'] },
+      { ...original, languageLevel: 'expert' },
+      { ...original, difficulty: 'unknown' },
+      { ...original, prerequisites: ['lesson-greetings'] },
+      { ...original, features: ['tone-guide', 'tone-guide'] },
+    ]
+    for (const payload of bad) await expect(asUser(ids.admin, () => adminSave('lesson', original.id, payload, 1))).rejects.toMatchObject({ code: '22023' })
+    expect((await db.query('select revision from public.platform_catalog')).rows).toEqual([{ revision: 1 }])
+  })
+  it('detects stale revisions atomically instead of overwriting another administrator’s work', async () => {
+    await asUser(ids.admin, async () => {
+      await adminSave('vocabulary', newWord.id, newWord, 1)
+      await db.exec('savepoint stale_revision')
+      await expect(adminSave('grammar', newGrammar.id, newGrammar, 1)).rejects.toMatchObject({ code: '40001' })
+      await db.exec('rollback to savepoint stale_revision')
+      const { rows } = await db.query<{ data: typeof catalog; revision: number }>('select data,revision from public.platform_catalog')
+      expect(rows[0].revision).toBe(2)
+      expect(rows[0].data.vocabulary.find((word) => word.id === newWord.id)).toBeDefined()
+      expect(rows[0].data.grammarTopics.find((topic) => topic.id === newGrammar.id)).toBeUndefined()
+    })
+  })
+})
 
 describe('lecturer content classification and preserved ownership', () => {
   it('adds defaults to existing lessons without changing their author, text or publication', async () => {

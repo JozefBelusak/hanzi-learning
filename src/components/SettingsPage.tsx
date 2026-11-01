@@ -5,6 +5,7 @@ import type { StudyData } from '../types/study'
 import type { UserProfile } from '../types/auth'
 import type { LearningProfileInput } from '../lib/profile'
 import LearningProfileForm from './LearningProfileForm'
+import { getActiveCatalog } from '../data/catalog'
 
 type Props = {
   study: StudyData
@@ -58,7 +59,7 @@ export default function SettingsPage({ study, profile, onSaveProfile, onImport, 
       {message && <p role="status" className="status-message">{message}</p>}
       <section className="card-surface source-settings">
         <h2>Vocabulary</h2>
-        <p>{vocabularyInfo.wordCount} words in the platform catalog, with English meanings. Public vocabulary: <a href={vocabularyInfo.url} target="_blank" rel="noreferrer">HearMandarin</a>, {vocabularyInfo.selection}. Authored vocabulary is kept when refreshing the public dataset.</p>
+        <p>{getActiveCatalog().vocabulary.filter((word) => !word.archived).length} words in the platform catalog, with English meanings. Original public vocabulary: <a href={vocabularyInfo.url} target="_blank" rel="noreferrer">HearMandarin</a>, {vocabularyInfo.selection}. Refresh loads the latest published catalog when platform administration is configured.</p>
         <button className="secondary-btn" type="button" disabled={refreshing} onClick={onRefresh}>{refreshing ? 'Refreshing…' : 'Refresh vocabulary'}</button>
         {notice && <p role="status" className="status-message">{notice}</p>}
         <details className="practice-help">

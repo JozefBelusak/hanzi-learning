@@ -18,6 +18,7 @@ export type ContentTaxonomy = {
   vocabularySelection: { hsk2Levels: number[]; levelMapping: Record<string, LanguageLevel> }
 }
 export type VocabularyEntry = EducationalMetadata & ChineseExample & {
+  archived?: boolean
   id: string
   categoryId: WordCategoryId
   // Compatibility field: HSK 2.0 level, not an app proficiency/points level.
@@ -28,6 +29,8 @@ export type VocabularyEntry = EducationalMetadata & ChineseExample & {
   partOfSpeech?: string
 }
 export type GrammarTopic = EducationalMetadata & {
+  archived?: boolean
+  vocabularyIds?: string[]
   id: string; title: string; explanation: string; examples: ChineseExample[]; prerequisites: string[]
 }
 type QuestionBase = { id: string; prompt: string; explanation: string; hint?: string; audioText?: string }
@@ -50,6 +53,7 @@ export type PlatformLesson = PlatformActivity & { kind: 'lesson' }
 export type PlatformExercise = PlatformActivity & { kind: 'exercise' }
 export type SentenceGrammarPart = { label: string; text: string }
 export type SentenceContent = EducationalMetadata & {
+  archived?: boolean
   id: string; meaning: string; pinyin: string; tokens: string[]; punctuation: '。' | '？'
   acceptedOrders?: string[][]; grammarTopicId: string; grammarParts: SentenceGrammarPart[]
 }
