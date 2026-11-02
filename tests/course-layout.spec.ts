@@ -19,7 +19,7 @@ test('all paths is a separate overview, never a combined station map, and surviv
   await expect(page).toHaveURL(/#\/course\?level=all$/)
   await expect(page.locator('.course-path-card')).toHaveCount(4)
   await expect(page.locator('.course-map')).toHaveCount(0)
-  await expect(page.getByRole('heading', { name: 'Find your starting point', exact: true })).toBeVisible()
+  await expect(page.getByRole('group', { name: 'Choose your learning path', exact: true })).toBeVisible()
   await page.reload()
   await expect(page.getByRole('radio', { name: 'All paths', exact: true })).toBeChecked()
   await page.screenshot({ path: 'playwright-report/course-paths-overview.png', fullPage: true, animations: 'disabled' })
@@ -41,6 +41,10 @@ for (const width of [360, 820, 1100, 1440]) {
       await expect(page.locator('.course-station')).toHaveCount(level === 'Beginner' ? 7 : 6)
       expect(await page.locator('.course-map-scroll').evaluate((element) => element.scrollLeft)).toBe(0)
       await expectSeparateStations(page)
+      expect(await page.locator('.course-map-scroll').evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true)
+      const mapBounds = await page.locator('.course-map-scroll').boundingBox()
+      const dots = await page.locator('.course-station-dot').evaluateAll((nodes) => nodes.map((node) => { const box = node.getBoundingClientRect(); return { left: box.left, right: box.right } }))
+      for (const dot of dots) { expect(dot.left).toBeGreaterThanOrEqual(mapBounds!.x); expect(dot.right).toBeLessThanOrEqual(mapBounds!.x + mapBounds!.width + 1) }
       await page.locator('.course-station').last().click()
       await expect(page.locator('.course-station').last()).toHaveAttribute('aria-pressed', 'true')
       if (width > 800) {

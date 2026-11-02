@@ -75,7 +75,7 @@ export function speechErrorMessage(error: unknown): string {
     return 'Speech recognition is not available on this device. You can submit a typed answer.'
   }
   if (/voice-missing/i.test(code)) {
-    return 'A Chinese voice is not available. Add a Mandarin voice to your device and try again.'
+    return 'A Chinese voice is not available.'
   }
   if (/audio-capture|NotFoundError/i.test(code)) {
     return 'The microphone is not available. Check its connection and your device settings.'
@@ -85,6 +85,11 @@ export function speechErrorMessage(error: unknown): string {
   }
   if (/timeout/i.test(code)) return 'The speech operation took too long. Try again.'
   return 'The speech operation could not be completed. Try again or submit a typed answer.'
+}
+
+export type SpeechIssue = { message: string; voiceMissing: boolean }
+export function describeSpeechError(error: unknown): SpeechIssue {
+  return { message: speechErrorMessage(error), voiceMissing: error instanceof Error && /voice-missing/.test(error.message) }
 }
 
 // Every operation has one outcome; cancellation also covers pending permissions.

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getLatestSession, gradeAnswer, sessionScore } from '../lib/learning'
-import { isSpeechAbort, speakChinese, speechErrorMessage, stopSpeaking } from '../lib/speech'
+import { describeSpeechError, isSpeechAbort, speakChinese, stopSpeaking, type SpeechIssue } from '../lib/speech'
+import SpeechNotice from './SpeechNotice'
 import type { LearningActivity, LearningAnswer, LearningQuestion, LearningSession } from '../types/learning'
 import type { PracticeMode } from '../types/study'
 import ToneGuide from './ToneGuide'
@@ -201,7 +202,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions = [], on
     return unanswered < 0 ? Math.max(0, activity.questions.length - 1) : unanswered
   })
   const [playingText, setPlayingText] = useState<string | null>(null)
-  const [audioError, setAudioError] = useState('')
+  const [audioError, setAudioError] = useState<SpeechIssue | null>(null)
   const playbackRef = useRef<AbortController | null>(null)
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null)
   const question = activity.questions[currentIndex]
@@ -227,7 +228,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions = [], on
   async function playAudio(text: string) {
     const wasPlaying = playingText === text
     stopAudio()
-    setAudioError('')
+    setAudioError(null)
     if (wasPlaying) return
     const controller = new AbortController()
     playbackRef.current = controller
@@ -235,7 +236,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions = [], on
     try {
       await speakChinese(text, { rate: 0.8, signal: controller.signal })
     } catch (error) {
-      if (!isSpeechAbort(error) && playbackRef.current === controller) setAudioError(speechErrorMessage(error))
+      if (!isSpeechAbort(error) && playbackRef.current === controller) setAudioError(describeSpeechError(error))
     } finally {
       if (playbackRef.current === controller) {
         playbackRef.current = null
@@ -310,7 +311,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions = [], on
           <progress max={activity.questions.length} value={session!.answers.length} aria-label="Saved answers" />
         </div>
       )}
-      {audioError && <p className="session-audio-error" role="status">{audioError}</p>}
+      {audioError && <SpeechNotice issue={audioError} className="session-audio-error" role="status" />}
       <div className="session-workspace">
         <aside className="session-notes" aria-label="Lesson notes">
           <button

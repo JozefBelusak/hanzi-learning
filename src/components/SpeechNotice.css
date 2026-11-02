@@ -1,0 +1,13 @@
+.speech-notice-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; }
+.speech-notice .speech-setup-toggle { display: inline-flex; align-items: center; gap: 7px; color: inherit; background: transparent; border-color: currentColor; font-size: 14px; padding: 7px 12px; }
+.voice-setup { margin-top: 18px; padding-top: 18px; border-top: 1px solid #dcc9b9; color: var(--green); }
+.voice-setup h2 { margin-bottom: 6px; font-size: 20px; }
+.voice-setup .voice-setup-device { margin: 0 0 16px; font-size: 13px; color: var(--muted); }
+.voice-setup ol { margin: 0 0 18px; padding-left: 22px; }
+.voice-setup li { padding-left: 4px; margin-bottom: 9px; font-size: 14px; }
+.voice-setup-links { display: flex; flex-wrap: wrap; gap: 12px 20px; margin: 16px 0; font-size: 14px; }
+.voice-setup small { display: block; margin-top: 16px; color: var(--muted); font-size: 12px; }
+.voice-device-change { margin-top: 18px; font-size: 13px; }
+.voice-device-change label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 12px; }
+.voice-device-change select { flex: 1; min-width: 130px; }
+.voice-setup p[role=status] { margin: 14px 0 0; font-size: 14px; }

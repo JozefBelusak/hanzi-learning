@@ -50,9 +50,8 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
   const next = suggested ?? lessons[0]
 
   if (level === 'all') return <main className="course-page course-overview">
-    <div className="course-heading"><div><h1>Your Chinese journey</h1><p>Four independent paths. Choose the level you want to explore.</p></div><div className="course-overview-count"><strong>{allLessons.length}</strong><span>lessons across {coursePaths.length} paths</span></div></div>
+    <div className="course-heading"><div><h1>Your Chinese journey</h1></div><div className="course-overview-count"><strong>{allLessons.length}</strong><span>lessons across {coursePaths.length} paths</span></div></div>
     {picker}
-    <section className="course-overview-note" aria-labelledby="course-overview-title"><span lang="zh-CN" aria-hidden="true">行</span><div><h2 id="course-overview-title">Find your starting point</h2><p>Open a path to see its stations, lesson details and your next stop. Each path keeps its own progress; you can switch whenever you like.</p></div></section>
   </main>
 
   if (!selected || !next) return <main className="course-page"><h1>Your Chinese journey</h1>{picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} /><p>No lessons match this level and difficulty yet.</p><button type="button" onClick={() => setContentFilter({ languageLevel: level, difficulty: 'all' })}>Show all lessons</button></main>
@@ -72,7 +71,6 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
       <div className="course-heading">
         <div>
           <h1>Your Chinese journey</h1>
-          <p>{path.title} · {path.description}</p>
         </div>
         {previewOnly ? <div className="course-progress"><strong>{lessons.length}</strong><span>lessons to explore</span></div> : <div className="course-progress" aria-label={`${completed} of ${lessons.length} lessons completed`}>
           <strong>{completed}<span> / {lessons.length}</span></strong>
@@ -86,21 +84,21 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
         <div className="course-next-symbol" lang="zh-CN" aria-hidden="true">{completed === lessons.length ? '成' : '学'}</div>
         <div>
           <p>{completed === lessons.length ? 'You have reached the end of this path' : nextSession && !nextSession.finishedAt ? 'Pick up where you left off' : 'Your next stop'}</p>
-          <h2>{completed === lessons.length ? 'Keep your Chinese fresh' : next.title}</h2>
-          <span>{completed === lessons.length ? 'Revisit a station or try a mixed exercise.' : `${next.minutes} min · a little learning, then a short review`}</span>
+          <h2>{completed === lessons.length ? 'Path completed' : next.title}</h2>
+          {completed !== lessons.length && <span>{next.minutes} min</span>}
         </div>
         <button type="button" onClick={() => onSelect(next.id)}>{previewOnly ? 'Preview lesson' : completed === lessons.length ? 'Revisit first lesson' : activityStatus(next, sessions) === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
       </section>
 
       <div className="course-layout">
         <section className="course-network" aria-labelledby="course-map-heading">
-          <div className="course-map-heading"><h2 id="course-map-heading">{path.title}</h2><span>{levelLabel(level)} path · {lessons.length} stops</span><p className="course-map-scroll-hint">Scroll sideways to explore the route. Select a stop for lesson details.</p></div>
+          <div className="course-map-heading"><h2 id="course-map-heading">{path.title}</h2><span>{levelLabel(level)} path · {lessons.length} stops</span></div>
           <ul className="course-lines" aria-label="Course lines">
             {visibleRoutes.map(([id, route]) => <li key={id} style={{ '--route-color': route.color } as CSSProperties}><span aria-hidden="true" />{route.title}</li>)}
           </ul>
 
           <div key={`${level}:${difficulty}`} className="course-map-scroll" role="region" aria-label={`${levelLabel(level)} course map`} tabIndex={0}>
-          <div className="course-map" style={{ '--course-map-width': `${mapWidth}px`, '--course-map-height': `${mapHeight}px` } as CSSProperties}>
+          <div className="course-map" style={{ '--course-columns': `${map.columns}`, '--course-map-height': `${mapHeight}px` } as CSSProperties}>
             <svg className="course-tracks" viewBox={`0 0 ${mapWidth} ${mapHeight}`} preserveAspectRatio="none" aria-hidden="true">
               <defs><pattern id="course-map-grid" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.2" fill="#d8e2d5" /></pattern></defs>
               <rect width={mapWidth} height={mapHeight} fill="url(#course-map-grid)" />
@@ -126,21 +124,26 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
           </div>
           </div>
           <div className="course-map-key" aria-label="Station status legend"><span><i className="course-key-current" aria-hidden="true" />Next stop</span><span><i className="course-key-done" aria-hidden="true">✓</i>Completed</span><span><i className="course-key-locked" aria-hidden="true" />Preview available</span></div>
-          <p className="course-map-note">Score at least 80% independently in the review to unlock the linked stops. At the fork, explore both branches before the final checkpoint. You can preview any stop.</p>
+          <details className="course-map-help"><summary>How lessons unlock</summary><p>Score at least 80% without hints to unlock linked stops. Complete both branches before their checkpoint.</p></details>
         </section>
 
         <aside id="course-preview" className="course-preview" aria-labelledby="course-preview-title">
+          <div className="course-preview-main">
           <div className="course-preview-route" style={{ '--route-color': routes[selected.line].color } as CSSProperties}><span lang="zh-CN" aria-hidden="true">{routes[selected.line].symbol}</span>{routes[selected.line].title}</div>
           <p className={`course-state is-${selectedStatus}`}>{statusLabels[selectedStatus]} · {selected.minutes} min</p>
           <h2 id="course-preview-title">{selected.title}</h2>
           <p className="content-classification">{levelLabel(selected.languageLevel)} · {difficultyLabel(selected.difficulty)}</p>
-          <p>{selected.description}</p>
+          </div>
+          <div className="course-preview-details">
           <h3>At this stop</h3>
           <ul className="course-objectives">{selected.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
           {latestScore && <p className="course-last-result">Last review: <strong>{latestScore.correct} / {latestScore.total}</strong>{latestScore.passed ? ' · Passed' : ' · Try again when ready'}</p>}
           {selectedStatus === 'locked' && <div className="course-unlock"><strong>First, complete</strong><ul>{prerequisites.map((lesson) => <li key={lesson.id}>{lesson.title}{activityStatus(lesson, sessions) === 'completed' ? ' ✓' : ''}</li>)}</ul></div>}
+          </div>
+          <div className="course-preview-actions">
           <button type="button" onClick={() => onSelect(selected.id)}>{previewOnly || selectedStatus === 'locked' ? 'Preview lesson' : selectedStatus === 'completed' ? 'Review lesson' : selectedStatus === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
-          <p className="course-mastery-note">Completion records this lesson&apos;s review. It is not a verified score of pronunciation or tone mastery.</p>
+          <details className="course-mastery-note"><summary>About this lesson</summary><p>{selected.description}</p><p>Completion records this lesson&apos;s review, not verified pronunciation or tone mastery.</p></details>
+          </div>
         </aside>
       </div>
     </main>

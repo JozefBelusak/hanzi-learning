@@ -7,7 +7,10 @@ import {
   speakChinese,
   speechErrorMessage,
   speechTextMatches,
+  describeSpeechError,
+  type SpeechIssue,
 } from '../lib/speech'
+import SpeechNotice from './SpeechNotice'
 import type { AttemptInput, Card } from '../types/study'
 
 type SpeechPageProps = {
@@ -40,6 +43,7 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
   const [status, setStatus] = useState<Status>('idle')
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [playbackError, setPlaybackError] = useState<SpeechIssue | null>(null)
   const [result, setResult] = useState<SpeechResult | null>(null)
   const [manualText, setManualText] = useState('')
 
@@ -113,6 +117,7 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
     if (!currentCard || operationRef.current) return null
     audioPlayerRef.current?.pause()
     setError(null)
+    setPlaybackError(null)
     const operation = { cardId: currentCard.id, controller: new AbortController() }
     operationRef.current = operation
     setStatus(nextStatus)
@@ -166,7 +171,7 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
     try {
       await speakChinese(card.hanzi, { signal: operation.controller.signal, rate })
     } catch (failure) {
-      if (isCurrent(operation) && !isSpeechAbort(failure)) setError(speechErrorMessage(failure))
+      if (isCurrent(operation) && !isSpeechAbort(failure)) setPlaybackError(describeSpeechError(failure))
     } finally {
       finishOperation(operation)
     }
@@ -240,6 +245,7 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
     if (operationRef.current || !cards.length) return
     replaceAudio(null)
     setError(null)
+    setPlaybackError(null)
     setResult(null)
     setManualText('')
     setCurrentIndex((index) => (index + 1) % cards.length)
@@ -345,6 +351,7 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
         )}
       </section>
       {error && <p className="error-message" role="alert">{error}</p>}
+      {playbackError && <SpeechNotice issue={playbackError} />}
       {audioUrl && (
         <section className="feedback-panel">
           <h2>Your recording</h2>

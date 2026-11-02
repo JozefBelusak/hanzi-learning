@@ -9,7 +9,7 @@ export default function CoursePathPicker({ value, lessons, sessions, onChange, p
 }) {
   return <fieldset className={`course-path-picker${value === 'all' ? '' : ' is-compact'}`}><legend>{value === 'all' ? 'Choose your learning path' : 'Learning path'}</legend>
     <div className="course-path-selection">
-    <div className="course-path-controls"><label className="filter-option"><input type="radio" name="course-path" aria-label="All paths" value="all" checked={value === 'all'} onChange={() => onChange('all')} /><span>All paths</span></label>{value === 'all' && <span>Choose a level to view its route.</span>}</div>
+    <div className="course-path-controls"><label className="filter-option"><input type="radio" name="course-path" aria-label="All paths" value="all" checked={value === 'all'} onChange={() => onChange('all')} /><span>All paths</span></label></div>
     <div className="course-path-grid">
     {coursePaths.map((path) => {
       const stops = lessons.filter((lesson) => lesson.languageLevel === path.level)
@@ -21,5 +21,5 @@ export default function CoursePathPicker({ value, lessons, sessions, onChange, p
         <span className="course-path-progress">{previewOnly ? `${stops.length} lessons to explore` : `${complete} / ${stops.length} stops completed`}</span></>}
       </label>
     })}
-  </div></div>{value === 'all' && <p>Paths start independently. Choose your starting point; levels describe the app content, not a placement-test result.</p>}</fieldset>
+  </div></div></fieldset>
 }

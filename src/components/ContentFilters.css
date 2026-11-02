@@ -1,9 +1,9 @@
 .content-filters { display: flex; flex-wrap: wrap; gap: 24px; margin: 28px 0; padding: 22px 0; border-block: 1px solid var(--line); }
 .filter-group { flex: 1 1 410px; min-width: 0; padding: 0; margin: 0; border: 0; }
 .filter-levels { flex-basis: 570px; }
-.filter-group legend { padding: 0; margin-bottom: 12px; font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.filter-group legend { padding: 0; margin-bottom: 12px; font-size: 14px; font-weight: 500; color: var(--muted); }
 .filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
-.filter-option { position: relative; display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 24px; color: var(--muted); background: var(--surface); font-size: 13px; font-weight: 600; cursor: pointer; transition: background 150ms, border-color 150ms, color 150ms; }
+.filter-option { position: relative; display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 24px; color: var(--muted); background: var(--surface); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 150ms, border-color 150ms, color 150ms; }
 .filter-option input { position: absolute; inset: 50% auto auto 50%; width: 1px; height: 1px; min-height: 0; padding: 0; margin: 0; opacity: 0; }
 .filter-option:hover { border-color: #8ba596; background: #f0f4ed; }
 .filter-option:has(input:checked) { background: var(--green); border-color: var(--green); color: white; }

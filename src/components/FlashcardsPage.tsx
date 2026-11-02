@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AttemptInput, Card, FlashcardRating, StudyData } from '../types/study'
 import { dueCards, scheduleReview } from '../lib/study'
-import { isSpeechAbort, speakChinese, stopSpeaking } from '../lib/speech'
+import { describeSpeechError, isSpeechAbort, speakChinese, stopSpeaking, type SpeechIssue } from '../lib/speech'
+import SpeechNotice from './SpeechNotice'
 
 type Props = {
   cards: Card[]
@@ -31,7 +32,7 @@ export default function FlashcardsPage({ cards, study, onBack, onAttempt }: Prop
   const [isRevealed, setIsRevealed] = useState(false)
   const [direction, setDirection] = useState<'meaning' | 'hanzi'>('meaning')
   const [session, setSession] = useState({ total: 0, correct: 0 })
-  const [audioError, setAudioError] = useState<string | null>(null)
+  const [audioError, setAudioError] = useState<SpeechIssue | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const audioOperation = useRef<AbortController | null>(null)
   const currentCard = cards.find((card) => card.id === queue[index])
@@ -93,7 +94,7 @@ export default function FlashcardsPage({ cards, study, onBack, onAttempt }: Prop
       await speakChinese(currentCard.hanzi, { signal: controller.signal })
     } catch (error) {
       if (audioOperation.current === controller && !isSpeechAbort(error)) {
-        setAudioError('A Chinese voice is not available on this device.')
+        setAudioError(describeSpeechError(error))
       }
     } finally {
       if (audioOperation.current === controller) {
@@ -165,7 +166,7 @@ export default function FlashcardsPage({ cards, study, onBack, onAttempt }: Prop
               </button>
             )}
           </article>
-          {audioError && <p role="status" className="status-message">{audioError}</p>}
+          {audioError && <SpeechNotice issue={audioError} role="status" className="status-message" />}
           {isRevealed && (
             <div className="rating-actions" aria-label="Rate your answer">
               {ratings.map((rating) => {

@@ -1,7 +1,7 @@
 import type { LearningActivity } from '../types/learning'
 
 // Keep editorial ordering/branches, but reserve a readable cell per station.
-// Pixel spacing stays constant inside the scrollable desktop map.
+// The display fits these relative columns to the available desktop width.
 export function layoutCourseMap(lessons: LearningActivity[]) {
   const columns = [...new Set(lessons.map((lesson) => lesson.position.x))].sort((a, b) => a - b)
   const rows = [...new Set(lessons.map((lesson) => lesson.position.y))].sort((a, b) => a - b)
@@ -17,5 +17,5 @@ export function layoutCourseMap(lessons: LearningActivity[]) {
     lastRow = Math.max(lastRow, row)
     positions.set(lesson.id, { x: 110 + column * 220, y: 55 + row * 160 })
   }
-  return { positions, width: Math.max(440, columns.length * 220), height: Math.max(300, 195 + lastRow * 160) }
+  return { positions, columns: Math.max(2, columns.length), width: Math.max(440, columns.length * 220), height: Math.max(300, 195 + lastRow * 160) }
 }

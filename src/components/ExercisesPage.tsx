@@ -36,7 +36,7 @@ export default function ExercisesPage({ sessions, onSelect, onPractice, previewO
   return (
     <main className="exercises-page">
       <header className="exercises-heading">
-        <div><h1>Exercises</h1><p>Pick a situation and work through a mix of short tasks. No course stops need to be unlocked.</p></div>
+        <div><h1>Exercises</h1></div>
         <span className="exercises-heading-symbol" lang="zh-CN" aria-hidden="true">练</span>
       </header>
 

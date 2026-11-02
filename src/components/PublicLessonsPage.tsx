@@ -22,7 +22,6 @@ export default function PublicLessonsPage({ lessonId, onSelect, onBack }: { less
   return <main className="platform-page">
     {lessonId && <button type="button" className="back-button" onClick={onBack}>Back to public lessons</button>}
     <h1>{lessonId && lessons[0] ? lessons[0].title : 'Public lessons'}</h1>
-    {!lessonId && <p>Lessons published by Hanzi lecturers. Choose something new to explore.</p>}
     {!lessonId && <ContentFilters id="public-lessons" value={filter} onChange={setFilter} />}
     {loading && <p role="status">Loading lessons…</p>}
     {error && <div role="alert" className="error-message"><p>{error}</p><button type="button" onClick={() => { setError(null); setLoading(true); setRevision((value) => value + 1) }}>Try again</button></div>}
