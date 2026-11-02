@@ -11,12 +11,21 @@ import './LearningSessionPage.css'
 
 type Props = {
   activity: LearningActivity
+  onBack: () => void
+  locked?: boolean
+} & ({
+  previewOnly: true
+  onSignIn: () => void
+  sessions?: never
+  onSaveSession?: never
+  onPractice?: never
+} | {
+  previewOnly?: false
   sessions: LearningSession[]
   onSaveSession: (session: LearningSession) => void
-  onBack: () => void
   onPractice: (mode: PracticeMode) => void
-  locked?: boolean
-}
+  onSignIn?: never
+})
 
 type WordToken = { id: number; text: string }
 
@@ -182,7 +191,7 @@ function QuestionTask({ question, questionNumber, total, answer, previouslyHinte
   )
 }
 
-function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveSession, onBack, onPractice, locked = false }: Props) {
+function LearningSessionWorkspace({ activity: currentActivity, sessions = [], onSaveSession, onBack, onPractice, locked = false, previewOnly = false, onSignIn }: Props) {
   const [session, setSession] = useState<LearningSession | null>(() => getLatestSession(currentActivity.id, sessions) ?? null)
   const activity = session ? getActivity(session.activityId, session.contentRevision ?? 1) ?? currentActivity : currentActivity
   const [notesOpen, setNotesOpen] = useState(() => locked || !getLatestSession(activity.id, sessions))
@@ -197,7 +206,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveS
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null)
   const question = activity.questions[currentIndex]
   const finished = Boolean(session?.finishedAt)
-  const started = Boolean(session) && !locked
+  const started = Boolean(session) && !locked && !previewOnly
   const score = session ? sessionScore(activity, session) : null
 
   useEffect(() => () => {
@@ -236,12 +245,13 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveS
   }
 
   function save(updated: LearningSession) {
+    if (previewOnly) return
     setSession(updated)
-    onSaveSession(updated)
+    onSaveSession?.(updated)
   }
 
   function startSession() {
-    if (locked || !activity.questions.length) return
+    if (previewOnly || locked || !activity.questions.length) return
     stopAudio()
     const now = new Date().toISOString()
     save({ id: crypto.randomUUID(), activityId: currentActivity.id, contentRevision: currentActivity.revision, startedAt: now, updatedAt: now, answers: [] })
@@ -278,7 +288,8 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveS
 
   function practise(mode: PracticeMode) {
     stopAudio()
-    onPractice(mode)
+    if (previewOnly) onSignIn?.()
+    else onPractice?.(mode)
   }
 
   const weakerQuestions = finished && session ? activity.questions.filter((item) => {
@@ -350,9 +361,9 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions, onSaveS
           <>
             <section className="session-intro">
               <span className="session-stop-symbol" aria-hidden="true">站</span>
-              <h2>{locked ? 'Preview this stop' : activity.kind === 'lesson' ? 'Ready for the next stop?' : 'Put it all together'}</h2>
-              <p>Read the notes, listen to the examples, then work through {activity.questions.length} short questions.</p>
-              {locked ? <p className="session-lock-note">Complete the earlier stops on this course line to start this lesson. You can explore its notes now.</p> : (
+              <h2>{previewOnly ? activity.kind === 'lesson' ? 'Lesson preview' : 'Exercise preview' : locked ? 'Preview this stop' : activity.kind === 'lesson' ? 'Ready for the next stop?' : 'Put it all together'}</h2>
+              <p>{previewOnly ? `Explore the notes and examples. Sign in to work through the ${activity.questions.length} questions and save your progress.` : `Read the notes, listen to the examples, then work through ${activity.questions.length} short questions.`}</p>
+              {previewOnly ? <button type="button" className="session-check" onClick={onSignIn}>Sign in to start</button> : locked ? <p className="session-lock-note">Complete the earlier stops on this course line to start this lesson. You can explore its notes now.</p> : (
                 <button type="button" className="session-check" disabled={!activity.questions.length} onClick={startSession}>{activity.kind === 'lesson' ? 'Start lesson' : 'Start exercise'}</button>
               )}
             </section>

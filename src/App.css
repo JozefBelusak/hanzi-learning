@@ -279,6 +279,8 @@
 .landing-content p { font-size: 19px; color: #d6e3d0; max-width: 380px; line-height: 1.7; }
 .primary-btn { background: var(--cream); color: var(--green); padding: 13px 24px; }
 .landing-content .primary-btn { margin-top: 16px; }
+.landing-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.landing-actions .landing-guest { margin-top: 16px; color: var(--cream); background: transparent; border: 1px solid #91aa9b; padding: 15px 24px; }
 .landing-character { position: absolute; top: 26%; right: 8%; color: #cbd8bd; font: 210px var(--hanzi-font); }
 .landing-character > span { display: block; font: 16px Arial, sans-serif; text-align: center; }
 

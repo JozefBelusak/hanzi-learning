@@ -17,6 +17,7 @@ type Props = {
   level: LanguageLevel | 'all'
   difficulty: ContentFilter['difficulty']
   onFilterChange: (value: ContentFilter) => void
+  previewOnly?: boolean
 }
 
 const routes = Object.fromEntries(taxonomy.courseLines.map((line) => [line.id, line]))
@@ -36,11 +37,11 @@ function trackPath(from: LearningActivity['position'], to: LearningActivity['pos
   return `M ${startX} ${startY} H ${bend} L ${endX} ${endY}`
 }
 
-export default function CoursePage({ sessions, onSelect, level, difficulty, onFilterChange }: Props) {
+export default function CoursePage({ sessions, onSelect, level, difficulty, onFilterChange, previewOnly = false }: Props) {
   const contentFilter: ContentFilter = { languageLevel: level, difficulty }
   const setContentFilter = onFilterChange
   const path = coursePaths.find((item) => item.level === level)!
-  const picker = <CoursePathPicker value={level} lessons={allLessons} sessions={sessions} onChange={(languageLevel) => setContentFilter({ ...contentFilter, languageLevel })} />
+  const picker = <CoursePathPicker value={level} lessons={allLessons} sessions={sessions} previewOnly={previewOnly} onChange={(languageLevel) => setContentFilter({ ...contentFilter, languageLevel })} />
   const lessons = allLessons.filter((lesson) => matchesContent(lesson, contentFilter))
   const suggested = getNextLesson(sessions, lessons)
   const [selectedId, setSelectedId] = useState(() => suggested?.id ?? lessons[0]?.id)
@@ -73,11 +74,11 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
           <h1>Your Chinese journey</h1>
           <p>{path.title} · {path.description}</p>
         </div>
-        <div className="course-progress" aria-label={`${completed} of ${lessons.length} lessons completed`}>
+        {previewOnly ? <div className="course-progress"><strong>{lessons.length}</strong><span>lessons to explore</span></div> : <div className="course-progress" aria-label={`${completed} of ${lessons.length} lessons completed`}>
           <strong>{completed}<span> / {lessons.length}</span></strong>
           <span>stops completed</span>
           <progress aria-label="Course completion" value={completed} max={lessons.length} />
-        </div>
+        </div>}
       </div>
       {picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} />
 
@@ -88,7 +89,7 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
           <h2>{completed === lessons.length ? 'Keep your Chinese fresh' : next.title}</h2>
           <span>{completed === lessons.length ? 'Revisit a station or try a mixed exercise.' : `${next.minutes} min · a little learning, then a short review`}</span>
         </div>
-        <button type="button" onClick={() => onSelect(next.id)}>{completed === lessons.length ? 'Revisit first lesson' : activityStatus(next, sessions) === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
+        <button type="button" onClick={() => onSelect(next.id)}>{previewOnly ? 'Preview lesson' : completed === lessons.length ? 'Revisit first lesson' : activityStatus(next, sessions) === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
       </section>
 
       <div className="course-layout">
@@ -138,7 +139,7 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
           <ul className="course-objectives">{selected.objectives.map((objective) => <li key={objective}>{objective}</li>)}</ul>
           {latestScore && <p className="course-last-result">Last review: <strong>{latestScore.correct} / {latestScore.total}</strong>{latestScore.passed ? ' · Passed' : ' · Try again when ready'}</p>}
           {selectedStatus === 'locked' && <div className="course-unlock"><strong>First, complete</strong><ul>{prerequisites.map((lesson) => <li key={lesson.id}>{lesson.title}{activityStatus(lesson, sessions) === 'completed' ? ' ✓' : ''}</li>)}</ul></div>}
-          <button type="button" onClick={() => onSelect(selected.id)}>{selectedStatus === 'locked' ? 'Preview lesson' : selectedStatus === 'completed' ? 'Review lesson' : selectedStatus === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
+          <button type="button" onClick={() => onSelect(selected.id)}>{previewOnly || selectedStatus === 'locked' ? 'Preview lesson' : selectedStatus === 'completed' ? 'Review lesson' : selectedStatus === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
           <p className="course-mastery-note">Completion records this lesson&apos;s review. It is not a verified score of pronunciation or tone mastery.</p>
         </aside>
       </div>

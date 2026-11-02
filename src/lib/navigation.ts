@@ -3,9 +3,10 @@ import { categories } from '../data/categories'
 import { getActivity } from '../data/learning'
 import { languageLevelIds, difficultyIds, type LanguageLevel, type Difficulty } from '../types/content'
 import type { CategoryId, PracticeMode } from '../types/study'
+import { canBrowseAsGuest } from './guest'
 
 type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'exercises' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
-export type AppRoute =
+type BaseAppRoute =
   | { page: StaticPage }
   | { page: 'course'; level?: LanguageLevel | 'all'; difficulty?: Difficulty | 'all' }
   | { page: 'topics'; level?: LanguageLevel | 'all' }
@@ -14,6 +15,7 @@ export type AppRoute =
   | { page: 'exercise'; activityId: string }
   | { page: 'modes'; category: CategoryId; level?: LanguageLevel | 'all' }
   | { page: 'practice'; category: CategoryId; mode: PracticeMode; activityId?: string; level?: LanguageLevel | 'all' }
+export type AppRoute = BaseAppRoute & { guest?: true }
 
 const modes: PracticeMode[] = ['flashcards', 'speech', 'writing', 'sentences']
 const validCategory = (value: string): value is CategoryId => categories.some((category) => category.id === value)
@@ -54,7 +56,7 @@ function pathHash(route: AppRoute): string {
   return `#/${route.page}`
 }
 
-export function parseRoute(hash: string): AppRoute {
+function parseNormalRoute(hash: string): AppRoute {
   const [path, query = ''] = hash.split('?')
   const route = parsePath(path)
   const params = new URLSearchParams(query)
@@ -68,12 +70,19 @@ export function parseRoute(hash: string): AppRoute {
   }
   return route
 }
+export function parseRoute(hash: string): AppRoute {
+  if (!/^#\/guest(?=\/|\?|$)/.test(hash)) return parseNormalRoute(hash)
+  const rest = hash.replace(/^#\/guest/, '')
+  const route = parseNormalRoute(rest.startsWith('/') ? `#${rest}` : `#/home${rest}`)
+  return canBrowseAsGuest(route.page) ? { ...route, guest: true } : route
+}
 export function routeHash(route: AppRoute): string {
   const params = new URLSearchParams()
   if ('level' in route && route.level) params.set('level', route.level)
   if (route.page === 'course' && route.difficulty && route.difficulty !== 'all') params.set('difficulty', route.difficulty)
   const query = params.toString()
-  return pathHash(route) + (query ? `?${query}` : '')
+  const path = pathHash(route)
+  return (route.guest && canBrowseAsGuest(route.page) ? path.replace(/^#\//, '#/guest/') : path) + (query ? `?${query}` : '')
 }
 
 function subscribe(onChange: () => void) {

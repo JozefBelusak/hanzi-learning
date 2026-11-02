@@ -3,9 +3,9 @@ import type { Auth } from '../lib/useAuth'
 import { accountError } from '../lib/supabase'
 import './AuthPage.css'
 
-type Props = { mode: 'login' | 'register'; auth: Auth; onSwitch: () => void; onBack: () => void }
+type Props = { mode: 'login' | 'register'; auth: Auth; onSwitch: () => void; onBack: () => void; onGuest: () => void }
 
-export default function AuthPage({ mode, auth, onSwitch, onBack }: Props) {
+export default function AuthPage({ mode, auth, onSwitch, onBack, onGuest }: Props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
@@ -41,6 +41,7 @@ export default function AuthPage({ mode, auth, onSwitch, onBack }: Props) {
           <button type="submit" disabled={busy || !auth.configured}>{busy ? 'Please wait…' : registration ? 'Create account' : 'Sign in'}</button>
         </form>}
       {!confirmation && <p className="auth-switch">{registration ? 'Already have an account?' : 'New to Hanzi?'} <button type="button" className="text-btn" disabled={busy} onClick={onSwitch}>{registration ? 'Sign in' : 'Create an account'}</button></p>}
+      <button type="button" className="text-btn" disabled={busy} onClick={onGuest}>Browse as guest</button>
     </section>
   </main>
 }

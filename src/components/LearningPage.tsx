@@ -3,7 +3,7 @@ import type { Card, CategoryId, PracticeMode } from '../types/study'
 import type { LanguageLevel } from '../types/content'
 import { levelLabel } from '../data/taxonomy'
 
-type Props = { cards: Card[]; category: CategoryId; level: LanguageLevel | 'all'; onSelectMode: (mode: PracticeMode) => void; onBack: () => void; disabled: boolean }
+type Props = { cards: Card[]; category: CategoryId; level: LanguageLevel | 'all'; onSelectMode: (mode: PracticeMode) => void; onBack: () => void; disabled: boolean; previewOnly?: boolean }
 
 const modes: { id: PracticeMode; title: string; description: string; symbol: string }[] = [
   { id: 'flashcards', title: 'Flashcards', description: 'Recall the meaning or Chinese spelling of a word.', symbol: '词' },
@@ -12,13 +12,13 @@ const modes: { id: PracticeMode; title: string; description: string; symbol: str
   { id: 'sentences', title: 'Sentence building', description: 'Explore Chinese word order with shared examples.', symbol: '句' },
 ]
 
-export default function LearningPage({ cards, category, level, onSelectMode, onBack, disabled }: Props) {
+export default function LearningPage({ cards, category, level, onSelectMode, onBack, disabled, previewOnly = false }: Props) {
   return (
     <main className="learning-page">
       <button className="back-button" type="button" onClick={onBack}>Back</button>
       <div className="topic-heading"><h1>{categoryTitle(category)}</h1><button className="text-btn" type="button" onClick={onBack}>Change topic</button></div>
       <p>{cards.length.toLocaleString('en-GB')} words · {level === 'all' ? 'All levels' : levelLabel(level)}</p>
-      <h2 className="mode-heading">What would you like to practise?</h2>
+      <h2 className="mode-heading">{previewOnly ? 'Explore practice modes' : 'What would you like to practise?'}</h2>
       <div className="mode-list" aria-label="Practice modes">
         {modes.map((mode) => (
           <button className="mode-card" type="button" key={mode.id} disabled={disabled || (!cards.length && mode.id !== 'sentences')} onClick={() => onSelectMode(mode.id)}>

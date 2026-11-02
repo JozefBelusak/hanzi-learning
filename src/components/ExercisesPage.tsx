@@ -13,6 +13,7 @@ type Props = {
   sessions: LearningSession[]
   onSelect: (id: string) => void
   onPractice: () => void
+  previewOnly?: boolean
 }
 
 function normalizeSearch(text: string) {
@@ -24,7 +25,7 @@ function bestResult(activity: LearningActivity, sessions: LearningSession[]) {
   return results.reduce<ReturnType<typeof sessionScore> | undefined>((best, result) => !best || result.percent > best.percent ? result : best, undefined)
 }
 
-export default function ExercisesPage({ sessions, onSelect, onPractice }: Props) {
+export default function ExercisesPage({ sessions, onSelect, onPractice, previewOnly = false }: Props) {
   const [topic, setTopic] = useState<CategoryId>('all')
   const [query, setQuery] = useState('')
   const [contentFilter, setContentFilter] = useState(allContent)
@@ -61,7 +62,7 @@ export default function ExercisesPage({ sessions, onSelect, onPractice }: Props)
                 <div className="exercise-card-meta"><span>{levelLabel(exercise.languageLevel)}</span><span>{difficultyLabel(exercise.difficulty)}</span><span>{exercise.minutes} min</span><span>{exercise.questions.length} tasks</span>{continuing && <strong>In progress</strong>}</div>
                 <h2>{exercise.title}</h2>
                 <p>{exercise.description}</p>
-                <div className="exercise-card-footer">{best && <span>Best independent result<br /><strong>{best.correct} / {best.total} · {best.percent}%</strong></span>}<button type="button" aria-label={`${continuing ? 'Continue' : 'Start'} ${exercise.title}`} onClick={() => onSelect(exercise.id)}>{continuing ? 'Continue' : 'Start exercise'}</button></div>
+                <div className="exercise-card-footer">{best && <span>Best independent result<br /><strong>{best.correct} / {best.total} · {best.percent}%</strong></span>}<button type="button" aria-label={`${previewOnly ? 'Preview' : continuing ? 'Continue' : 'Start'} ${exercise.title}`} onClick={() => onSelect(exercise.id)}>{previewOnly ? 'Preview exercise' : continuing ? 'Continue' : 'Start exercise'}</button></div>
               </div>
             </article>
           )
