@@ -1,10 +1,13 @@
 import { requireSupabase } from './supabase'
 import type { Classroom, ClassroomMember, PublicLesson, UserProfile, UserRole } from '../types/auth'
 import { difficultyIds, languageLevelIds, type Difficulty, type LanguageLevel } from '../types/content'
+import { getActiveCatalog } from '../data/catalog'
+import { lessonDocumentText, parseLessonDocument } from './lessonBlocks'
 
 export function platformError(error: unknown): string {
   const failure = error as { code?: string; message?: string }
-  if (failure.code === '42703' || failure.code === 'PGRST204') return 'The content database needs an update. Ask the administrator to apply the content classification migration.'
+  if (failure.code === '42703' || failure.code === 'PGRST204') return 'The content database needs an update. Ask the administrator to apply the latest content and lesson block migrations.'
+  if (failure.code === '22023') return failure.message ?? 'Please check the lesson content.'
   if (failure.code === '42501' || failure.code === 'PGRST116') return 'You do not have permission for this action. Refresh the page if your role has changed.'
   if (failure.code === 'P0001') return failure.message ?? 'The action is not available.'
   if (/fetch|network/i.test(failure.message ?? '')) return 'Could not connect. Please try again.'
@@ -29,15 +32,20 @@ function readPublicLesson(value: Record<string, unknown>): PublicLesson {
   const languageLevel = value.language_level ?? 'beginner'
   const difficulty = value.difficulty ?? 'balanced'
   if (!languageLevelIds.includes(languageLevel as LanguageLevel) || !difficultyIds.includes(difficulty as Difficulty)) throw new Error('Lesson classification is invalid.')
-  return { ...value, languageLevel, difficulty, source: 'lecturer' } as PublicLesson
+  return { ...value, blocks: value.content_blocks == null ? null : parseLessonDocument(value.content_blocks), languageLevel, difficulty, source: 'lecturer' } as PublicLesson
 }
-export type LessonDraft = Pick<PublicLesson, 'title' | 'summary' | 'content' | 'published' | 'languageLevel' | 'difficulty'>
-export async function saveLesson(draft: LessonDraft, id?: string): Promise<void> {
-  const { languageLevel, difficulty, ...content } = draft
-  const values = { ...content, language_level: languageLevel, difficulty }
+export type LessonDraft = Pick<PublicLesson, 'title' | 'summary' | 'content' | 'blocks' | 'published' | 'languageLevel' | 'difficulty'>
+export async function saveLesson(draft: LessonDraft, id?: string): Promise<PublicLesson> {
+  const { languageLevel, difficulty, blocks, ...content } = draft
+  const vocabulary = getActiveCatalog().vocabulary
+  const document = blocks ? parseLessonDocument(blocks, draft.published, vocabulary) : null
+  const fallback = document ? lessonDocumentText(document, vocabulary) : draft.content
+  if (!draft.title.trim() || [...draft.title.trim()].length > 160 || [...draft.summary].length > 500 || !fallback.trim() || [...fallback].length > 50000) throw new Error('Add a title (up to 160 characters), a summary up to 500 characters, and lesson text up to 50,000 characters.')
+  const values = { ...content, content: fallback, content_blocks: document, language_level: languageLevel, difficulty }
   const table = requireSupabase().from('public_lessons')
-  const result = id ? await table.update(values).eq('id', id).select('id').single() : await table.insert(values).select('id').single()
+  const result = id ? await table.update(values).eq('id', id).select('*').single() : await table.insert(values).select('*').single()
   if (result.error) throw result.error
+  return readPublicLesson(result.data)
 }
 export async function deleteLesson(id: string): Promise<void> {
   const { error } = await requireSupabase().from('public_lessons').delete().eq('id', id).select('id').single()

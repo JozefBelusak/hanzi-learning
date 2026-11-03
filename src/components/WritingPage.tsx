@@ -10,6 +10,7 @@ import {
 } from '../lib/writing'
 
 type WritingPageProps = {
+  embedded?: boolean
   cards: Card[]
   onBack: () => void
   onAttempt: (attempt: AttemptInput) => void
@@ -259,7 +260,8 @@ function WritingExercise({
   )
 }
 
-export default function WritingPage({ cards, onBack, onAttempt }: WritingPageProps) {
+export default function WritingPage({ cards, onBack, onAttempt, embedded = false }: WritingPageProps) {
+  const Container = embedded ? 'section' : 'main'
   const characters = useMemo(() => writingCharacters(cards), [cards])
   const [selected, setSelected] = useState(() => characters[0]?.character ?? '')
   const [mode, setMode] = useState<WritingMode>('guide')
@@ -273,7 +275,7 @@ export default function WritingPage({ cards, onBack, onAttempt }: WritingPagePro
   }
 
   return (
-    <main className="practice-page writing-page">
+    <Container className="practice-page writing-page">
       <header className="practice-header">
         <button className="secondary-button" type="button" onClick={onBack}>Back</button>
         {choice && <span>Character {currentIndex + 1} / {characters.length}</span>}
@@ -367,6 +369,6 @@ export default function WritingPage({ cards, onBack, onAttempt }: WritingPagePro
           )}
         </>
       )}
-    </main>
+    </Container>
   )
 }

@@ -17,6 +17,7 @@ type SpeechPageProps = {
   onBack: () => void
   cards: Card[]
   onAttempt: (attempt: AttemptInput) => void
+  embedded?: boolean
 }
 
 type Status =
@@ -38,7 +39,8 @@ const statusMessages: Record<Status, string> = {
   speaking: 'Playing the example pronunciation…',
 }
 
-function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
+function SpeechPage({ onBack, cards, onAttempt, embedded = false }: SpeechPageProps) {
+  const Container = embedded ? 'section' : 'main'
   const [currentIndex, setCurrentIndex] = useState(0)
   const [status, setStatus] = useState<Status>('idle')
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
@@ -272,15 +274,15 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
 
   if (!currentCard) {
     return (
-      <main className="speech-page">
+      <Container className="speech-page">
         <button type="button" onClick={goBack}>Back</button>
         <p>There are no words in this selection.</p>
-      </main>
+      </Container>
     )
   }
 
   return (
-    <main className="speech-page">
+    <Container className="speech-page">
       <header className="speech-header">
         <button type="button" className="secondary-btn" onClick={goBack}>Back</button>
         <p>Word {Math.min(currentIndex + 1, cards.length)} / {cards.length}</p>
@@ -399,9 +401,9 @@ function SpeechPage({ onBack, cards, onAttempt }: SpeechPageProps) {
         <summary>How speaking is checked</summary>
         <p>The recognized word is compared with the prompt in simplified Chinese characters. Text matching does not assess pronunciation quality or tone accuracy.</p>
         <p>Recognition uses your device or browser’s speech service and may need an internet connection. You can play back your recording to compare it yourself; it is not automatically scored.</p>
-        <p>Typed answers are saved separately and excluded from speech recognition results.</p>
+        <p>{embedded ? 'Typed answers in this editor preview are not saved.' : 'Typed answers are saved separately and excluded from speech recognition results.'}</p>
       </details>
-    </main>
+    </Container>
   )
 }
 

@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { catalog } from '../src/data/catalog'
 import { parseContentCatalog } from '../src/lib/contentValidation'
 import type { CatalogSnapshot } from '../src/lib/contentMutation'
+import { sampleLessonDocument } from '../tests/fixtures/lesson-blocks'
 
 const db = new PGlite()
 const ids = {
@@ -45,6 +46,7 @@ beforeAll(async () => {
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101120000_content_classification.sql', import.meta.url), 'utf8'))
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101150000_platform_content_admin.sql', import.meta.url), 'utf8'))
   await db.exec(readFileSync(new URL('../supabase/migrations/20261101180000_expanded_curriculum.sql', import.meta.url), 'utf8'))
+  await db.exec(readFileSync(new URL('../supabase/migrations/20261103120000_lecturer_lesson_blocks.sql', import.meta.url), 'utf8'))
 }, 30_000)
 afterAll(async () => { await db.close() })
 
@@ -171,6 +173,55 @@ describe('backend authorization using the actual PostgreSQL migration', () => {
 
 const saveProfileSql = 'select public.save_learning_profile($1,$2,$3,$4::text[],$5::text[],$6) as profile'
 const validProfile = ['Learner', 'elementary', 'gentle', ['speech', 'writing'], ['travel', 'culture'], 15]
+
+describe('lecturer block authoring migration and authorization', () => {
+  it('preserves every existing text lesson without inventing block content', async () => {
+    const rows = (await db.query('select id,content,content_blocks from public.public_lessons order by id')).rows
+    expect(rows).toHaveLength(3)
+    expect(rows.every((row) => row.content === 'Content' && row.content_blocks === null)).toBe(true)
+  })
+  it('stores, publishes, reorders and reopens all five block types under the existing owner', async () => {
+    await asUser(ids.lecturer, async () => {
+      const document = sampleLessonDocument()
+      const row = (await db.query<{ id: string; author_id: string; content_blocks: unknown }>("insert into public.public_lessons(title,content,content_blocks,published) values ('Blocks','Readable text',$1::jsonb,true) returning id,author_id,content_blocks", [JSON.stringify(document)])).rows[0]
+      expect(row.author_id).toBe(ids.lecturer)
+      expect(row.content_blocks).toEqual(document)
+      document.blocks.reverse()
+      expect((await db.query<{ content_blocks: unknown }>('update public.public_lessons set content_blocks=$1::jsonb where id=$2 returning content_blocks', [JSON.stringify(document), row.id])).rows[0].content_blocks).toEqual(document)
+    })
+  })
+  it('allows partial drafts and rejects publishing them atomically', async () => {
+    const document = { schemaVersion: 1, blocks: [{ id: 'draft', type: 'explanation', heading: '', text: '', grammar: '' }] }
+    await asUser(ids.lecturer, async () => {
+      const row = (await db.query<{ id: string }>("insert into public.public_lessons(title,content,content_blocks) values ('Draft','Draft content',$1::jsonb) returning id", [JSON.stringify(document)])).rows[0]
+      await db.exec('savepoint attempt_publish')
+      await expect(db.query('update public.public_lessons set published=true where id=$1', [row.id])).rejects.toMatchObject({ code: '22023' })
+      await db.exec('rollback to savepoint attempt_publish')
+      expect((await db.query('select published,content_blocks from public.public_lessons where id=$1', [row.id])).rows[0]).toEqual({ published: false, content_blocks: document })
+    })
+  })
+  it('validates documents and references on direct API writes, independently of the editor', async () => {
+    const doc = sampleLessonDocument()
+    const mutations = [
+      { ...doc, schemaVersion: 99 }, { ...doc, blocks: [] }, { ...doc, blocks: [...doc.blocks, doc.blocks[0]] },
+      { ...doc, blocks: [{ id: 'bad', type: 'vocabulary', vocabularyIds: ['missing-word'] }] },
+      { ...doc, blocks: [{ id: 'bad', type: 'practice', vocabularyIds: ['wo'], modes: ['admin'] }] },
+      { ...doc, blocks: [{ id: 'bad', type: 'exercise', questions: [{ id: 'bad-order', type: 'order', prompt: 'Build', explanation: 'All tokens', tokens: ['我', '和', '我'], acceptedOrders: [['我', '和']] }] }] },
+      { ...doc, blocks: [{ id: 'bad', type: 'exercise', questions: [{ id: 'bad-choice', type: 'choice', prompt: 'Pick', explanation: 'Feedback', options: [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }], answer: 'missing' }] }] },
+    ]
+    for (const value of mutations) await expect(asUser(ids.lecturer, () => db.query("insert into public.public_lessons(title,content,content_blocks,published) values ('Invalid','Readable',$1::jsonb,true)", [JSON.stringify(value)]))).rejects.toMatchObject({ code: '22023' })
+  })
+  it('denies students, anonymous callers, revoked sessions and foreign lecturers while permitting administrators', async () => {
+    const document = JSON.stringify(sampleLessonDocument())
+    for (const user of [null, ids.student]) await expect(asUser(user, () => db.query("insert into public.public_lessons(title,content,content_blocks) values ('Denied','Content',$1::jsonb)", [document]))).rejects.toMatchObject({ code: '42501' })
+    await asUser(ids.lecturer, async () => {
+      expect((await db.query('update public.public_lessons set content_blocks=$1::jsonb where id=$2 returning id', [document, foreignLesson])).rows).toEqual([])
+      expect((await db.query('select id from public.public_lessons where id=$1', [draft])).rows).toEqual([])
+    })
+    await expect(asUser(ids.lecturer, () => db.query("insert into public.public_lessons(title,content,content_blocks) values ('Revoked','Content',$1::jsonb)", [document]), 'missing-session')).rejects.toMatchObject({ code: '42501' })
+    await asUser(ids.admin, async () => { expect((await db.query('update public.public_lessons set content_blocks=$1::jsonb where id=$2 returning id', [document, foreignLesson])).rows).toHaveLength(1) })
+  })
+})
 
 const adminSaveSql = 'select public.admin_save_platform_content($1,$2,$3::jsonb,$4) as snapshot'
 const newWord = { ...catalog.vocabulary[0], id: 'platform:db-word', hanzi: '明白', meaning: 'to understand', sourceId: 'hanzi-original', sourceEntryId: undefined, level: null }

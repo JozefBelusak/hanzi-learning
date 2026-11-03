@@ -1,5 +1,5 @@
 import { difficultyIds, languageLevelIds } from '../types/content.ts'
-import type { CategoryId, ContentCatalog, ContentTaxonomy, LanguageLevel, PlatformActivity } from '../types/content'
+import type { CategoryId, ContentCatalog, ContentTaxonomy, LanguageLevel, LearningQuestion, PlatformActivity } from '../types/content'
 
 type Row = Record<string, unknown>
 function check(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(`Invalid educational content: ${message}`) }
@@ -19,6 +19,23 @@ function metadata(value: Row, path: string, taxonomy: ContentTaxonomy) {
 }
 function examples(value: unknown, path: string) { rows(value, path).forEach((example) => { for (const field of ['hanzi', 'pinyin', 'meaning']) text(example[field], `${path}.${field}`) }) }
 function sameTokens(left: string[], right: string[]) { return left.length === right.length && [...left].sort().every((token, i) => token === [...right].sort()[i]) }
+export function parseLearningQuestion(value: unknown): LearningQuestion {
+  const question = row(value, 'question')
+  id(question.id, 'question.id')
+  for (const field of ['prompt', 'explanation']) text(question[field], `question.${field}`)
+  for (const field of ['hint', 'audioText']) if (question[field] !== undefined) text(question[field], `question.${field}`)
+  if (question.type === 'choice') {
+    const options = ids(question.options, 'question.options'); check(options.size >= 2, 'Choice questions need at least two options.')
+    rows(question.options, 'options').forEach((option) => { text(option.text, 'option.text'); if (option.pinyin !== undefined) text(option.pinyin, 'option.pinyin') })
+    check(options.has(question.answer as string), 'Choice answer must reference an existing option.')
+  } else {
+    check(question.type === 'order', 'Unknown question type. Supported types are choice and order.')
+    const tokens = strings(question.tokens, 'question.tokens', true)
+    const orders = list(question.acceptedOrders, 'acceptedOrders'); check(orders.length, 'Ordering questions need accepted answers.')
+    orders.forEach((order) => check(sameTokens(strings(order, 'acceptedOrder'), tokens), 'Accepted orders must use every token occurrence exactly once.'))
+  }
+  return question as unknown as LearningQuestion
+}
 function acyclic(graph: Map<string, string[]>, path: string) {
   const done = new Set<string>(), visiting = new Set<string>()
   function visit(key: string) {
@@ -91,20 +108,7 @@ export function parseContentCatalog(value: unknown): ContentCatalog {
     const features = strings(activity.features, 'features'); unique(features, 'features'); check(features.every((feature) => feature === 'tone-guide'), 'Unsupported teaching feature.')
     const questionIds = ids(activity.questions, `activity ${activity.id}.questions`)
     check(questionIds.size > 0, 'Activities need at least one question.')
-    rows(activity.questions, 'questions').forEach((question) => {
-      for (const field of ['prompt', 'explanation']) text(question[field], `question.${field}`)
-      for (const field of ['hint', 'audioText']) if (question[field] !== undefined) text(question[field], `question.${field}`)
-      if (question.type === 'choice') {
-        const options = ids(question.options, 'question.options'); check(options.size >= 2, 'Choice questions need at least two options.')
-        rows(question.options, 'options').forEach((option) => { text(option.text, 'option.text'); if (option.pinyin !== undefined) text(option.pinyin, 'option.pinyin') })
-        check(options.has(question.answer as string), 'Choice answer must reference an existing option.')
-      } else {
-        check(question.type === 'order', 'Unknown question type. Supported types are choice and order.')
-        const tokens = strings(question.tokens, 'question.tokens', true)
-        const orders = list(question.acceptedOrders, 'acceptedOrders'); check(orders.length, 'Ordering questions need accepted answers.')
-        orders.forEach((order) => check(sameTokens(strings(order, 'acceptedOrder'), tokens), 'Accepted orders must use every token occurrence exactly once.'))
-      }
-    })
+    rows(activity.questions, 'questions').forEach(parseLearningQuestion)
     if (activity.fact !== undefined) { const fact = row(activity.fact, 'fact'); for (const key of ['title', 'text', 'sourceUrl', 'sourceLabel']) text(fact[key], `fact.${key}`); check(/^https:\/\//.test(fact.sourceUrl as string), 'Fact URLs must use HTTPS.') }
     const old = current.get(activity.id)
     if (old) check(old.kind === activity.kind, 'An activity cannot change kind across revisions.')

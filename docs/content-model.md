@@ -26,14 +26,14 @@ flowchart LR
 | GrammarTopic | ID, level/difficulty, explanation, examples, prerequisite topics | `grammar.json` |
 | VocabularyEntry | Stable ID, characters, pinyin, meaning, topic, level/difficulty, source and source-entry ID, optional traditional spelling/part of speech | Normalized public snapshot + `vocabulary-extra.json` |
 | SentenceContent | Stable ID, tokens, accepted orders, translation, level/difficulty, grammar-topic reference and annotated parts | `sentences.json` |
-| LecturerLesson | UUID, lecturer author, title/summary/plain text, publication and shared level/difficulty | Supabase `public_lessons` |
+| LecturerLesson | UUID, lecturer author, title/summary/legacy reading text, optional versioned block document, publication and shared level/difficulty | Supabase `public_lessons` |
 | LearningSession | Stable activity ID, optional `contentRevision`, answers, hints and dates | Existing per-account progress |
 
 `src/types/content.ts` defines these contracts. Existing `types/study.ts`, `types/learning.ts` and `types/auth.ts` re-export compatible names. `src/data/catalog.ts` provides lookups and derives practice words from vocabulary IDs; presentation code does not contain lesson-specific answer keys. The old `data/learning.ts` and `data/sentences.ts` modules are compatibility adapters.
 
 Language levels are the same beginner/elementary/intermediate/advanced IDs used by account onboarding. Difficulty uses gentle/balanced/challenging. Labels, descriptions, topics, map lines, source records and vocabulary selection are in `taxonomy.json`. These are editorial app classifications, not placement-test results or CEFR equivalences. Vocabulary `level` retains its older meaning: an **HSK 2.0 source level**, or `null` for an authored word without that classification. It is not the gamification points level. The source-to-proficiency mapping is an explicit editorial configuration.
 
-Platform content has `source: "platform"`; lecturer lessons have `source: "lecturer"` assigned by the Supabase adapter. A lecturer lesson shares metadata and Chinese text conventions, but it does not acquire platform prerequisites, answer keys, course-map placement or course completion rights. A published lecturer lesson is visible to signed-in users according to the existing RLS policies. The new classification columns do not change ownership, roles or publishing permissions.
+Platform content has `source: "platform"`; lecturer lessons have `source: "lecturer"` assigned by the Supabase adapter. A lecturer lesson shares metadata, Chinese examples and the `LearningQuestion` model, but does not acquire platform prerequisites, course-map placement or course completion rights. Its optional `LecturerLessonDocument` contains ordered explanation/example/vocabulary/exercise/practice blocks. Vocabulary links use the existing catalog IDs; editor exercise previews reuse platform grading. A published lecturer lesson is visible to signed-in users according to existing RLS policies. See [the lecturer editor and migration guide](lecturer-lesson-editor.md) for draft validation, legacy reading compatibility and the author-only preview scope.
 
 ## Add a lesson or exercise
 

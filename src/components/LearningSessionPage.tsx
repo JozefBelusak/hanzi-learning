@@ -72,9 +72,10 @@ type TaskProps = {
   onPrevious: () => void
   onPlay: (text: string) => void
   playingText: string | null
+  preview?: boolean
 }
 
-function QuestionTask({ question, questionNumber, total, answer, previouslyHinted, onHint, onCheck, onNext, onPrevious, onPlay, playingText }: TaskProps) {
+export function QuestionTask({ question, questionNumber, total, answer, previouslyHinted, onHint, onCheck, onNext, onPrevious, onPlay, playingText, preview = false }: TaskProps) {
   const [choice, setChoice] = useState(answer?.response[0] ?? '')
   const [selectedIds, setSelectedIds] = useState(() => selectedOccurrences(question, answer?.response ?? []))
   const [showHint, setShowHint] = useState(false)
@@ -152,7 +153,7 @@ function QuestionTask({ question, questionNumber, total, answer, previouslyHinte
         )}
         <div className="session-task-actions">
           {!answer && <button type="button" className="session-check" disabled={!ready} onClick={checkAnswer}>Check answer</button>}
-          {answer && <button type="button" className="session-check" onClick={onNext}>{questionNumber === total ? 'See results' : 'Next question'}</button>}
+          {answer && <button type="button" className="session-check" onClick={onNext}>{questionNumber === total ? preview ? 'Restart preview' : 'See results' : 'Next question'}</button>}
           {questionNumber > 1 && <button type="button" className="secondary-btn" onClick={onPrevious}>Previous</button>}
         </div>
         {question.hint && !answer && (
@@ -177,13 +178,13 @@ function QuestionTask({ question, questionNumber, total, answer, previouslyHinte
               <p className="session-submitted-answer">Your answer: <strong>{answerText(question, answer.response)}</strong></p>
               {!correct && <p className="session-expected-answer">An accepted answer: <strong>{answerText(question)}</strong></p>}
               <p>{question.explanation}</p>
-              {assisted && <p className="session-assistance-note">This is saved as assisted practice. Try it again without a hint to count towards your independent result.</p>}
+              {assisted && <p className="session-assistance-note">{preview ? 'Hint used in preview. No result is saved.' : 'This is saved as assisted practice. Try it again without a hint to count towards your independent result.'}</p>}
             </>
           ) : (
             <>
               <h2>Give it a try</h2>
               <p>Your answer and an explanation will appear here after you check.</p>
-              <p>Each checked answer is saved, so you can leave and continue later.</p>
+              <p>{preview ? 'Editor preview only. Checked answers are not saved.' : 'Each checked answer is saved, so you can leave and continue later.'}</p>
             </>
           )}
         </div>

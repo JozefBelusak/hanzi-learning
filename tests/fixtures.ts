@@ -2,6 +2,7 @@ import { test as base, expect, type Page } from '@playwright/test'
 import type { UserProfile, UserRole, PublicLesson, Classroom, ClassroomMember } from '../src/types/auth'
 import { catalog } from '../src/data/catalog'
 import { applyContentMutation, type ContentEntity, type ContentKind } from '../src/lib/contentMutation'
+import { parseLessonDocument } from '../src/lib/lessonBlocks'
 
 export const studentId = '00000000-0000-4000-8000-000000000001'
 export const accountStudyKey = `hanzi-learning-study-v1:${studentId}`
@@ -22,6 +23,7 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
   let failProfile = false
   let failSave = false
   let failCatalog = false
+  let failLessonSave = false
   const platform = { revision: 1, data: structuredClone(catalog), updated_at: timestamp }
   const authUser = (user: UserProfile) => ({ id: user.id, email: user.email, aud: 'authenticated', role: 'authenticated', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { display_name: user.display_name }, created_at: timestamp })
   const session = (user: UserProfile) => {
@@ -85,9 +87,14 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
       await respond(caller); return
     }
     if (url.pathname === '/rest/v1/public_lessons') {
-      const databaseRow = (lesson: PublicLesson) => ({ ...lesson, language_level: lesson.languageLevel })
+      const databaseRow = (lesson: PublicLesson) => ({ ...lesson, content_blocks: 'content_blocks' in lesson ? lesson.content_blocks : lesson.blocks ?? null, language_level: lesson.languageLevel })
       if (method === 'GET') { await result(lessons.filter((lesson) => (lesson.published || caller.role === 'admin' || (caller.role === 'lecturer' && lesson.author_id === caller.id)) && matches(lesson)).map(databaseRow)); return }
       if (caller.role === 'student') { await denied(); return }
+      if (failLessonSave) { await respond({ message: 'Lesson save unavailable' }, 503); return }
+      if (body?.content_blocks != null) {
+        try { parseLessonDocument(body.content_blocks, body.published === true, platform.data.vocabulary) }
+        catch (failure) { await respond({ code: '22023', message: (failure as Error).message }, 400); return }
+      }
       if (method === 'POST') {
         const lesson = { ...body, source: 'lecturer', languageLevel: body?.language_level ?? 'beginner', difficulty: body?.difficulty ?? 'balanced', id: crypto.randomUUID(), author_id: caller.id, created_at: timestamp, updated_at: timestamp } as PublicLesson
         lessons.push(lesson); await result([databaseRow(lesson)]); return
@@ -127,7 +134,7 @@ export async function mockSupabase(page: Page, initialRole: UserRole | null) {
     }
     await respond({ message: 'Unknown test endpoint' }, 404)
   })
-  return { users, lessons, classrooms, memberships, requests, platform, setCatalogFailure: (fail: boolean) => { failCatalog = fail }, failProfile: () => { failProfile = true }, setSaveFailure: (fail: boolean) => { failSave = fail }, needsOnboarding: (email = 'student@example.test') => { Object.assign(users.find((user) => user.email === email)!, emptyPreferences) }, session }
+  return { users, lessons, classrooms, memberships, requests, platform, setCatalogFailure: (fail: boolean) => { failCatalog = fail }, setLessonSaveFailure: (fail: boolean) => { failLessonSave = fail }, failProfile: () => { failProfile = true }, setSaveFailure: (fail: boolean) => { failSave = fail }, needsOnboarding: (email = 'student@example.test') => { Object.assign(users.find((user) => user.email === email)!, emptyPreferences) }, session }
 }
 
 type Backend = Awaited<ReturnType<typeof mockSupabase>>

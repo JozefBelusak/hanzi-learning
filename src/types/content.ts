@@ -38,6 +38,14 @@ export type LearningQuestion = QuestionBase & (
   | { type: 'choice'; options: { id: string; text: string; pinyin?: string }[]; answer: string }
   | { type: 'order'; tokens: string[]; acceptedOrders: string[][] }
 )
+export type LecturerLessonBlock = { id: string } & (
+  | { type: 'explanation'; heading: string; text: string; grammar: string }
+  | { type: 'example'; example: ChineseExample; translationLanguage: 'sk' | 'en' }
+  | { type: 'vocabulary'; vocabularyIds: string[] }
+  | { type: 'exercise'; questions: LearningQuestion[] }
+  | { type: 'practice'; vocabularyIds: string[]; modes: ('speech' | 'writing')[] }
+)
+export type LecturerLessonDocument = { schemaVersion: 1; blocks: LecturerLessonBlock[] }
 export type PlatformActivity = EducationalMetadata & {
   id: string; revision: number; source: 'platform'; publication: 'published' | 'archived'
   kind: 'lesson' | 'exercise'; title: string; description: string; minutes: number; category: CategoryId
@@ -62,9 +70,10 @@ export type ContentCatalog = {
   schemaVersion: 1; id: 'hanzi-platform'; taxonomy: ContentTaxonomy
   activities: PlatformActivity[]; grammarTopics: GrammarTopic[]; vocabulary: VocabularyEntry[]; sentences: SentenceContent[]
 }
-// Lecturer-authored reading material, stored separately in Supabase. It does
-// not acquire platform prerequisites, answer keys or course completion rights.
+// Lecturer-authored content remains separate from the platform course map.
+// content is the legacy/static reading version; blocks adds an authoring document.
 export type LecturerLesson = EducationalMetadata & {
   id: string; source: 'lecturer'; author_id: string; title: string; summary: string; content: string
+  blocks?: LecturerLessonDocument | null
   published: boolean; created_at: string; updated_at: string
 }
