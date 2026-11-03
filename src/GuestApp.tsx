@@ -9,6 +9,7 @@ import { catalog, getActiveCatalog, getActivity, installCatalog, lessons } from 
 import { filterCards } from './data/categories'
 import { parseRoute, type AppRoute, type useNavigation } from './lib/navigation'
 import { isGuestRoute } from './lib/guest'
+import { allContent, resolveContentFilter } from './lib/contentFilter'
 import type { PracticeMode } from './types/study'
 import './components/GuestApp.css'
 
@@ -41,7 +42,7 @@ function GuestWorkspace({ navigation, onAuth }: Props) {
   if (route.page === 'course') {
     content = <CoursePage sessions={[]} previewOnly level={route.level ?? 'all'} difficulty={route.difficulty ?? 'all'} onFilterChange={(filter) => browse({ page: 'course', level: filter.languageLevel, difficulty: filter.difficulty })} onSelect={(activityId) => browse({ page: 'lesson', activityId })} />
   } else if (route.page === 'exercises') {
-    content = <ExercisesPage sessions={[]} previewOnly onSelect={(activityId) => browse({ page: 'exercise', activityId })} onPractice={topics} />
+    content = <ExercisesPage contentFilter={resolveContentFilter(allContent, route)} onFilterChange={(filter) => browse({ page: 'exercises', level: filter.languageLevel, difficulty: filter.difficulty })} sessions={[]} previewOnly onSelect={(activityId) => browse({ page: 'exercise', activityId })} onPractice={topics} />
   } else if (route.page === 'lesson' || route.page === 'exercise') {
     const activity = getActivity(route.activityId)
     const returnToList = () => {

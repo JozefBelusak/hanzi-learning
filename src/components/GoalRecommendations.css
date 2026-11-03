@@ -1,0 +1,16 @@
+.goal-recommendations { margin: 32px 0; }
+.goal-recommendations > .goal-heading { flex-wrap: wrap; }
+.goal-recommendations > p { font-size: 14px; }
+.goal-recommendation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.goal-recommendation-grid > section { padding: 22px; min-width: 0; overflow-wrap: anywhere; }
+.goal-recommendation-grid h3 { margin: 0 0 18px; font-size: 18px; }
+.goal-recommendation-grid h4 { margin: 0 0 8px; font-size: 15px; }
+.goal-recommendation-grid p { font-size: 14px; margin: 10px 0; }
+.goal-recommendation-grid small { display: block; color: var(--muted); font-size: 12px; }
+.goal-recommendation-grid article + article, .goal-recommendation-grid details + details { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+.goal-recommendation-grid article > strong { display: block; font: 27px var(--hanzi-font); color: var(--green); }
+.goal-recommendation-grid article > span { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+.goal-recommendation-grid article button { margin-top: 12px; font-size: 13px; }
+.goal-recommendation-grid details summary { cursor: pointer; font-size: 15px; }
+.goal-recommendation-grid details[open] summary { margin-bottom: 12px; }
+@media (max-width: 850px) { .goal-recommendation-grid { grid-template-columns: minmax(0, 1fr); } }

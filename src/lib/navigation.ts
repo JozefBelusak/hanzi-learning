@@ -5,10 +5,10 @@ import { languageLevelIds, difficultyIds, type LanguageLevel, type Difficulty } 
 import type { CategoryId, PracticeMode } from '../types/study'
 import { canBrowseAsGuest } from './guest'
 
-type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'exercises' | 'progress' | 'settings' | 'lessons' | 'classes' | 'teach' | 'admin'
+type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'progress' | 'settings' | 'classes' | 'teach' | 'admin'
 type BaseAppRoute =
   | { page: StaticPage }
-  | { page: 'course'; level?: LanguageLevel | 'all'; difficulty?: Difficulty | 'all' }
+  | { page: 'course' | 'exercises' | 'lessons'; level?: LanguageLevel | 'all'; difficulty?: Difficulty | 'all' }
   | { page: 'topics'; level?: LanguageLevel | 'all' }
   | { page: 'public-lesson'; lessonId: string }
   | { page: 'lesson'; activityId: string }
@@ -22,8 +22,8 @@ const validCategory = (value: string): value is CategoryId => categories.some((c
 
 function parsePath(hash: string): AppRoute {
   const parts = hash.replace(/^#\/?/, '').split('/')
-  if (parts.length === 1 && (parts[0] === 'course' || parts[0] === 'topics')) return { page: parts[0] }
-  if (parts.length === 1 && ['welcome', 'login', 'register', 'onboarding', 'home', 'course', 'exercises', 'topics', 'progress', 'settings', 'lessons', 'classes', 'teach', 'admin'].includes(parts[0])) {
+  if (parts.length === 1 && ['course', 'exercises', 'lessons', 'topics'].includes(parts[0])) return { page: parts[0] as 'course' | 'exercises' | 'lessons' | 'topics' }
+  if (parts.length === 1 && ['welcome', 'login', 'register', 'onboarding', 'home', 'progress', 'settings', 'classes', 'teach', 'admin'].includes(parts[0])) {
     return { page: parts[0] as StaticPage }
   }
   if (parts.length === 2 && parts[0] === 'lessons' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(parts[1])) return { page: 'public-lesson', lessonId: parts[1] }
@@ -61,9 +61,9 @@ function parseNormalRoute(hash: string): AppRoute {
   const route = parsePath(path)
   const params = new URLSearchParams(query)
   const level = params.get('level')
-  if (route.page === 'course') {
+  if (route.page === 'course' || route.page === 'exercises' || route.page === 'lessons') {
     const difficulty = params.get('difficulty')
-    return { ...route, ...(level === 'all' || languageLevelIds.includes(level as LanguageLevel) ? { level: level as LanguageLevel | 'all' } : {}), ...(difficultyIds.includes(difficulty as Difficulty) ? { difficulty: difficulty as Difficulty } : {}) }
+    return { ...route, ...(level === 'all' || languageLevelIds.includes(level as LanguageLevel) ? { level: level as LanguageLevel | 'all' } : {}), ...(difficulty === 'all' || difficultyIds.includes(difficulty as Difficulty) ? { difficulty: difficulty as Difficulty | 'all' } : {}) }
   }
   if (route.page === 'topics' || route.page === 'modes' || route.page === 'practice') {
     if (level === 'all' || languageLevelIds.includes(level as LanguageLevel)) return { ...route, level: level as LanguageLevel | 'all' }
@@ -79,7 +79,7 @@ export function parseRoute(hash: string): AppRoute {
 export function routeHash(route: AppRoute): string {
   const params = new URLSearchParams()
   if ('level' in route && route.level) params.set('level', route.level)
-  if (route.page === 'course' && route.difficulty && route.difficulty !== 'all') params.set('difficulty', route.difficulty)
+  if ((route.page === 'course' || route.page === 'exercises' || route.page === 'lessons') && route.difficulty) params.set('difficulty', route.difficulty)
   const query = params.toString()
   const path = pathHash(route)
   return (route.guest && canBrowseAsGuest(route.page) ? path.replace(/^#\//, '#/guest/') : path) + (query ? `?${query}` : '')

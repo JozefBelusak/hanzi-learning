@@ -1,14 +1,15 @@
 import { studySummary } from '../lib/study'
 import { getNextLesson, activityStatus } from '../lib/learning'
 import { lessons } from '../data/learning'
-import type { PracticeMode, StudyData } from '../types/study'
+import type { Card, CategoryId, PracticeMode, StudyData } from '../types/study'
 import type { UserProfile } from '../types/auth'
 import LearningPlan from './LearningPlan'
 import { levelLabel } from '../data/taxonomy'
+import GoalRecommendations from './GoalRecommendations'
 
-type Props = { study: StudyData; profile: UserProfile; onEditProfile: () => void; onPreferredPractice: (mode: PracticeMode) => void; onLearn: () => void; onCourse: () => void; onLesson: (id: string) => void; onExercises: () => void; onProgress: () => void }
+type Props = { study: StudyData; profile: UserProfile; cards: Card[]; onExercise: (id: string) => void; onVocabulary: (category: CategoryId) => void; onEditProfile: () => void; onPreferredPractice: (mode: PracticeMode) => void; onLearn: () => void; onCourse: () => void; onLesson: (id: string) => void; onExercises: () => void; onProgress: () => void }
 
-export default function HomePage({ study, profile, onEditProfile, onPreferredPractice, onLearn, onCourse, onLesson, onExercises, onProgress }: Props) {
+export default function HomePage({ study, profile, cards, onExercise, onVocabulary, onEditProfile, onPreferredPractice, onLearn, onCourse, onLesson, onExercises, onProgress }: Props) {
   const summary = studySummary(study.attempts)
   const sessions = study.learningSessions ?? []
   const pathLessons = lessons.filter((lesson) => lesson.languageLevel === (profile.language_level ?? 'beginner'))
@@ -36,6 +37,7 @@ export default function HomePage({ study, profile, onEditProfile, onPreferredPra
         <button className="home-pathway" type="button" aria-label="Start practice" onClick={onLearn}><span><strong>Start practice</strong><span>Choose your own words and focus on one skill at a time.</span></span></button>
       </section>
       <LearningPlan profile={profile} onEdit={onEditProfile} onPractice={onPreferredPractice} />
+      <GoalRecommendations profile={profile} cards={cards} onExercise={onExercise} onVocabulary={onVocabulary} onBrowse={onExercises} />
       <section className="home-goal" aria-label="Today's practice">
         <div className="goal-heading"><h2>Daily practice goal</h2><span>{summary.todayCount} / {study.dailyGoal} practice attempts</span></div>
         <progress aria-label="Daily goal progress" value={Math.min(summary.todayCount, study.dailyGoal)} max={study.dailyGoal} />

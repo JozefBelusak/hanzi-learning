@@ -1,7 +1,15 @@
 import { difficulties, languageLevels } from '../data/taxonomy'
-import type { ContentFilter } from '../lib/contentFilter'
+import { allContent, type ContentFilter } from '../lib/contentFilter'
 import './ContentFilters.css'
-export default function ContentFilters({ id, value, onChange, showLevel = true, showDifficulty = true }: { id: string; value: ContentFilter; onChange: (filter: ContentFilter) => void; showLevel?: boolean; showDifficulty?: boolean }) {
+type FilterProps = { value: ContentFilter; onChange: (filter: ContentFilter) => void; profileFilter?: ContentFilter }
+export function ContentFilterActions({ value, onChange, profileFilter }: FilterProps) {
+  if (!profileFilter) return null
+  return <div className="content-filter-actions">
+    <button type="button" className="text-btn" disabled={value.languageLevel === 'all' && value.difficulty === 'all'} onClick={() => onChange(allContent)}>Clear filters</button>
+    <button type="button" className="text-btn" disabled={value.languageLevel === profileFilter.languageLevel && value.difficulty === profileFilter.difficulty} onClick={() => onChange(profileFilter)}>Use profile preferences</button>
+  </div>
+}
+export default function ContentFilters({ id, value, onChange, showLevel = true, showDifficulty = true, profileFilter }: FilterProps & { id: string; showLevel?: boolean; showDifficulty?: boolean }) {
   return <div className="content-filters" role="group" aria-label="Content level and difficulty">
     {showLevel && <fieldset className="filter-group filter-levels">
       <legend>Language level</legend>
@@ -29,5 +37,6 @@ export default function ContentFilters({ id, value, onChange, showLevel = true, 
         </label>)}
       </div>
     </fieldset>}
+    <ContentFilterActions value={value} onChange={onChange} profileFilter={profileFilter} />
   </div>
 }

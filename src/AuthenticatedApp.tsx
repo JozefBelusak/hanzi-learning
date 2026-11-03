@@ -27,6 +27,7 @@ import { loadStudyData } from './lib/storage'
 import type { Card } from './types/study'
 import type { UserProfile } from './types/auth'
 import type { LearningProfileInput } from './lib/profile'
+import { profileContentFilter, resolveContentFilter } from './lib/contentFilter'
 
 export default function AuthenticatedApp({ profile, navigation: router, onLogout, onRefreshAccount, onSaveProfile, logoutError }: {
   profile: UserProfile; navigation: ReturnType<typeof useNavigation>; onLogout: () => void; onRefreshAccount: () => void; onSaveProfile: (input: LearningProfileInput) => Promise<void>; logoutError: string | null
@@ -81,6 +82,8 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   }
 
   const activity = 'activityId' in route && route.activityId ? getActivity(route.activityId) : undefined
+  const profileFilter = profileContentFilter(profile)
+  const catalogFilter = resolveContentFilter(profileFilter, route.page === 'course' || route.page === 'exercises' || route.page === 'lessons' ? route : {})
   const practiceLevel = activity?.languageLevel ?? ('level' in route ? route.level ?? profile.language_level ?? 'beginner' : profile.language_level ?? 'beginner')
   const learn = () => navigate({ page: 'topics', ...(practiceLevel !== 'beginner' ? { level: practiceLevel } : {}) })
   const home = () => navigate({ page: 'home' })
@@ -102,16 +105,15 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
     if (route.mode === 'writing') content = <WritingPage key={deckKey} cards={selected} onBack={returnToModes} onAttempt={study.recordAttempt} />
     if (route.mode === 'sentences') content = <SentencesPage key={practiceLevel} level={practiceLevel} onBack={returnToModes} onAttempt={study.recordAttempt} />
   } else if (route.page === 'course') {
-    content = <CoursePage level={route.level ?? profile.language_level ?? 'beginner'} difficulty={route.difficulty ?? 'all'} onFilterChange={(filter) => navigate({ page: 'course', level: filter.languageLevel, difficulty: filter.difficulty })} sessions={sessions} onSelect={(activityId) => navigate({ page: 'lesson', activityId })} />
+    content = <CoursePage level={catalogFilter.languageLevel} difficulty={catalogFilter.difficulty} profileFilter={profileFilter} onFilterChange={(filter) => navigate({ page: 'course', level: filter.languageLevel, difficulty: filter.difficulty })} sessions={sessions} onSelect={(activityId) => navigate({ page: 'lesson', activityId })} />
   } else if (route.page === 'exercises') {
-    content = <ExercisesPage sessions={sessions} onSelect={(activityId) => navigate({ page: 'exercise', activityId })} onPractice={learn} />
+    content = <ExercisesPage contentFilter={catalogFilter} profileFilter={profileFilter} onFilterChange={(filter) => navigate({ page: 'exercises', level: filter.languageLevel, difficulty: filter.difficulty })} sessions={sessions} onSelect={(activityId) => navigate({ page: 'exercise', activityId })} onPractice={learn} />
   } else if ((route.page === 'lesson' || route.page === 'exercise') && activity) {
     const returnToList = () => {
       const previousHash = window.history.state?.hanziFrom
       const previous = typeof previousHash === 'string' ? parseRoute(previousHash) : null
-      if (activity.kind === 'lesson' && previous?.page === 'course' && (previous.level ?? profile.language_level ?? 'beginner') === activity.languageLevel) back(previous)
-      else if (activity.kind === 'lesson') back({ page: 'course', ...(activity.languageLevel !== 'beginner' ? { level: activity.languageLevel } : {}) })
-      else back({ page: 'exercises' })
+      if (previous?.page === (activity.kind === 'lesson' ? 'course' : 'exercises')) back(previous)
+      else back({ page: activity.kind === 'lesson' ? 'course' : 'exercises', level: activity.languageLevel, difficulty: 'all' })
     }
     content = <LearningSessionPage key={activity.id} activity={activity} sessions={sessions} locked={activityStatus(activity, sessions) === 'locked'} onSaveSession={study.recordLearningSession} onBack={returnToList} onPractice={(mode) => navigate({ page: 'practice', category: activity.category, mode, activityId: activity.id })} />
   } else if (route.page === 'lesson' || route.page === 'exercise') {
@@ -125,13 +127,17 @@ export default function AuthenticatedApp({ profile, navigation: router, onLogout
   } else if (route.page === 'settings') {
     content = <SettingsPage study={study.data} profile={profile} onSaveProfile={onSaveProfile} onImport={study.importBackup} onRefresh={() => void updateVocabulary()} refreshing={refreshing} notice={notice} onImportPrevious={async () => study.importBackup(JSON.stringify(await loadStudyData()))} />
   } else if (route.page === 'lessons' || route.page === 'public-lesson') {
-    content = <PublicLessonsPage key={hash} lessonId={route.page === 'public-lesson' ? route.lessonId : undefined} onSelect={(lessonId) => navigate({ page: 'public-lesson', lessonId })} onBack={() => back({ page: 'lessons' })} />
+    content = <PublicLessonsPage key={route.page === 'public-lesson' ? route.lessonId : 'lessons'} filter={catalogFilter} profileFilter={profileFilter} onFilterChange={(filter) => navigate({ page: 'lessons', level: filter.languageLevel, difficulty: filter.difficulty })} lessonId={route.page === 'public-lesson' ? route.lessonId : undefined} onSelect={(lessonId) => navigate({ page: 'public-lesson', lessonId })} onBack={() => {
+      const previousHash = window.history.state?.hanziFrom
+      const previous = typeof previousHash === 'string' ? parseRoute(previousHash) : null
+      back(previous?.page === 'lessons' ? previous : { page: 'lessons' })
+    }} />
   } else if (route.page === 'classes') {
     content = <ClassroomsPage profile={profile} />
   } else if (route.page === 'teach' || route.page === 'admin') {
     content = <ManagementPage key={route.page} profile={profile} admin={route.page === 'admin'} onRead={(lessonId) => navigate({ page: 'public-lesson', lessonId })} onRefreshAccount={onRefreshAccount} />
   } else {
-    content = <HomePage study={study.data} profile={profile} onEditProfile={() => navigate({ page: 'settings' })} onPreferredPractice={(mode) => navigate({ page: 'practice', category: 'all', mode })} onLearn={learn} onCourse={() => navigate({ page: 'course' })} onLesson={(activityId) => navigate({ page: 'lesson', activityId })} onExercises={() => navigate({ page: 'exercises' })} onProgress={() => navigate({ page: 'progress' })} />
+    content = <HomePage study={study.data} profile={profile} cards={cards} onExercise={(activityId) => navigate({ page: 'exercise', activityId })} onVocabulary={(category) => navigate({ page: 'modes', category, level: profileFilter.languageLevel })} onEditProfile={() => navigate({ page: 'settings' })} onPreferredPractice={(mode) => navigate({ page: 'practice', category: 'all', mode })} onLearn={learn} onCourse={() => navigate({ page: 'course' })} onLesson={(activityId) => navigate({ page: 'lesson', activityId })} onExercises={() => navigate({ page: 'exercises' })} onProgress={() => navigate({ page: 'progress' })} />
   }
 
   return (

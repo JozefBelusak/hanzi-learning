@@ -4,7 +4,7 @@ import { activityStatus, getLatestSession, getNextLesson, sessionScore } from '.
 import type { LearningActivity, LearningSession } from '../types/learning'
 import './CoursePage.css'
 import { taxonomy, difficultyLabel, levelLabel } from '../data/taxonomy'
-import ContentFilters from './ContentFilters'
+import ContentFilters, { ContentFilterActions } from './ContentFilters'
 import CoursePathPicker from './CoursePathPicker'
 import { coursePaths } from '../data/coursePaths'
 import type { LanguageLevel } from '../types/content'
@@ -18,6 +18,7 @@ type Props = {
   difficulty: ContentFilter['difficulty']
   onFilterChange: (value: ContentFilter) => void
   previewOnly?: boolean
+  profileFilter?: ContentFilter
 }
 
 const routes = Object.fromEntries(taxonomy.courseLines.map((line) => [line.id, line]))
@@ -37,24 +38,29 @@ function trackPath(from: LearningActivity['position'], to: LearningActivity['pos
   return `M ${startX} ${startY} H ${bend} L ${endX} ${endY}`
 }
 
-export default function CoursePage({ sessions, onSelect, level, difficulty, onFilterChange, previewOnly = false }: Props) {
+export default function CoursePage({ sessions, onSelect, level, difficulty, onFilterChange, previewOnly = false, profileFilter }: Props) {
   const contentFilter: ContentFilter = { languageLevel: level, difficulty }
   const setContentFilter = onFilterChange
   const path = coursePaths.find((item) => item.level === level)!
-  const picker = <CoursePathPicker value={level} lessons={allLessons} sessions={sessions} previewOnly={previewOnly} onChange={(languageLevel) => setContentFilter({ ...contentFilter, languageLevel })} />
+  const difficultyLessons = allLessons.filter((lesson) => matchesContent(lesson, { languageLevel: 'all', difficulty }))
+  const picker = <CoursePathPicker value={level} lessons={difficultyLessons} sessions={sessions} previewOnly={previewOnly} onChange={(languageLevel) => setContentFilter({ ...contentFilter, languageLevel })} />
+  const filters = <div className="content-filters course-filters">{picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} /><ContentFilterActions value={contentFilter} onChange={setContentFilter} profileFilter={profileFilter} /></div>
   const lessons = allLessons.filter((lesson) => matchesContent(lesson, contentFilter))
   const suggested = getNextLesson(sessions, lessons)
   const [selectedId, setSelectedId] = useState(() => suggested?.id ?? lessons[0]?.id)
   const selected = lessons.find((lesson) => lesson.id === selectedId) ?? lessons[0]
   const completed = lessons.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length
+  const pathCompleted = allLessons.filter((lesson) => lesson.languageLevel === level).every((lesson) => activityStatus(lesson, sessions) === 'completed')
+  const filteredCompleted = lessons.length > 0 && completed === lessons.length
   const next = suggested ?? lessons[0]
 
   if (level === 'all') return <main className="course-page course-overview">
-    <div className="course-heading"><div><h1>Your Chinese journey</h1></div><div className="course-overview-count"><strong>{allLessons.length}</strong><span>lessons across {coursePaths.length} paths</span></div></div>
+    <div className="course-heading"><div><h1>Your Chinese journey</h1></div><div className="course-overview-count"><strong>{difficultyLessons.length}</strong><span>lessons across {coursePaths.length} paths</span></div></div>
     {picker}
+    <ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} profileFilter={profileFilter} />
   </main>
 
-  if (!selected || !next) return <main className="course-page"><h1>Your Chinese journey</h1>{picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} /><p>No lessons match this level and difficulty yet.</p><button type="button" onClick={() => setContentFilter({ languageLevel: level, difficulty: 'all' })}>Show all lessons</button></main>
+  if (!selected || !next) return <main className="course-page"><h1>Your Chinese journey</h1>{filters}<p>No lessons match this level and difficulty yet.</p><button type="button" onClick={() => setContentFilter({ languageLevel: level, difficulty: 'all' })}>Show all lessons</button></main>
 
   const selectedStatus = activityStatus(selected, sessions)
   const nextSession = getLatestSession(next.id, sessions)
@@ -78,17 +84,17 @@ export default function CoursePage({ sessions, onSelect, level, difficulty, onFi
           <progress aria-label="Course completion" value={completed} max={lessons.length} />
         </div>}
       </div>
-      {picker}<ContentFilters id="course" value={contentFilter} onChange={setContentFilter} showLevel={false} />
+      {filters}
 
-      <section className="course-next" aria-label="Recommended lesson">
+      {!previewOnly && !suggested && completed < lessons.length ? <section className="card-surface course-filter-notice" aria-label="Course prerequisites"><p>Complete earlier stops to unlock these lessons. Some prerequisites may be hidden by the difficulty filter.</p><button type="button" className="secondary-btn" onClick={() => setContentFilter({ ...contentFilter, difficulty: 'all' })}>Show all difficulties</button></section> : <section className="course-next" aria-label="Recommended lesson">
         <div className="course-next-symbol" lang="zh-CN" aria-hidden="true">{completed === lessons.length ? '成' : '学'}</div>
         <div>
-          <p>{completed === lessons.length ? 'You have reached the end of this path' : nextSession && !nextSession.finishedAt ? 'Pick up where you left off' : 'Your next stop'}</p>
-          <h2>{completed === lessons.length ? 'Path completed' : next.title}</h2>
+          <p>{filteredCompleted ? pathCompleted ? 'You have reached the end of this path' : 'You have completed the lessons matching these filters' : nextSession && !nextSession.finishedAt ? 'Pick up where you left off' : 'Your next stop'}</p>
+          <h2>{filteredCompleted ? pathCompleted ? 'Path completed' : 'Matching lessons completed' : next.title}</h2>
           {completed !== lessons.length && <span>{next.minutes} min</span>}
         </div>
-        <button type="button" onClick={() => onSelect(next.id)}>{previewOnly ? 'Preview lesson' : completed === lessons.length ? 'Revisit first lesson' : activityStatus(next, sessions) === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
-      </section>
+        <button type="button" onClick={() => filteredCompleted && !pathCompleted ? setContentFilter({ ...contentFilter, difficulty: 'all' }) : onSelect(next.id)}>{previewOnly ? 'Preview lesson' : filteredCompleted ? pathCompleted ? 'Revisit first lesson' : 'Show full path' : activityStatus(next, sessions) === 'in-progress' ? 'Continue lesson' : 'Start lesson'}</button>
+      </section>}
 
       <div className="course-layout">
         <section className="course-network" aria-labelledby="course-map-heading">

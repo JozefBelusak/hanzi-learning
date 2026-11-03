@@ -23,7 +23,8 @@ The database creates the profile during signup. The `save_learning_profile` RPC 
 - Settings uses the same editable form; equivalent session/focus refreshes preserve unsaved edits. Saves persist in Supabase and follow the account on another device.
 - Home offers shortcuts for selected practice modes. Home and Progress show learning goals and the daily target. All practice modes remain available.
 - The account's display name and daily target override device defaults and backup values. Import still merges learning history, without clearing attempts or review/session progress.
-- The selected level determines the initial course path and free-practice vocabulary. Four paths cover Beginner through Advanced, and users can switch levels. Difficulty remains a preference with explicit course/exercise filters; adaptive placement and automatic assessment changes are not implemented. Daily targets count free practice, while course/exercise completion has a separate summary.
+- Course, Exercises and public lecturer lessons default to both the profile's language level and difficulty. Filters can be changed independently, cleared together with **Clear filters**, or restored with **Use profile preferences**. Overrides (including explicit `all`) live in the hash query and survive reload and returning from a detail page; changing a filter never changes the saved account profile. A catalog opened without overrides uses the latest saved profile. Guest browsing continues to use unfiltered catalogs.
+- Free-practice vocabulary follows the selected language level. Home also recommends grammar, vocabulary and exercises for the selected learning goals. See [personalization rules](personalization.md). Automatic placement and changes to assessment scoring are not implemented. Daily targets count free practice, while course/exercise completion has a separate summary.
 
 ## Verification
 

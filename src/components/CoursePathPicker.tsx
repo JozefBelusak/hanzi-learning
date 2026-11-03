@@ -16,7 +16,7 @@ export default function CoursePathPicker({ value, lessons, sessions, onChange, p
       const complete = stops.filter((lesson) => activityStatus(lesson, sessions) === 'completed').length
       return <label key={path.level} className="course-path-card">
         <input className="course-path-input" type="radio" name="course-path" aria-label={levelLabel(path.level)} value={path.level} checked={value === path.level} onChange={() => onChange(path.level)} />
-        <span className="course-path-top"><span lang="zh-CN" aria-hidden="true">{path.symbol}</span><span>{levelLabel(path.level)}</span><span className="course-path-check" aria-hidden="true">{value === path.level ? '✓' : ''}</span></span>
+        <span className="course-path-top"><span lang="zh-CN" aria-hidden="true">{path.symbol}</span><span>{levelLabel(path.level)}</span></span>
         {value === 'all' && <><strong>{path.title}</strong><span className="course-path-description">{path.description}</span>
         <span className="course-path-progress">{previewOnly ? `${stops.length} lessons to explore` : `${complete} / ${stops.length} stops completed`}</span></>}
       </label>

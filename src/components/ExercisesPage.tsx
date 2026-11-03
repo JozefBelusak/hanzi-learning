@@ -6,7 +6,7 @@ import type { LearningActivity, LearningSession } from '../types/learning'
 import type { CategoryId } from '../types/study'
 import './ExercisesPage.css'
 import ContentFilters from './ContentFilters'
-import { allContent, matchesContent } from '../lib/contentFilter'
+import { allContent, matchesContent, type ContentFilter } from '../lib/contentFilter'
 import { difficultyLabel, levelLabel } from '../data/taxonomy'
 
 type Props = {
@@ -14,6 +14,9 @@ type Props = {
   onSelect: (id: string) => void
   onPractice: () => void
   previewOnly?: boolean
+  contentFilter: ContentFilter
+  onFilterChange: (filter: ContentFilter) => void
+  profileFilter?: ContentFilter
 }
 
 function normalizeSearch(text: string) {
@@ -25,10 +28,9 @@ function bestResult(activity: LearningActivity, sessions: LearningSession[]) {
   return results.reduce<ReturnType<typeof sessionScore> | undefined>((best, result) => !best || result.percent > best.percent ? result : best, undefined)
 }
 
-export default function ExercisesPage({ sessions, onSelect, onPractice, previewOnly = false }: Props) {
+export default function ExercisesPage({ sessions, onSelect, onPractice, previewOnly = false, contentFilter, onFilterChange: setContentFilter, profileFilter }: Props) {
   const [topic, setTopic] = useState<CategoryId>('all')
   const [query, setQuery] = useState('')
-  const [contentFilter, setContentFilter] = useState(allContent)
   const normalizedQuery = normalizeSearch(query)
   const topics = categories.filter((category) => category.id !== 'all' && exercises.some((exercise) => exercise.category === category.id))
   const filtered = exercises.filter((exercise) => matchesContent(exercise, contentFilter) && (topic === 'all' || exercise.category === topic) && normalizeSearch([exercise.title, exercise.description, ...exercise.objectives, ...exercise.examples.flatMap((example) => [example.hanzi, example.pinyin, example.meaning])].join(' ')).includes(normalizedQuery))
@@ -46,7 +48,7 @@ export default function ExercisesPage({ sessions, onSelect, onPractice, previewO
           {[{ id: 'all' as const, title: 'All topics' }, ...topics].map((category) => <button className="exercise-topic-button" key={category.id} type="button" aria-pressed={topic === category.id} onClick={() => setTopic(category.id)}>{category.title}</button>)}
         </div></div>
       </section>
-      <ContentFilters id="exercises" value={contentFilter} onChange={setContentFilter} />
+      <ContentFilters id="exercises" value={contentFilter} onChange={setContentFilter} profileFilter={profileFilter} />
       <p className="exercises-count" role="status">{filtered.length} {filtered.length === 1 ? 'exercise' : 'exercises'}{query || topic !== 'all' ? ' found' : ' to explore'}</p>
 
       <section className="exercise-catalog" aria-label="Available exercises">

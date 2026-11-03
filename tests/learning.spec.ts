@@ -46,13 +46,13 @@ test('a locked lesson can be previewed directly but cannot start or save answers
   await expect(page.getByRole('heading', { name: 'Preview this stop', exact: true })).toBeVisible()
   expect(await storedSessions(page)).toEqual([])
   await page.getByRole('button', { name: 'Back to course', exact: true }).click()
-  await expect(page).toHaveURL(/#\/course$/)
+  await expect(page).toHaveURL(/#\/course\?level=beginner&difficulty=all$/)
   await expect(page.getByRole('heading', { name: 'Your Chinese journey', exact: true })).toBeVisible()
 })
 
 test('independent lesson reviews unlock the tram map in order and require both fork branches', async ({ page }) => {
   test.setTimeout(90_000)
-  await page.goto('/#/course')
+  await page.goto('/#/course?difficulty=all')
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await expect(page.locator('.course-progress')).toContainText(`0 / ${lessons.length}`)
@@ -140,7 +140,7 @@ test('hiding a hint and reloading before an answer cannot turn assisted work int
 for (const viewport of [{ width: 320, height: 740 }, { width: 390, height: 844 }, { width: 1280, height: 900 }]) {
   test(`${viewport.width}px: the map and exercise workspace fit and support keyboard interaction`, async ({ page }) => {
     await page.setViewportSize(viewport)
-    await page.goto('/#/course')
+    await page.goto('/#/course?difficulty=all')
     await expect(page.getByRole('heading', { name: 'Your Chinese journey', exact: true })).toBeVisible()
     await fitsViewport(page)
     const station = page.getByRole('button', { name: /Lesson 1:/ })
@@ -164,6 +164,7 @@ for (const viewport of [{ width: 320, height: 740 }, { width: 390, height: 844 }
     await fitsViewport(page)
     await page.screenshot({ path: `playwright-report/lesson-workspace-${viewport.width}.png`, fullPage: true, animations: 'disabled' })
     await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'Exercises', exact: true }).click()
+    await page.getByRole('button', { name: 'Clear filters', exact: true }).click()
     await fitsViewport(page)
     const topicFilters = page.getByRole('group', { name: 'Topic', exact: true })
     const topicButton = topicFilters.getByRole('button', { name: 'People and family', exact: true })

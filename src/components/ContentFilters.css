@@ -16,6 +16,8 @@
 .filter-intensity i:nth-child(2) { height: 10px; }
 .filter-intensity i:nth-child(3) { height: 15px; }
 .filter-intensity .is-filled { opacity: 1; }
+.content-filter-actions { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.content-filter-actions .text-btn { padding: 4px 0; font-size: 13px; }
 @media (max-width: 500px) {
   .content-filters { margin: 22px 0; padding: 20px 0; }
   .filter-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }

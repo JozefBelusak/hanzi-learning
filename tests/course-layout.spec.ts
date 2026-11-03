@@ -14,9 +14,9 @@ async function expectSeparateStations(page: Page) {
 }
 
 test('all paths is a separate overview, never a combined station map, and survives reload and Back', async ({ page }) => {
-  await page.goto('/#/course')
+  await page.goto('/#/course?difficulty=all')
   await page.getByRole('radio', { name: 'All paths', exact: true }).check()
-  await expect(page).toHaveURL(/#\/course\?level=all$/)
+  await expect(page).toHaveURL(/#\/course\?level=all&difficulty=all$/)
   await expect(page.locator('.course-path-card')).toHaveCount(4)
   await expect(page.locator('.course-map')).toHaveCount(0)
   await expect(page.getByRole('group', { name: 'Choose your learning path', exact: true })).toBeVisible()
@@ -34,7 +34,7 @@ test('all paths is a separate overview, never a combined station map, and surviv
 for (const width of [360, 820, 1100, 1440]) {
   test(`${width}px: every course path keeps station labels separate and the page fits`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
-    await page.goto('/#/course?level=all')
+    await page.goto('/#/course?level=all&difficulty=all')
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     for (const level of ['Beginner', 'Elementary', 'Intermediate', 'Advanced']) {
       await page.getByRole('radio', { name: level, exact: true }).check()
@@ -66,7 +66,7 @@ test('admin-authored stations with identical coordinates and long titles still o
     lesson.title = `An extended lesson title with more detail about ${lesson.title} and practising Chinese in everyday situations`
   }
   await page.setViewportSize({ width: 1100, height: 900 })
-  await page.goto('/#/course')
+  await page.goto('/#/course?difficulty=all')
   await expect(page.locator('.course-station')).toHaveCount(7)
   await expectSeparateStations(page)
   await page.locator('.course-station').last().click()

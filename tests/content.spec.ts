@@ -2,7 +2,7 @@ import { test, expect, accountStudyKey } from './fixtures'
 import { lessons } from '../src/data/learning'
 
 test('course paths and exercise filters include higher levels and challenging lessons', async ({ page }) => {
-  await page.goto('/#/course')
+  await page.goto('/#/course?difficulty=all')
   await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(7)
   await page.getByRole('radio', { name: 'Advanced', exact: true }).check()
   await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(6)
@@ -11,7 +11,7 @@ test('course paths and exercise filters include higher levels and challenging le
   await page.reload()
   await expect(page.getByRole('radio', { name: 'Advanced', exact: true })).toBeChecked()
   await expect(page.getByRole('radio', { name: 'Challenging', exact: true })).toBeChecked()
-  await page.goto('/#/exercises')
+  await page.goto('/#/exercises?level=all&difficulty=all')
   await expect(page.locator('.exercise-card')).toHaveCount(12)
   await page.getByRole('radio', { name: 'Intermediate', exact: true }).check()
   await expect(page.locator('.exercise-card')).toHaveCount(3)
@@ -19,7 +19,7 @@ test('course paths and exercise filters include higher levels and challenging le
 
 test('an elementary lesson starts independently, saves its review and unlocks only its path', async ({ page }) => {
   const lesson = lessons.find((item) => item.languageLevel === 'elementary')!
-  await page.goto('/#/course?level=elementary')
+  await page.goto('/#/course?level=elementary&difficulty=all')
   await expect(page.getByRole('button', { name: /Lesson 1:.*Ready to start/ })).toBeVisible()
   await page.locator('.course-preview').getByRole('button', { name: 'Start lesson', exact: true }).click()
   await page.getByRole('button', { name: 'Start lesson', exact: true }).click()
@@ -36,7 +36,7 @@ test('an elementary lesson starts independently, saves its review and unlocks on
   }
   await expect(page.locator('.session-result-score')).toContainText('100%')
   await page.getByRole('button', { name: 'Return to course map', exact: true }).click()
-  await expect(page).toHaveURL(/#\/course\?level=elementary$/)
+  await expect(page).toHaveURL(/#\/course\?level=elementary&difficulty=all$/)
   await expect(page.getByRole('button', { name: /Lesson 2:.*Ready to start/ })).toBeVisible()
   await page.reload()
   await expect(page.locator('.course-progress')).toContainText('1 / 6')
@@ -108,7 +108,7 @@ test('a pre-catalog completed lesson and its grammar notes remain available afte
   const lesson = lessons[0]
   const old = { id: 'legacy-before-catalog', activityId: lesson.id, startedAt: '2026-10-14T10:00:00Z', updatedAt: '2026-10-14T10:05:00Z', finishedAt: '2026-10-14T10:05:00Z', answers: lesson.questions.map((question) => ({ questionId: question.id, response: question.type === 'choice' ? [question.answer] : question.acceptedOrders[0], assisted: false })) }
   await page.addInitScript(({ key, session }) => localStorage.setItem(key, JSON.stringify({ version: 1, displayName: 'Old name', dailyGoal: 10, attempts: [], progress: {}, learningSessions: [session] })), { key: accountStudyKey, session: old })
-  await page.goto('/#/course')
+  await page.goto('/#/course?difficulty=all')
   await expect(page.getByRole('button', { name: /Lesson 1:.*Completed/ })).toBeVisible()
   await page.goto(`/#/course/${lesson.id}`)
   await expect(page.locator('.session-result-score')).toContainText('100%')
@@ -139,9 +139,10 @@ test.describe('lecturer lessons remain separate from platform curriculum', () =>
     await page.getByRole('radio', { name: 'Beginner', exact: true }).check()
     await expect(page.getByText('No public lessons match this level and difficulty.', { exact: true })).toBeVisible()
     await page.getByRole('radio', { name: 'Intermediate', exact: true }).check()
+    await page.getByRole('radio', { name: 'Challenging', exact: true }).check()
     await page.getByRole('button', { name: 'Read lesson', exact: true }).click()
     await expect(page.locator('.lesson-reader')).toContainText('Lecturer lesson · Intermediate · Challenging')
-    await page.goto('/#/course')
+    await page.goto('/#/course?difficulty=all')
     await expect(page.getByRole('list', { name: 'Lessons on the course map' }).getByRole('button')).toHaveCount(7)
   })
 })
