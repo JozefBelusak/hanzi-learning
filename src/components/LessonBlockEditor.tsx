@@ -9,10 +9,24 @@ import './LessonBlocks.css'
 
 export default function LessonBlockEditor({ document, onChange }: { document: LecturerLessonDocument; onChange: (document: LecturerLessonDocument) => void }) {
   const [collapsed, setCollapsed] = useState(() => document.blocks.slice(1).map((block) => block.id))
+  const [removed, setRemoved] = useState<{ block: LecturerLessonBlock; index: number } | null>(null)
   const vocabulary = getActiveCatalog().vocabulary
   const update = (id: string, value: LecturerLessonBlock) => onChange({ ...document, blocks: document.blocks.map((block) => block.id === id ? value : block) })
+  function remove(block: LecturerLessonBlock, index: number) {
+    setRemoved({ block, index })
+    onChange({ ...document, blocks: document.blocks.filter((item) => item.id !== block.id) })
+  }
+  function undoRemoval() {
+    if (!removed || document.blocks.length >= 40 || document.blocks.some((block) => block.id === removed.block.id)) return
+    const blocks = [...document.blocks]
+    blocks.splice(Math.min(removed.index, blocks.length), 0, removed.block)
+    onChange({ ...document, blocks })
+    setCollapsed((ids) => ids.filter((id) => id !== removed.block.id))
+    setRemoved(null)
+  }
   return <div className="lesson-block-editor">
     <div className="lesson-block-heading"><h4>Lesson blocks</h4><span>{document.blocks.length} / 40</span></div>
+    {removed && <div className="lesson-block-undo" role="status"><span>{lessonBlockTypes.find((item) => item.type === removed.block.type)?.label} block removed.{document.blocks.length >= 40 ? ' The lesson is full; no more blocks can be restored.' : ''}</span><button className="text-btn" type="button" onClick={undoRemoval} disabled={document.blocks.length >= 40}>Undo</button></div>}
     {!document.blocks.length && <div className="lesson-block-empty"><span lang="zh-CN" aria-hidden="true">文</span><h4>Start with one idea</h4><p>Add an explanation, a Chinese example or an activity.</p></div>}
     <div className="lesson-block-list">
       {document.blocks.map((block, index) => {
@@ -22,7 +36,7 @@ export default function LessonBlockEditor({ document, onChange }: { document: Le
           <header><div><span className="lesson-block-symbol" lang="zh-CN" aria-hidden="true">{definition.symbol}</span><h4><button type="button" className="lesson-block-toggle" aria-label={`${expanded ? 'Collapse' : 'Expand'} block ${index + 1}`} aria-expanded={expanded} aria-controls={`${block.id}-fields`} onClick={() => setCollapsed((ids) => expanded ? [...ids, block.id] : ids.filter((id) => id !== block.id))}>{index + 1}. {definition.label}<span aria-hidden="true">{expanded ? '−' : '+'}</span></button></h4></div><div className="lesson-block-tools">
             <button type="button" className="text-btn" aria-label={`Move block ${index + 1} up`} disabled={index === 0} onClick={() => onChange(moveLessonBlock(document, block.id, -1))}>Move up</button>
             <button type="button" className="text-btn" aria-label={`Move block ${index + 1} down`} disabled={index === document.blocks.length - 1} onClick={() => onChange(moveLessonBlock(document, block.id, 1))}>Move down</button>
-            <button type="button" className="text-btn" aria-label={`Remove block ${index + 1}`} onClick={() => { if (window.confirm(`Remove ${definition.label.toLowerCase()} block ${index + 1}?`)) onChange({ ...document, blocks: document.blocks.filter((item) => item.id !== block.id) }) }}>Remove</button>
+            <button type="button" className="text-btn" aria-label={`Remove block ${index + 1}`} onClick={() => remove(block, index)}>Remove</button>
           </div></header>
           <div className="lesson-block-fields" id={`${block.id}-fields`} hidden={!expanded}>
             {block.type === 'explanation' && <>

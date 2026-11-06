@@ -15,6 +15,7 @@ export default function LessonManager({ profile, onRead }: { profile: UserProfil
   const [draft, setDraft] = useState<LessonDraft>(blank)
   const [baseline, setBaseline] = useState('')
   const [view, setView] = useState<'edit' | 'preview'>('edit')
+  const [editorRevision, setEditorRevision] = useState(0)
   const [legacy, setLegacy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState('')
@@ -31,7 +32,7 @@ export default function LessonManager({ profile, onRead }: { profile: UserProfil
   function open(lesson?: PublicLesson, preview = false) {
     if (!discard()) return
     const next = lesson ? { title: lesson.title, summary: lesson.summary, content: lesson.content, blocks: documentForLesson(lesson), published: lesson.published, languageLevel: lesson.languageLevel, difficulty: lesson.difficulty } : blank()
-    setDraft(next); setBaseline(JSON.stringify(next)); setEditing(lesson?.id ?? null); setView(preview ? 'preview' : 'edit'); setLegacy(Boolean(lesson && !lesson.blocks)); setMessage(''); setError(null)
+    setDraft(next); setBaseline(JSON.stringify(next)); setEditing(lesson?.id ?? null); setEditorRevision((value) => value + 1); setView(preview ? 'preview' : 'edit'); setLegacy(Boolean(lesson && !lesson.blocks)); setMessage(''); setError(null)
   }
   useEffect(() => {
     let active = true
@@ -71,7 +72,7 @@ export default function LessonManager({ profile, onRead }: { profile: UserProfil
           <label>Summary<input maxLength={500} value={draft.summary} onChange={(event) => setDraft({ ...draft, summary: event.target.value })} /></label>
           <div className="editor-columns"><label>Lesson language level<select aria-label="Lesson language level" value={draft.languageLevel} onChange={(event) => setDraft({ ...draft, languageLevel: event.target.value as LessonDraft['languageLevel'] })}>{languageLevels.map((level) => <option key={level.id} value={level.id}>{level.label}</option>)}</select></label>
           <label>Lesson difficulty<select aria-label="Lesson difficulty" value={draft.difficulty} onChange={(event) => setDraft({ ...draft, difficulty: event.target.value as LessonDraft['difficulty'] })}>{difficulties.map((difficulty) => <option key={difficulty.id} value={difficulty.id}>{difficulty.label}</option>)}</select></label></div>
-          <LessonBlockEditor document={draft.blocks!} onChange={(blocks) => setDraft({ ...draft, blocks })} />
+          <LessonBlockEditor key={editorRevision} document={draft.blocks!} onChange={(blocks) => setDraft({ ...draft, blocks })} />
           <footer className="lesson-editor-footer"><label className="checkbox-field"><input type="checkbox" checked={draft.published} onChange={(event) => setDraft({ ...draft, published: event.target.checked })} /> Publish to all signed-in learners</label><small>Drafts may be unfinished. Complete every block before publishing. Published lessons retain a readable text version.</small><div className="action-row"><button type="submit">{busy ? 'Saving…' : 'Save lesson'}</button><button type="button" className="text-btn" onClick={() => { if (discard()) setEditing(undefined) }}>Cancel editing</button></div></footer>
         </fieldset>
       </form> : <LessonBlockPreview document={draft.blocks!} title={draft.title} summary={draft.summary} />}

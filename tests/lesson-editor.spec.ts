@@ -4,6 +4,44 @@ import { sampleLessonDocument } from './fixtures/lesson-blocks'
 
 test.use({ account: 'lecturer' })
 
+test('removes blocks without a browser dialog, restores authored content and keeps undo scoped to the current lesson', async ({ page, backend }) => {
+  backend.lessons.push({ id: '10000000-0000-4000-8000-000000000001', source: 'lecturer', author_id: backend.users[1].id, title: 'Undo lesson', summary: '', content: 'Reading version', blocks: sampleLessonDocument(), published: false, languageLevel: 'beginner', difficulty: 'balanced', created_at: '2026-11-03T10:00:00Z', updated_at: '2026-11-03T10:00:00Z' })
+  const dialogs: string[] = []
+  const unexpectedDialog = async (dialog: import('@playwright/test').Dialog) => { dialogs.push(dialog.message()); await dialog.dismiss() }
+  page.on('dialog', unexpectedDialog)
+  await page.goto('/#/teach')
+  await page.getByRole('button', { name: 'Edit', exact: true }).click()
+  const originalId = await page.getByRole('region', { name: 'Block 4: Interactive exercise', exact: true }).locator('.lesson-block-fields').getAttribute('id')
+  await page.getByRole('button', { name: 'Remove block 4', exact: true }).click()
+  await expect(page.getByRole('region', { name: 'Block 4: Practice', exact: true })).toBeVisible()
+  await page.getByLabel('Explanation text', { exact: true }).fill('Keep this later edit when the exercise is restored.')
+  await page.getByRole('button', { name: 'Undo', exact: true }).focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByLabel('Question 1 prompt', { exact: true })).toHaveValue('What does 水 mean?')
+  await expect(page.getByLabel('Question 2 tokens (one per line)', { exact: true })).toHaveValue('我\n喝\n水')
+  await expect(page.getByLabel('Explanation text', { exact: true })).toHaveValue('Keep this later edit when the exercise is restored.')
+  await expect(page.getByRole('region', { name: 'Block 4: Interactive exercise', exact: true }).locator('.lesson-block-fields')).toHaveAttribute('id', originalId!)
+  await expect(page.getByRole('button', { name: 'Undo', exact: true })).toHaveCount(0)
+  await page.getByRole('button', { name: 'Remove block 4', exact: true }).click()
+  expect(dialogs).toEqual([])
+  page.off('dialog', unexpectedDialog)
+  page.once('dialog', (dialog) => dialog.accept())
+  await page.getByRole('button', { name: 'New lesson', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Undo', exact: true })).toHaveCount(0)
+  await expect(page.locator('.lesson-editor-block')).toHaveCount(0)
+})
+
+test('undo never restores a forty-first block', async ({ page, backend }) => {
+  const blocks = Array.from({ length: 40 }, (_, index) => ({ id: `explanation-${index}`, type: 'explanation' as const, heading: `Section ${index + 1}`, text: 'A short explanation.', grammar: '' }))
+  backend.lessons.push({ id: '10000000-0000-4000-8000-000000000001', source: 'lecturer', author_id: backend.users[1].id, title: 'Full lesson', summary: '', content: 'Reading version', blocks: { schemaVersion: 1, blocks }, published: false, languageLevel: 'beginner', difficulty: 'balanced', created_at: '2026-11-03T10:00:00Z', updated_at: '2026-11-03T10:00:00Z' })
+  await page.goto('/#/teach')
+  await page.getByRole('button', { name: 'Edit', exact: true }).click()
+  await page.getByRole('button', { name: 'Remove block 40', exact: true }).click()
+  await page.getByRole('button', { name: 'Add explanation block', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Undo', exact: true })).toBeDisabled()
+  await expect(page.locator('.lesson-editor-block')).toHaveCount(40)
+})
+
 async function chooseWord(block: Locator, query: string, hanzi: string) {
   await block.getByRole('searchbox', { name: 'Search vocabulary', exact: true }).fill(query)
   await block.getByRole('checkbox', { name: new RegExp(`^${hanzi} ·`) }).check()
@@ -143,7 +181,6 @@ test('authors all block types, reorders/removes them, saves a draft, publishes a
   await page.getByRole('button', { name: 'Move block 2 up', exact: true }).click()
   await expect(page.getByRole('region', { name: 'Block 1: Chinese example', exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Add explanation block', exact: true }).click()
-  page.once('dialog', (dialog) => dialog.accept())
   await page.getByRole('button', { name: 'Remove block 6', exact: true }).click()
   await page.getByRole('button', { name: 'Save lesson', exact: true }).click()
   await expect(page.getByRole('status')).toHaveText('Lesson saved.')

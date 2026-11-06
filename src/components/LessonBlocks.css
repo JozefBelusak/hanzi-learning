@@ -12,6 +12,8 @@
 .lesson-block-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 14px 0; }
 .lesson-block-heading h4 { margin: 0; font-size: 18px; }
 .lesson-block-heading > span { font-size: 13px; color: var(--muted); }
+.lesson-block-undo { position: sticky; top: 12px; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); font-size: 13px; }
+.lesson-block-undo button { flex-shrink: 0; }
 .lesson-block-empty { padding: 30px 20px; border: 1px dashed #b5c8b8; border-radius: 12px; text-align: center; background: #f4f7ef; }
 .lesson-block-empty > span { font: 36px var(--hanzi-font); color: var(--green); }
 .lesson-block-empty h4 { margin: 10px 0; }

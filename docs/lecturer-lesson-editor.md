@@ -8,7 +8,7 @@ The migration is additive: it adds nullable `public.public_lessons.content_block
 
 ## Authoring
 
-In Lecturer workspace, select **New lesson** or **Edit**. Set a title, summary, level and difficulty, then add up to 40 blocks. Block headings expand/collapse their fields; existing lessons initially expand the first block to keep longer documents manageable. **Move up**, **Move down** and **Remove** are keyboard-accessible; block and question identifiers remain stable when reordered. Removing a block and discarding unsaved edits require confirmation. Refreshing/closing a page with unsaved edits invokes the browser's unload warning. Changes are saved explicitly, not automatically.
+In Lecturer workspace, select **New lesson** or **Edit**. Set a title, summary, level and difficulty, then add up to 40 blocks. Block headings expand/collapse their fields; existing lessons initially expand the first block to keep longer documents manageable. **Move up**, **Move down** and **Remove** are keyboard-accessible; block and question identifiers remain stable when reordered. Removing a block is immediate and opens no browser dialog. **Undo** restores the most recently removed block, including its content and original position, while retaining edits to other blocks. Undo is available in the current editing view and respects the 40-block limit; switching lessons, previewing or saving clears it. Discarding unsaved edits still requires confirmation. Refreshing/closing a page with unsaved edits invokes the browser's unload warning. Changes are saved explicitly, not automatically.
 
 Supported blocks:
 
