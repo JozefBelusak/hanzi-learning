@@ -10,13 +10,13 @@ The course overview counts the lessons matching the selected difficulty in each 
 
 ## Goal recommendations
 
-Home's **For your goals** panel reuses the current published platform catalog and the already loaded vocabulary. It recommends up to three grammar topics, words and exercises. Grammar and exercise candidates must match both profile level and difficulty. Vocabulary matches language level: imported dictionary entries currently have a neutral `balanced` value, not a pedagogically validated difficulty classification, so gentle/challenging preferences do not remove all dictionary words.
+The **Explore more recommendations for your goals** panel inside Today’s stops reuses the current published platform catalog and the already loaded vocabulary. It recommends up to three grammar topics, words and exercises. Grammar and exercise candidates must match both profile level and difficulty. Vocabulary matches language level: imported dictionary entries currently have a neutral `balanced` value, not a pedagogically validated difficulty classification, so gentle/challenging preferences do not remove all dictionary words.
 
 `src/lib/recommendations.ts` defines small editorial rules for conversation, travel, work, study/exams and culture. An English topic/meaning keyword match scores eight points per selected goal; a related existing vocabulary/activity category scores two. Grammar also receives the highest related-activity score for each goal through its existing grammar references. Selected goals combine additively and duplicate goals are ignored. Ties retain catalog order. Recommendations display the matching goal names; candidates with no direct match are labelled **At your language level**. If no candidate matches the level/difficulty, the panel reports this rather than silently changing the preferences.
 
 These are deterministic content recommendations, not AI inference, a placement test or a claim of improved learning outcomes. New administrator-published content participates through existing text, categories and references, without hard-coded lesson IDs. Archived words/grammar and unpublished activities are excluded. Lecturer reading lessons remain a separate catalog and retain their existing publication/ownership checks.
 
-Grammar explanations and Chinese examples expand inline. Exercise buttons open the existing runner; vocabulary buttons open practice-mode selection for the recommended word's topic and the profile level. The existing Home course continuation still follows prerequisites at the profile level, even when the necessary prerequisite has a different difficulty.
+Grammar explanations and Chinese examples expand inline. Exercise buttons open the existing runner; vocabulary buttons open practice-mode selection for the recommended word's topic and the profile level. The daily route’s course continuation still follows prerequisites at the profile level, even when the necessary prerequisite has a different difficulty.
 
 ## Data preservation and verification
 

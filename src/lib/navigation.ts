@@ -5,12 +5,13 @@ import { languageLevelIds, difficultyIds, type LanguageLevel, type Difficulty } 
 import type { CategoryId, PracticeMode } from '../types/study'
 import { canBrowseAsGuest } from './guest'
 
-type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'progress' | 'settings' | 'classes' | 'teach' | 'admin'
+type StaticPage = 'welcome' | 'login' | 'register' | 'onboarding' | 'home' | 'today' | 'progress' | 'settings' | 'classes' | 'teach' | 'admin'
 type BaseAppRoute =
   | { page: StaticPage }
   | { page: 'course' | 'exercises' | 'lessons'; level?: LanguageLevel | 'all'; difficulty?: Difficulty | 'all' }
   | { page: 'topics'; level?: LanguageLevel | 'all' }
   | { page: 'public-lesson'; lessonId: string }
+  | { page: 'daily-stop'; routeId: string; stopId: string }
   | { page: 'lesson'; activityId: string }
   | { page: 'exercise'; activityId: string }
   | { page: 'modes'; category: CategoryId; level?: LanguageLevel | 'all' }
@@ -23,9 +24,10 @@ const validCategory = (value: string): value is CategoryId => categories.some((c
 function parsePath(hash: string): AppRoute {
   const parts = hash.replace(/^#\/?/, '').split('/')
   if (parts.length === 1 && ['course', 'exercises', 'lessons', 'topics'].includes(parts[0])) return { page: parts[0] as 'course' | 'exercises' | 'lessons' | 'topics' }
-  if (parts.length === 1 && ['welcome', 'login', 'register', 'onboarding', 'home', 'progress', 'settings', 'classes', 'teach', 'admin'].includes(parts[0])) {
+  if (parts.length === 1 && ['welcome', 'login', 'register', 'onboarding', 'home', 'today', 'progress', 'settings', 'classes', 'teach', 'admin'].includes(parts[0])) {
     return { page: parts[0] as StaticPage }
   }
+  if (parts.length === 3 && parts[0] === 'today' && parts.slice(1).every((part) => /^[a-z0-9][a-z0-9:_-]{0,159}$/.test(part))) return { page:'daily-stop',routeId:parts[1],stopId:parts[2] }
   if (parts.length === 2 && parts[0] === 'lessons' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(parts[1])) return { page: 'public-lesson', lessonId: parts[1] }
   if (parts.length === 2 && (parts[0] === 'course' || parts[0] === 'exercises')) {
     const activity = getActivity(parts[1])
@@ -48,6 +50,7 @@ function parsePath(hash: string): AppRoute {
 }
 
 function pathHash(route: AppRoute): string {
+  if (route.page === 'daily-stop') return `#/today/${route.routeId}/${route.stopId}`
   if (route.page === 'public-lesson') return `#/lessons/${route.lessonId}`
   if (route.page === 'modes') return `#/topics/${route.category}`
   if (route.page === 'lesson') return `#/course/${route.activityId}`

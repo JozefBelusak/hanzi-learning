@@ -10,6 +10,7 @@ type Props = {
   onBack: () => void
   onAttempt: (attempt: AttemptInput) => void
   embedded?: boolean
+  reviewAll?: boolean
 }
 
 const ratings: { value: FlashcardRating; label: string }[] = [
@@ -27,9 +28,9 @@ function intervalLabel(days: number): string {
   return `${amount} ${unit}`
 }
 
-export default function FlashcardsPage({ cards, study, onBack, onAttempt, embedded = false }: Props) {
+export default function FlashcardsPage({ cards, study, onBack, onAttempt, embedded = false, reviewAll = false }: Props) {
   const Container = embedded ? 'section' : 'main'
-  const [queue, setQueue] = useState(() => dueCards(cards, study.progress).map((card) => card.id))
+  const [queue, setQueue] = useState(() => (reviewAll ? cards : dueCards(cards, study.progress)).map((card) => card.id))
   const [index, setIndex] = useState(0)
   const [isRevealed, setIsRevealed] = useState(false)
   const [direction, setDirection] = useState<'meaning' | 'hanzi'>('meaning')

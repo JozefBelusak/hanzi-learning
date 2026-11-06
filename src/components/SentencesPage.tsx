@@ -11,6 +11,7 @@ import type { AttemptInput } from '../types/study'
 
 type SentencesPageProps = {
   level?: LanguageLevel | 'all'
+  sentenceIds?: string[]
   onBack: () => void
   onAttempt: (attempt: AttemptInput) => void
 }
@@ -223,8 +224,8 @@ function SentencePractice({
   )
 }
 
-function SentencesPage({ onBack, onAttempt, level = 'all' }: SentencesPageProps) {
-  const sentences = allSentences.filter((sentence) => level === 'all' || sentence.languageLevel === level)
+function SentencesPage({ onBack, onAttempt, level = 'all', sentenceIds }: SentencesPageProps) {
+  const sentences = allSentences.filter((sentence) => (level === 'all' || sentence.languageLevel === level) && (!sentenceIds || sentenceIds.includes(sentence.id)))
   const [currentIndex, setCurrentIndex] = useState(0)
   const currentSentence = sentences[currentIndex]
 

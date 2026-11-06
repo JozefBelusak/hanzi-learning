@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import type { UserProfile } from '../types/auth'
 import { difficulties, languageLevels, learningGoals, practicePreferences, profileInput, validLearningProfile, type LearningProfileInput } from '../lib/profile'
 import './LearningProfile.css'
+import { routePace, routePaces } from '../lib/routePace'
 
 type Props = { profile: UserProfile; onboarding?: boolean; onSave: (input: LearningProfileInput) => Promise<void> }
 
@@ -44,10 +45,10 @@ export default function LearningProfileForm({ profile, onboarding = false, onSav
         </div>
         <fieldset className="profile-options"><legend>How do you like to practise?</legend><p>Choose at least one. You can still use every practice mode.</p><div>{practicePreferences.map((mode) => <label key={mode.id}><input type="checkbox" checked={values.preferredModes.includes(mode.id)} onChange={() => setValues({ ...values, preferredModes: toggle(values.preferredModes, mode.id) })} /><span>{mode.label}</span></label>)}</div></fieldset>
         <fieldset className="profile-options"><legend>What are your learning goals?</legend><p>Choose at least one reason for learning Chinese.</p><div>{learningGoals.map((goal) => <label key={goal.id}><input type="checkbox" checked={values.learningGoals.includes(goal.id)} onChange={() => setValues({ ...values, learningGoals: toggle(values.learningGoals, goal.id) })} /><span>{goal.label}</span></label>)}</div></fieldset>
-        <label htmlFor="daily-goal">Daily goal · attempts</label>
-        <input id="daily-goal" type="number" min={1} max={100} required value={Number.isNaN(values.dailyGoal) ? '' : values.dailyGoal} onChange={(event) => setValues({ ...values, dailyGoal: event.target.valueAsNumber })} />
-        <small>This target is used in your daily progress and counts free practice attempts. Course and exercise completion is tracked separately.</small>
-        <p className="profile-content-note">The current course and vocabulary cover beginner Chinese (HSK 1). Level and difficulty record your preferences; they do not unlock advanced content or change assessment scores.</p>
+        <label htmlFor="daily-goal">Daily route length</label>
+        <select id="daily-goal" value={routePace(values.dailyGoal).id} onChange={(event) => setValues({ ...values, dailyGoal: routePaces.find((pace) => pace.id === event.target.value)!.value })}>{routePaces.map((pace) => <option key={pace.id} value={pace.id}>{pace.label} · {pace.words} words + {pace.practice} practice {pace.practice === 1 ? 'item' : 'items'}</option>)}</select>
+        <small>Each section also includes an available lesson or exercise. You can always continue with another section. Changes apply to newly planned sections.</small>
+        <p className="profile-content-note">Your level, difficulty and learning goals guide content selection. Completing practice does not certify a language level or change assessment rules.</p>
         <button type="submit">{busy ? 'Saving…' : onboarding ? 'Finish setup' : 'Save preferences'}</button>
       </fieldset>
       {error && <p role="alert" className="error-message">{error}</p>}

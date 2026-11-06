@@ -1,4 +1,5 @@
 import type { LearningSession } from './learning'
+import type { DailyRoute } from './daily'
 
 export type { WordCategoryId, CategoryId } from './content'
 export type PracticeMode = 'flashcards' | 'speech' | 'writing' | 'sentences'
@@ -41,6 +42,7 @@ export type StudyData = {
   attempts: StudyAttempt[]
   progress: Record<string, CardProgress>
   learningSessions?: LearningSession[]
+  dailyRoutes?: DailyRoute[]
 }
 
 // Earlier saved attempts are migrated when the application starts.

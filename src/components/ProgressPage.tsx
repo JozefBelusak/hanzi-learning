@@ -5,12 +5,14 @@ import { activities, lessons, exercises, getActivity } from '../data/learning'
 import { activityStatus, sessionScore } from '../lib/learning'
 import type { UserProfile } from '../types/auth'
 import LearningPlan from './LearningPlan'
+import { currentDailyRoute, dailyRouteProgress, todayRoutes } from '../lib/daily'
 
-type Props = { cards: Card[]; study: StudyData; profile: UserProfile; onEditProfile: () => void; onBack: () => void }
+type Props = { cards: Card[]; study: StudyData; profile: UserProfile; onEditProfile: () => void; onBack: () => void; onToday: () => void }
 const modeNames = { flashcards: 'Flashcards', speech: 'Speaking · text match', writing: 'Writing', sentences: 'Sentences · word order' }
 
-export default function ProgressPage({ cards, study, profile, onEditProfile, onBack }: Props) {
-  const summary = studySummary(study.attempts)
+export default function ProgressPage({ cards, study, profile, onEditProfile, onBack, onToday }: Props) {
+  const summary = studySummary(study.attempts,undefined,study.learningSessions)
+  const route = currentDailyRoute(study), routeProgress = route ? dailyRouteProgress(route,study) : null
   const sessions = study.learningSessions ?? []
   const finished = sessions.filter((session) => session.finishedAt).slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
   const days = Array.from({ length: 7 }, (_, index) => {
@@ -25,9 +27,10 @@ export default function ProgressPage({ cards, study, profile, onEditProfile, onB
       <button className="back-button" type="button" onClick={onBack}>Back</button>
       <h1>Progress</h1>
       <LearningPlan profile={profile} onEdit={onEditProfile} />
-      <section className="home-goal" aria-label="Today's practice">
-        <div className="goal-heading"><h2>Daily practice goal</h2><span>{summary.todayCount} / {study.dailyGoal} practice attempts</span></div>
-        <progress aria-label="Daily goal progress" value={Math.min(summary.todayCount, study.dailyGoal)} max={study.dailyGoal} />
+      <section className="home-goal" aria-label="Today's stops">
+        <div className="goal-heading"><h2>Today's stops</h2><span>{routeProgress ? `${routeProgress.done} / ${routeProgress.total} stops completed in this section` : 'Your daily route is ready to be planned'}</span></div>
+        {routeProgress && <progress aria-label="Daily route progress" value={routeProgress.done} max={routeProgress.total} />}
+        <p>{todayRoutes(study).filter((item) => dailyRouteProgress(item,study).complete).length} sections completed today.</p><button type="button" className="text-btn" onClick={onToday}>Open today's stops</button>
       </section>
       <section className="stats-grid">
         <div className="stat-card"><span>Total attempts</span><strong>{study.attempts.length}</strong></div>

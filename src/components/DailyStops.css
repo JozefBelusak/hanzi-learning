@@ -1,0 +1,50 @@
+.daily-page { width:min(920px,calc(100% - 48px)); margin:40px auto; }
+.daily-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin:24px 0; }
+.daily-heading h1 { margin:10px 0; }
+.daily-heading p { margin:0; }
+.daily-eyebrow { font-size:13px; color:var(--muted); }
+.daily-home-track { width:120px; height:220px; flex-shrink:0; overflow:visible; }
+.daily-home-track path { fill:none; stroke:#9eb7a2; stroke-width:6; }
+.daily-home-track circle { fill:var(--green); stroke:#dce7d1; stroke-width:5; }
+.daily-home-track circle.is-done { fill:#e8d3a1; stroke:#e8d3a1; }
+.daily-home-track text { font:26px var(--hanzi-font); fill:#dce7d1; }
+.daily-overview { padding:20px 0 28px; border-bottom:1px solid var(--line); }
+.daily-overview p { color:var(--muted); font-size:14px; }
+.daily-overview progress { width:100%; height:10px; }
+.daily-stops { list-style:none; margin:28px 0; padding:0; }
+.daily-stops > li { position:relative; display:grid; grid-template-columns:44px minmax(0,1fr); gap:16px; padding-bottom:22px; }
+.daily-stops > li:not(:last-child)::before { content:''; position:absolute; left:20px; top:25px; bottom:-12px; width:4px; background:#c5d5c4; }
+.daily-station { z-index:1; display:grid; place-items:center; width:44px; height:44px; margin-top:20px; border:4px solid #a8bfa9; border-radius:50%; background:var(--cream); color:var(--green); font-size:14px; transition:background .2s,border-color .2s; }
+.daily-stops .is-complete .daily-station { background:var(--green); border-color:var(--green); color:white; }
+.daily-stop { min-width:0; overflow-wrap:anywhere; }
+.daily-stop-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; }
+.daily-stop-heading h2 { font-size:21px; margin:0; }
+.daily-stop-heading > span { color:var(--muted); font-size:13px; }
+.daily-stop > small { display:block; color:var(--muted); line-height:1.7; }
+.daily-stop > button { margin-top:18px; }
+.daily-stop-items { display:flex; flex-wrap:wrap; gap:10px; list-style:none; margin:18px 0; padding:0; }
+.daily-stop-items li { display:grid; gap:4px; padding:9px 12px; background:#f3f6ee; border-radius:8px; min-width:0; overflow-wrap:anywhere; }
+.daily-stop-items span { font:24px var(--hanzi-font); color:var(--green); }
+.daily-stop-items small { color:var(--muted); font-size:12px; }
+.daily-next { text-align:center; margin:18px 0 24px; }
+.daily-next > span { font:42px var(--hanzi-font); color:var(--green); }
+.daily-next h2 { font-size:23px; }
+.daily-next .action-row { justify-content:center; }
+.daily-help { color:var(--muted); font-size:13px; line-height:1.7; }
+.daily-history,.daily-recommendations { padding:20px 0; border-top:1px solid var(--line); }
+.daily-history > summary,.daily-recommendations > summary { cursor:pointer; color:var(--green); }
+.daily-session-banner { width:min(920px,calc(100% - 48px)); margin:24px auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
+.daily-session-banner > div { display:grid; gap:6px; }
+.daily-session-banner span { font-size:13px; color:var(--muted); }
+.daily-session-banner.is-complete { background:#edf3e5; }
+@media (max-width:650px) {
+  .daily-page,.daily-session-banner { width:calc(100% - 32px); margin:24px auto; }
+  .daily-home-track { width:54px; height:170px; }
+  .daily-home-track text { display:none; }
+  .daily-stops > li { grid-template-columns:32px minmax(0,1fr); gap:10px; }
+  .daily-station { width:32px; height:32px; border-width:3px; }
+  .daily-stops > li:not(:last-child)::before { left:14px; }
+  .daily-stop { padding:18px; }
+  .daily-stop > button,.daily-session-banner > button { width:100%; }
+}
+@media (prefers-reduced-motion:reduce) { .daily-station { transition:none; } }

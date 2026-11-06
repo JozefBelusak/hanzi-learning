@@ -3,6 +3,8 @@ import type {
 } from '../types/study'
 import type { LearningSession } from '../types/learning'
 import { validateLearningSession } from './learning'
+import { mergeDailyRoutes } from './daily'
+import type { DailyRoute } from '../types/daily'
 
 const DAY = 86_400_000
 const intervals = [1, 3, 7, 14, 30]
@@ -81,10 +83,11 @@ export function createAttempt(input: AttemptInput): StudyAttempt {
 export function dayKey(date: Date): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
-export function studySummary(attempts: StudyAttempt[], now = new Date()) {
+export function studySummary(attempts: StudyAttempt[], now = new Date(), sessions: LearningSession[] = []) {
   const today = dayKey(now)
   const todayCount = attempts.filter((attempt) => dayKey(new Date(attempt.createdAt)) === today).length
   const activeDays = new Set(attempts.map((attempt) => dayKey(new Date(attempt.createdAt))))
+  sessions.forEach((session) => { if (session.finishedAt) activeDays.add(dayKey(new Date(session.finishedAt))) })
   const cursor = new Date(now)
   if (!activeDays.has(today)) cursor.setDate(cursor.getDate() - 1)
   let streak = 0
@@ -127,8 +130,10 @@ export function parseStudy(raw: string): StudyData {
   if (data.version !== 1 || typeof data.displayName !== 'string' || !Array.isArray(data.attempts) || !data.attempts.every(isStudyAttempt) || typeof data.dailyGoal !== 'number' || !Number.isInteger(data.dailyGoal) || data.dailyGoal < 1 || data.dailyGoal > 100) throw new Error('The backup does not contain valid Hanzi progress.')
   if (data.learningSessions !== undefined && (!Array.isArray(data.learningSessions) || !data.learningSessions.every(validateLearningSession))) throw new Error('The backup does not contain valid lesson or exercise progress.')
   const learningSessions = mergeLearningSessions((data.learningSessions ?? []) as LearningSession[])
-  return data.attempts.slice().sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)).reduce(appendAttempt, { ...emptyStudy(), displayName: data.displayName.slice(0, 60), dailyGoal: data.dailyGoal, learningSessions })
+  if (data.dailyRoutes !== undefined && !Array.isArray(data.dailyRoutes)) throw new Error('The backup does not contain valid daily routes.')
+  const dailyRoutes = data.dailyRoutes === undefined ? undefined : mergeDailyRoutes(data.dailyRoutes as DailyRoute[])
+  return data.attempts.slice().sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)).reduce(appendAttempt, { ...emptyStudy(), displayName: data.displayName.slice(0, 60), dailyGoal: data.dailyGoal, learningSessions, ...(dailyRoutes ? { dailyRoutes } : {}) })
 }
 export function mergeStudy(current: StudyData, imported: StudyData): StudyData {
-  return parseStudy(JSON.stringify({ ...imported, attempts: [...current.attempts, ...imported.attempts], learningSessions: [...(current.learningSessions ?? []), ...(imported.learningSessions ?? [])] }))
+  return parseStudy(JSON.stringify({ ...imported, attempts: [...current.attempts, ...imported.attempts], learningSessions: [...(current.learningSessions ?? []), ...(imported.learningSessions ?? [])], ...(current.dailyRoutes || imported.dailyRoutes ? { dailyRoutes: [...(current.dailyRoutes ?? []), ...(imported.dailyRoutes ?? [])] } : {}) }))
 }

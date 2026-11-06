@@ -37,7 +37,7 @@ export default function SettingsPage({ study, profile, onSaveProfile, onImport, 
         <LearningProfileForm profile={profile} onSave={onSaveProfile} />
         <div className="card-surface">
           <h2>Progress backup</h2>
-          <p>Export your progress to use it on another device. Importing merges histories without duplicate attempts. Your account name, learning preferences and daily goal stay as saved in your profile.</p>
+          <p>Export your progress to use it on another device. Importing merges histories and daily routes without duplicate attempts. Your account name, learning preferences and route length stay as saved in your profile.</p>
           <button className="secondary-btn" type="button" disabled={busy} onClick={() => void exportBackup()}>Export progress</button>
           <label className="import-label" htmlFor="progress-import">Import progress backup</label>
           <input id="progress-import" type="file" accept=".json,application/json" onChange={(event) => {

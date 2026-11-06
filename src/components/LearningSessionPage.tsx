@@ -13,6 +13,7 @@ import './LearningSessionPage.css'
 type Props = {
   activity: LearningActivity
   onBack: () => void
+  returnLabel?: string
   locked?: boolean
 } & ({
   previewOnly: true
@@ -193,7 +194,7 @@ export function QuestionTask({ question, questionNumber, total, answer, previous
   )
 }
 
-function LearningSessionWorkspace({ activity: currentActivity, sessions = [], onSaveSession, onBack, onPractice, locked = false, previewOnly = false, onSignIn }: Props) {
+function LearningSessionWorkspace({ activity: currentActivity, sessions = [], onSaveSession, onBack, onPractice, locked = false, previewOnly = false, onSignIn, returnLabel }: Props) {
   const [session, setSession] = useState<LearningSession | null>(() => getLatestSession(currentActivity.id, sessions) ?? null)
   const activity = session ? getActivity(session.activityId, session.contentRevision ?? 1) ?? currentActivity : currentActivity
   const [notesOpen, setNotesOpen] = useState(() => locked || !getLatestSession(activity.id, sessions))
@@ -302,7 +303,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions = [], on
   return (
     <main className="learning-session-page">
       <header className="session-header">
-        <button type="button" className="back-button" onClick={leave}>{activity.kind === 'lesson' ? 'Back to course' : 'Back to exercises'}</button>
+        <button type="button" className="back-button" onClick={leave}>{returnLabel ?? (activity.kind === 'lesson' ? 'Back to course' : 'Back to exercises')}</button>
         <div><span className={`session-kind session-line-${activity.line}`}>{activity.kind === 'lesson' ? 'Course lesson' : 'Independent exercise'}</span><span>{activity.minutes} min</span></div>
       </header>
       <div className="session-title"><h1>{activity.title}</h1><p>{activity.description}</p><p className="content-classification">{levelLabel(activity.languageLevel)} · {difficultyLabel(activity.difficulty)}</p></div>
@@ -379,7 +380,7 @@ function LearningSessionWorkspace({ activity: currentActivity, sessions = [], on
               <div className="session-result-score"><strong>{score.percent}%</strong><span>correct without a hint</span></div>
               <p>{score.correct} of {score.total} questions answered correctly without a hint.</p>
               <p>{score.passed ? 'You can continue your journey or practise the words in another way.' : 'Review the explanations and try again. Your previous results stay saved.'}</p>
-              <div className="session-result-actions"><button type="button" className="session-check" onClick={leave}>{activity.kind === 'lesson' ? 'Return to course map' : 'Return to exercises'}</button><button type="button" className="secondary-btn" onClick={startSession}>Try questions again</button></div>
+              <div className="session-result-actions"><button type="button" className="session-check" onClick={leave}>{returnLabel ?? (activity.kind === 'lesson' ? 'Return to course map' : 'Return to exercises')}</button><button type="button" className="secondary-btn" onClick={startSession}>Try questions again</button></div>
               <div className="session-practice-links"><h3>Use these words</h3><button type="button" className="secondary-btn" onClick={() => practise('speech')}>Speaking</button><button type="button" className="secondary-btn" onClick={() => practise('writing')}>Writing</button><button type="button" className="secondary-btn" onClick={() => practise('flashcards')}>Flashcards</button></div>
               <small className="session-voice-note">This result checks choices and word order. Speaking practice currently compares recognized text; acoustic tone assessment is not included.</small>
             </section>

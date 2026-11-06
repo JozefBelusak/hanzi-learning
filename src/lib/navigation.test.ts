@@ -8,6 +8,7 @@ describe('course, exercises and contextual practice routes', () => {
     const lesson = lessons[0]
     const routes: AppRoute[] = [
       { page: 'course' }, { page: 'exercises' }, { page: 'onboarding' },
+      { page: 'today' }, { page: 'daily-stop', routeId: 'route-123', stopId: 'review' },
       { page: 'lesson', activityId: lesson.id },
       { page: 'exercise', activityId: exercises[0].id },
       { page: 'practice', category: lesson.category, mode: 'speech', activityId: lesson.id },
@@ -30,7 +31,7 @@ describe('course, exercises and contextual practice routes', () => {
 
   it('rejects missing IDs, wrong activity kinds, invalid modes and mismatched practice context', () => {
     for (const hash of [
-      '#/course/invalid%20id', `#/course/${exercises[0].id}`, `#/exercises/${lessons[0].id}`,
+      '#/today/invalid%20id/review', '#/today/route-123', '#/today/route-123/review/extra', '#/course/invalid%20id', `#/course/${exercises[0].id}`, `#/exercises/${lessons[0].id}`,
       '#/practice/food/wrong', `#/practice/food/speech/from/${lessons[0].id}`,
     ]) expect(parseRoute(hash)).toEqual({ page: 'home' })
   })

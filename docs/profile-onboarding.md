@@ -11,7 +11,7 @@ The migration retains existing accounts, published lessons, classrooms and devic
 
 ## Stored fields
 
-`public.profiles` stores the display name, self-reported Chinese level (beginner/elementary/intermediate/advanced), preferred difficulty (gentle/balanced/challenging), selected practice modes, learning goals, a daily goal of 1–100 practice attempts, and `onboarding_completed_at`.
+`public.profiles` stores the display name, self-reported Chinese level (beginner/elementary/intermediate/advanced), preferred difficulty (gentle/balanced/challenging), selected practice modes, learning goals, the legacy `daily_goal` value (1–100) now mapped to Short, Regular or Extended daily routes, and `onboarding_completed_at`.
 
 The database creates the profile during signup. The `save_learning_profile` RPC accepts no target account or role; it always updates the current verified account. The database validates the whole profile, rejects unknown/empty selections, normalizes duplicate choices and sets completion in the same transaction. Failed requests never grant access or show a successful save. The RPC preserves the original completion time on later edits. Existing database-owned role permissions remain in force.
 
@@ -21,10 +21,10 @@ The database creates the profile during signup. The `save_learning_profile` RPC 
 - An incomplete profile is sent to `/#/onboarding` on login, reload or a protected deep link. No learning workspace is mounted until completion. Signing out is available from setup.
 - After saving, the app restores an allowed protected destination, or opens the role's default workspace. A completed account opening onboarding is returned to its workspace.
 - Settings uses the same editable form; equivalent session/focus refreshes preserve unsaved edits. Saves persist in Supabase and follow the account on another device.
-- Home offers shortcuts for selected practice modes. Home and Progress show learning goals and the daily target. All practice modes remain available.
-- The account's display name and daily target override device defaults and backup values. Import still merges learning history, without clearing attempts or review/session progress.
+- Home opens personalized Today’s stops; Progress shows the profile and current route completion. Settings offers a daily route length. All practice modes remain available.
+- The account's display name and route setting override device defaults and backup values. Import still merges learning history, without clearing attempts or review/session progress.
 - Course, Exercises and public lecturer lessons default to both the profile's language level and difficulty. Filters can be changed independently, cleared together with **Clear filters**, or restored with **Use profile preferences**. Overrides (including explicit `all`) live in the hash query and survive reload and returning from a detail page; changing a filter never changes the saved account profile. A catalog opened without overrides uses the latest saved profile. Guest browsing continues to use unfiltered catalogs.
-- Free-practice vocabulary follows the selected language level. Home also recommends grammar, vocabulary and exercises for the selected learning goals. See [personalization rules](personalization.md). Automatic placement and changes to assessment scoring are not implemented. Daily targets count free practice, while course/exercise completion has a separate summary.
+- Free-practice vocabulary follows the selected language level. Today’s stops also offers expandable grammar, vocabulary and exercise recommendations for the selected learning goals. See [personalization rules](personalization.md). Automatic placement and changes to assessment scoring are not implemented. Daily stops count matching practice and completed course/exercise reviews. Both contribute to the day streak. See [daily stops](daily-stops.md).
 
 ## Verification
 

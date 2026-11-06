@@ -1,5 +1,11 @@
 import { expect, test, accountStudyKey } from './fixtures'
+import type { Page } from '@playwright/test'
 import { lessons } from '../src/data/learning'
+
+async function openRecommendations(page: Page) {
+  await page.goto('/#/today')
+  await page.getByText('Explore more recommendations for your goals', { exact: true }).click()
+}
 
 for (const pageName of ['course', 'exercises', 'lessons'] as const) {
   test(`${pageName}: profile filters apply by default, can be cleared and survive reload and detail Back`, async ({ page, backend }) => {
@@ -70,19 +76,19 @@ test('empty profile matches offer all content, and a difficulty filter never off
 
 test('changing goals changes recommendations; changing level and difficulty retains saved attempts, reviews and course answers', async ({ page, backend }) => {
   Object.assign(backend.users[0], { learning_goals: ['travel'] })
-  await page.goto('/#/home')
+  await openRecommendations(page)
   const recommendations = page.getByRole('region', { name: 'Recommendations for your goals', exact: true })
   const grammar = page.getByRole('region', { name: 'Recommended grammar', exact: true })
   const vocabulary = page.getByRole('region', { name: 'Recommended vocabulary', exact: true })
   const exercises = page.getByRole('region', { name: 'Recommended exercises', exact: true })
   await expect(exercises.locator('h4').first()).toHaveText('A stop at the café')
   const before = { grammar: await grammar.locator('summary').allTextContents(), vocabulary: await vocabulary.locator('article > strong').allTextContents(), exercises: await exercises.locator('h4').allTextContents() }
-  await page.getByRole('button', { name: 'Edit profile', exact: true }).click()
+  await page.getByRole('button', { name: 'Route preferences', exact: true }).click()
   await page.getByLabel('Travel', { exact: true }).uncheck()
   await page.getByLabel('Study and exams', { exact: true }).check()
   await page.getByRole('button', { name: 'Save preferences', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Preferences saved')
-  await page.goto('/#/home')
+  await openRecommendations(page)
   await expect(recommendations).toBeVisible()
   await expect(exercises.locator('h4').first()).toHaveText('Meet a new classmate')
   expect(await grammar.locator('summary').allTextContents()).not.toEqual(before.grammar)
@@ -107,7 +113,7 @@ test('changing goals changes recommendations; changing level and difficulty reta
   await page.getByLabel('Preferred difficulty', { exact: true }).selectOption('challenging')
   await page.getByRole('button', { name: 'Save preferences', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('Preferences saved')
-  await page.goto('/#/home')
+  await openRecommendations(page)
   await expect(recommendations).toContainText('Intermediate · Challenging activities')
   await page.goto('/#/exercises')
   await expect(page.getByRole('radio', { name: 'Intermediate', exact: true })).toBeChecked()
@@ -135,7 +141,7 @@ test('completing a filtered subset never claims that the entire course path is c
 for (const width of [360, 1280]) {
   test(`${width}px: personalized recommendations fit and open grammar without creating attempts`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
-    await page.goto('/#/home')
+    await openRecommendations(page)
     await expect(page.getByRole('region', { name: 'Recommendations for your goals', exact: true })).toBeVisible()
     const grammar = page.getByRole('region', { name: 'Recommended grammar', exact: true })
     await grammar.locator('summary').first().focus()

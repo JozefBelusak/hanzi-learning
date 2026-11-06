@@ -5,6 +5,7 @@ import { appendAttempt, createAttempt, emptyStudy, mergeStudy, parseStudy, saveL
 import { loadStudyData, saveStudyData } from './storage'
 import { applyAccountProfile } from './profile'
 import type { UserProfile } from '../types/auth'
+import { buildDailyRoute, currentDailyRoute, dailyPreferenceKey, dailyRouteProgress, dailyStopAvailable } from './daily'
 
 export function useStudy(profile: UserProfile) {
   const userId = profile.id
@@ -36,6 +37,20 @@ export function useStudy(profile: UserProfile) {
   function recordLearningSession(session: LearningSession) {
     setData((previous) => saveLearningSession(previous, session))
   }
+  function startDailyRoute(nextSection = false) {
+    const now = new Date()
+    const previous = currentDailyRoute(data,now)
+    if (previous && !nextSection) return true
+    if (previous && !dailyRouteProgress(previous,data).complete && previous.preferenceKey === dailyPreferenceKey(profile) && previous.stops.every((stop) => dailyStopAvailable(stop,data))) return false
+    const route = buildDailyRoute(data,profile,now)
+    if (!route) return false
+    setData((stored) => {
+      // A second click cannot append a duplicate section from a stale render.
+      if (currentDailyRoute(stored,now)?.id !== previous?.id) return stored
+      return { ...stored, dailyRoutes: [...(stored.dailyRoutes ?? []),route] }
+    })
+    return true
+  }
   function importBackup(raw: string) {
     const imported = parseStudy(raw)
     // Validate cross-device conflicts inside the caller's import error handler.
@@ -43,5 +58,5 @@ export function useStudy(profile: UserProfile) {
     setData(merged)
     return merged
   }
-  return { data, ready, storageError, recordAttempt, recordLearningSession, importBackup }
+  return { data, ready, storageError, recordAttempt, recordLearningSession, startDailyRoute, importBackup }
 }
